@@ -6,10 +6,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface AccountRepository extends JpaRepository<Users, Long> {
 
-	Account findOneByEmail(String email);
+	Users findOneByEmail(String email);
 
-	@Query("select count(a) > 0 from Account a where a.email = :email")
+	@Query("select count(a) > 0 from Users a where a.email = :email")
 	boolean exists(@Param("email") String email);
 }
