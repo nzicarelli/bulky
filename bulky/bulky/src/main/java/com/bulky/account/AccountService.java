@@ -29,39 +29,39 @@ public class AccountService implements UserDetailsService {
 
 	@PostConstruct	
 	protected void initialize() {
-//		save(new Account("user", "demo", "ROLE_USER"));
-//		save(new Account("admin", "admin", "ROLE_ADMIN"));
+		save(new Account("user", "demo", "ROLE_USER"));
+		save(new Account("admin", "admin", "ROLE_ADMIN"));
 	}
 
 	@Transactional
-	public Users save(Users account) {
+	public Account save(Account account) {
 		account.setPassword(passwordEncoder.encode(account.getPassword()));
-		account = accountRepository.save(account);
+		accountRepository.save(account);
 		return account;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Users account = accountRepository.findOneByEmail(username);
+		Account account = accountRepository.findOneByEmail(username);
 		if(account == null) {
 			throw new UsernameNotFoundException("user not found");
 		}
 		return createUser(account);
 	}
 	
-	public void signin(Users account) {
+	public void signin(Account account) {
 		SecurityContextHolder.getContext().setAuthentication(authenticate(account));
 	}
 	
-	private Authentication authenticate(Users account) {
+	private Authentication authenticate(Account account) {
 		return new UsernamePasswordAuthenticationToken(createUser(account), null, Collections.singleton(createAuthority(account)));		
 	}
 	
-	private User createUser(Users account) {
+	private User createUser(Account account) {
 		return new User(account.getEmail(), account.getPassword(), Collections.singleton(createAuthority(account)));
 	}
 
-	private GrantedAuthority createAuthority(Users account) {
+	private GrantedAuthority createAuthority(Account account) {
 		return new SimpleGrantedAuthority(account.getRole());
 	}
 
