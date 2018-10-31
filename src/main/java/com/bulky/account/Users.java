@@ -19,7 +19,6 @@ public class Users implements java.io.Serializable {
 	
 	public static enum ROLES {ROLE_ADMIN,ROLE_ACCOUNT,ROLE_USER,ROLE_EXTERNAL};
 
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -36,7 +35,6 @@ public class Users implements java.io.Serializable {
 	
 	@Column(name = "uemail")
 	private String email;
-
 	
 	@Column(name="ucode01")
 	private String code01;
@@ -64,6 +62,7 @@ public class Users implements java.io.Serializable {
     public Users() {
 
 	}
+
 
 	public Integer getId() {
 		return id;
@@ -173,6 +172,9 @@ public class Users implements java.io.Serializable {
 	public void setUserLastUpdate(Integer userLastUpdate) {
 		this.userLastUpdate = userLastUpdate;
 	}
+
+	
+		
 
 	
 }
