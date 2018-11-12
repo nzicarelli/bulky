@@ -3,16 +3,25 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import {AuthGuard} from './_guard/auth.guard';
+import {AppRoutes} from './app.routes';
+import { LoginComponent } from './login/login.component';
+import {ButtonModule} from 'primeng/button';
 
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
   imports: [
-    BrowserModule
+    AppRoutes,
+    BrowserModule,
+
+    // PRIMENG
+    ButtonModule
   ],
-  providers: [],
+  declarations: [
+    AppComponent,
+    LoginComponent
+  ],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
