@@ -7,19 +7,23 @@ import {AuthGuard} from './_guard/auth.guard';
 import {AppRoutes} from './app.routes';
 import { LoginComponent } from './login/login.component';
 import {ButtonModule} from 'primeng/button';
+import { LandingComponent } from './landing/landing.component';
 
 
 @NgModule({
   imports: [
-    AppRoutes,
+
     BrowserModule,
 
     // PRIMENG
-    ButtonModule
+    ButtonModule,
+
+    AppRoutes
   ],
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    LandingComponent
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
