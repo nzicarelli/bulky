@@ -1,104 +1,86 @@
 package com.bulky.account;
 
+import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
+/**
+ * The persistent class for the account database table.
+ * 
+ */
 @Entity
-@Table(name = "account")
-public class Account implements java.io.Serializable {
-
-
+@Table(name="account")
+@NamedQueries({
+	@NamedQuery(name="Account.findAll", query="SELECT a FROM Account a")
+})
+public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="aid")
-	private Integer id;
-	
-	@Column(name="acredit")
-	private Integer credit;
-	
-	@Column(name = "aname")
-	private String name;
-	
-	@Column(name = "alogo")
-	private String logo;
-	
-	@Column(name="astatus")
-	private Integer status;
-	
-	@Column(name="adtmod")
+	private Integer aid;
+
+	private Integer acredit;
+
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dtmod;
-	
-//	@JsonIgnore
-//	private String password;
+	private Date adtmod;
 
-//	private String role = "ROLE_USER";
+	private String alogo;
 
-//	private Instant created;
-		
+	private String aname;
 
-    protected Account() {
+	private Integer astatus;
 
+	public Account() {
 	}
 
-	public Integer getId() {
-		return id;
+	public Integer getAid() {
+		return this.aid;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setAid(Integer aid) {
+		this.aid = aid;
 	}
 
-	public Integer getCredit() {
-		return credit;
+	public Integer getAcredit() {
+		return this.acredit;
 	}
 
-	public void setCredit(Integer credit) {
-		this.credit = credit;
+	public void setAcredit(Integer acredit) {
+		this.acredit = acredit;
 	}
 
-	public String getName() {
-		return name;
+	public Date getAdtmod() {
+		return this.adtmod;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAdtmod(Date adtmod) {
+		this.adtmod = adtmod;
 	}
 
-	public String getLogo() {
-		return logo;
+	public String getAlogo() {
+		return this.alogo;
 	}
 
-	public void setLogo(String logo) {
-		this.logo = logo;
+	public void setAlogo(String alogo) {
+		this.alogo = alogo;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public String getAname() {
+		return this.aname;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setAname(String aname) {
+		this.aname = aname;
 	}
 
-	public Date getDtmod() {
-		return dtmod;
+	public Integer getAstatus() {
+		return this.astatus;
 	}
 
-	public void setDtmod(Date dtmod) {
-		this.dtmod = dtmod;
+	public void setAstatus(Integer astatus) {
+		this.astatus = astatus;
 	}
-		
 
-	
 }

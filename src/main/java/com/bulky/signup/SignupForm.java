@@ -3,7 +3,8 @@ package com.bulky.signup;
 import org.hibernate.validator.constraints.*;
 
 import com.bulky.account.Account;
-import com.bulky.account.Users;
+import com.bulky.account.User;
+
 
 public class SignupForm {
 
@@ -35,11 +36,11 @@ public class SignupForm {
 		this.password = password;
 	}
 
-	public Users createAccount() {
-		Users u = new Users();
-		u.setEmail(getEmail());
-		u.setPassword(getPassword());
-		u.setRole(Users.ROLES.ROLE_USER.name());
+	public User createAccount() {
+		User u = new User();
+		u.setUemail(getEmail());
+		u.setUpasswd(getPassword());
+		u.setUrole(User.ROLES.ROLE_USER.name());
         return u;
 	}
 }

@@ -14,6 +14,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -60,6 +63,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
 					creds.getUsername(), creds.getPassword(), Collections.emptyList());
 			
+			
 			// 3. Authentication manager authenticate the user, and use UserDetialsServiceImpl::loadUserByUsername() method to load the user.
 			return authManager.authenticate(authToken);
 			
@@ -88,6 +92,13 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 		
 		// Add token to header
 		response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
+		response.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+		JSONObject body = new JSONObject();
+		body.put("tk", token);
+		body.put("expire", jwtConfig.getExpiration());
+		
+		response.getWriter().println( body.toString() );
+	
 	}
 	
 	// A (temporary) class just to represent the user credentials
