@@ -1,0 +1,7 @@
+{
+  "baseUrl": "",
+  "version": "AUTOMOTIVE",
+  "PRECOMPILA_CNT_TPRO": 1,
+  "PRECOMPILA_CNT_TCNT": 1,
+  "WEBSOCKET_URL": "/api/websocket"
+}
