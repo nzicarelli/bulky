@@ -16,8 +16,9 @@ import { RegistrationComponent } from './registration/registration.component';
 import {InputTextModule} from "primeng/primeng";
 import {FormsModule} from "@angular/forms";
 import { RecoveryPasswordComponent } from './recovery-password/recovery-password.component';
+import {APP_BASE_HREF} from '@angular/common';
 
-
+import { getBaseUrl } from './shared/common-functions.util';
 
 export function initConfig(config: AppConfig) {
   return () => config.loadNew();
@@ -45,6 +46,11 @@ export function initConfig(config: AppConfig) {
   ],
   providers: [AuthGuard, AppConfig, AuthenticationService,
     {provide: APP_INITIALIZER, useFactory: initConfig, deps: [AppConfig], multi: true},
+    { provide: 'BASE_URL', useFactory: getBaseUrl },
+    /*{
+      provide: APP_BASE_HREF,
+      useFactory: getBaseLocation
+    },*/
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,

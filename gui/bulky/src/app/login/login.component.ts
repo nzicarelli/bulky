@@ -74,4 +74,9 @@ export class LoginComponent implements OnInit {
           this.textError = 'Errore';
         });
   }
+
+  noAlert() {
+    this.userWrong = false;
+    this.passwordWrong = false;
+  }
 }
