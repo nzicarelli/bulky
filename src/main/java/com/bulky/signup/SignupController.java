@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,6 +19,7 @@ import com.bulky.account.AccountService;
 import com.bulky.account.User;
 import com.bulky.customer.Customer;
 import com.bulky.customer.CustomerRepository;
+import com.bulky.error.DataException;
 import com.bulky.response.ResponseBuilder;
 import com.bulky.response.ResponseData;
 import com.bulky.support.AppUtil;
@@ -80,8 +82,9 @@ class SignupController {
 	
 	
 	@PostMapping("api/customer/signup")
-	public @ResponseBody ResponseData signupCustomer(@ModelAttribute Customer user , HttpServletRequest request) {
+	public @ResponseBody ResponseData signupCustomer(@RequestBody String payload, HttpServletRequest request) throws DataException {
 		
+		Customer user = AppUtil.bindObject(payload,Customer.class);
 		// test if user exists
 		Customer u = null;
 		try {
