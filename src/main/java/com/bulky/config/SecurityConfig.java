@@ -48,7 +48,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		    // allow all POST requests 
 		    .antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()
-		    .antMatchers("/", "/favicon.ico", "/resources/**", "/signup", "/about").permitAll()
+		    .antMatchers("/", "/favicon.ico", "/resources/**", "/signup", "/about","/api/customer/signup","/api/users/signup").permitAll()
 		    // any other requests must be authenticated
 		    .anyRequest().authenticated();
 	}

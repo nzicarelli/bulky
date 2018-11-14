@@ -1,5 +1,7 @@
 package com.bulky.error;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,8 +33,18 @@ class ExceptionHandler {
 	}
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler(value = UsernameNotFoundException.class)	
-	public @ResponseBody ResponseData usernameNotFoundException(Exception exception, WebRequest request) {
+	public @ResponseBody ResponseData usernameNotFoundException(UsernameNotFoundException exception, WebRequest request) {
 		return responseBuilder.userNotFound(request.getLocale());	
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(value = ConstraintViolationException.class)	
+	public @ResponseBody ResponseData costraintNotFoundException(UsernameNotFoundException exception, WebRequest request) {
+		return responseBuilder.fail(exception);	
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(value = DataException.class)	
+	public @ResponseBody ResponseData costraintNotFoundException(DataException exception, WebRequest request) {
+		return responseBuilder.fail(exception);	
 	}
 	
 	
