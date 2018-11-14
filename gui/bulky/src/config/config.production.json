@@ -1,0 +1,5 @@
+{
+    "baseUrl": "http://localhost:10489",
+    "version": "DIY",
+    "WEBSOCKET_URL": "/crm40/api/websocket"
+}
