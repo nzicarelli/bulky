@@ -18,7 +18,7 @@ export class AuthenticationService {
     const myUrl = this.config.getConfig('baseUrl');
 
     return this.http
-      .post(myUrl + '/services/auth/login', data).map((response: any) => {
+      .post(myUrl + '/auth/login', data).map((response: any) => {
         console.log('New login');
         const user = response;
         const tk = user.access_token;
