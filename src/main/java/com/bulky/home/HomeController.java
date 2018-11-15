@@ -19,6 +19,7 @@ class HomeController {
 	@GetMapping("/")
 	String index(Principal principal, Model model) {
 		model.addAttribute("springVersion", SpringVersion.getVersion());
-		return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";
+		//return principal != null ? "home/homeSignedIn" : "home/homeNotSignedIn";
+		return "index";
 	}
 }
