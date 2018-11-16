@@ -31,4 +31,15 @@ public final class AppUtil {
 			throw new DataException(e);
 		}	
 	}
+	
+	public static String toJson(Object o) throws DataException {		
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.getFactory().configure(Feature.ESCAPE_NON_ASCII, true);
+			return mapper.writeValueAsString(o);
+		} catch (Exception e) {
+			throw new DataException(e);
+		}
+		
+	}
 }

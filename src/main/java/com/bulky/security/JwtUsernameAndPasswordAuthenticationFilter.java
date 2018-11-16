@@ -7,6 +7,8 @@ package com.bulky.security;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
@@ -25,6 +27,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.bulky.account.UserData;
+import com.bulky.support.AppUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
@@ -93,11 +97,17 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 		// Add token to header
 		response.addHeader(jwtConfig.getHeader(), jwtConfig.getPrefix() + token);
 		response.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-		JSONObject body = new JSONObject();
+		Map<String, Object> body = new HashMap<>();
 		body.put("tk", token);
 		body.put("expire", jwtConfig.getExpiration());
+		UserData uData = (UserData)auth.getPrincipal();
+		body.put("user", uData);
 		
-		response.getWriter().println( body.toString() );
+		try {
+			response.getWriter().println(AppUtil.toJson(body));
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
 	
 	}
 	

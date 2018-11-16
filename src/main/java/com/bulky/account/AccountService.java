@@ -65,7 +65,9 @@ public class AccountService implements UserDetailsService {
 		if(account == null) {
 			throw new UsernameNotFoundException("user not found");
 		}
-		return createUser(account);
+		UserData user = createUser(account);
+		 
+		return user;
 	}
 	
 	public void signin(User account) {
@@ -76,8 +78,13 @@ public class AccountService implements UserDetailsService {
 		return new UsernamePasswordAuthenticationToken(createUser(account), null, Collections.singleton(createAuthority(account)));		
 	}
 	
-	private org.springframework.security.core.userdetails.User createUser(User account) {
-		return new org.springframework.security.core.userdetails.User(account.getUemail(), account.getUpasswd(), Collections.singleton(createAuthority(account)));
+	private UserData createUser(User account) {
+		UserData user = new UserData(account.getUemail(), account.getUpasswd(), Collections.singleton(createAuthority(account)));
+		user.setIdAccount(account.getUaccount());
+		user.setName(account.getUname());
+		user.setRole(account.getUrole());
+		
+		return user;
 	}
 
 	private GrantedAuthority createAuthority(User account) {
