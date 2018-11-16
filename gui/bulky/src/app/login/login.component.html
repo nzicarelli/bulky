@@ -18,7 +18,7 @@
 					</span>
 
         <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': userWrong}" data-validate = "Valid email is required: ex@abc.xyz">
-          <input pInputText  class="input100" type="text" name="email" placeholder="Email" [(ngModel)]="user">
+          <input pInputText  class="input100" type="text" name="email" placeholder="Email" [(ngModel)]="user" (focus)="noAlert()" (change)="noAlert()">
           <span class="focus-input100"></span>
           <span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
@@ -26,7 +26,7 @@
         </div>
 
         <div class="wrap-input100 validate-input " [ngClass]="{'alert-validate': passwordWrong}" data-validate = "Password is required">
-          <input pInputText  class="input100" type="password" name="pass" placeholder="Password" [(ngModel)]="password">
+          <input pInputText  class="input100" type="password" name="pass" placeholder="Password" [(ngModel)]="password" (focus)="noAlert()" (change)="noAlert()">
           <span class="focus-input100"></span>
           <span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>

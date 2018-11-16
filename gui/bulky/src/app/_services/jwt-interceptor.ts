@@ -9,19 +9,20 @@ import {
 import {Observable} from 'rxjs/Observable';
 import {AuthenticationService} from './authentication.service';
 import {Router} from '@angular/router';
-import {Injectable, Injector} from '@angular/core';
+import {Inject, Injectable, Injector} from '@angular/core';
 import {AppConfig} from '../app.config';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
-
-  constructor(public router: Router, private inj: Injector, private config: AppConfig) {
+  private bUrl = '';
+  constructor(public router: Router, private inj: Injector, private config: AppConfig,  @Inject('BASE_URL') baseUrl: string) {
+    this.bUrl = baseUrl;
   }
 
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // console.log('JWT_INTERCEPTOR **********************************************************');
+     console.log('JWT_INTERCEPTOR **********************************************************');
     const auth = this.inj.get(AuthenticationService);
     req = req.clone({
       setHeaders: {
@@ -29,9 +30,10 @@ export class JwtInterceptor implements HttpInterceptor {
       }
     });
     if (req.url.startsWith('/')) {
-      const myUrl = this.config.getConfig('baseUrl');     // prefix base url
+      const servUrl = this.config.getConfig('baseUrl');
+      const myUrl = this.bUrl;  // prefix base url
       req = req.clone({
-        url: myUrl + req.url
+        url: servUrl + myUrl + req.url.substring(1, req.url.length),
       });
     }
 
