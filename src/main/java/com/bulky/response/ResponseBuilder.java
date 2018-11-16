@@ -3,12 +3,14 @@
  */
 package com.bulky.response;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
+import com.bulky.action.CatgAction;
 import com.bulky.support.web.Message;
 
 /**
@@ -61,6 +63,11 @@ public class ResponseBuilder {
 		String msgKey = "user.not.found";
 		String sz = messageSource.getMessage(msgKey,data, locale);
 		ResponseData r = new ResponseData(false,sz,null, null, new Message(msgKey, Message.Type.DANGER));
+		return r;
+	}
+
+	public ResponseData success(List<?> data) {
+		ResponseData r = new ResponseData(true,"Operation OK",data, null, new Message("OK", Message.Type.SUCCESS));
 		return r;
 	}
 }

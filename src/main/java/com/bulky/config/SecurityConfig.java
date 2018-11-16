@@ -13,9 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.bulky.account.AccountService;
 import com.bulky.security.JwtConfig;
+import com.bulky.security.JwtTokenAuthenticationFilter;
 import com.bulky.security.JwtUsernameAndPasswordAuthenticationFilter;
 
 @Configuration
@@ -64,7 +66,9 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    		"/api/customer/signup",
 		    		"/api/users/signup").permitAll()
 		    // any other requests must be authenticated
-		    .anyRequest().authenticated();
+		    .anyRequest().authenticated()
+		    .and()
+            .addFilterBefore(new JwtTokenAuthenticationFilter(jwtConfig), BasicAuthenticationFilter.class);;
 	}
 	
 	// Spring has UserDetailsService interface, which can be overriden to provide our implementation for fetching user from database (or any other source).

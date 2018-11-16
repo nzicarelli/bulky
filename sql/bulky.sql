@@ -102,6 +102,25 @@ create table address_zone(
 );
 
 
+CREATE TABLE catg_action(
+	caid int not null primary key auto_increment,
+	cafkaccount int not null,
+	cafktlead int null,
+	castatus int null,
+	cadescr varchar(250) null,
+	catitle varchar(250) null,
+	canote varchar(500) null,
+	caenabled bit null,
+	cadtins datetime null,
+	cadtmod datetime null,
+	causermod int null
+);
+
+insert into catg_action(cafkaccount,cafktlead,castatus,cadescr,catitle,canote,caenabled) values(1,1,1,'','Ingombranti/Sfalci-Potature','',1);
+insert into catg_action(cafkaccount,cafktlead,castatus,cadescr,catitle,canote,caenabled) values(1,1,1,'','Smaltimento Rifiuti Speciali','',1);
+insert into catg_action(cafkaccount,cafktlead,castatus,cadescr,catitle,canote,caenabled) values(1,1,1,'','Richiesta Informazione','',1);
+
+
 
 
 CREATE TABLE lead (
