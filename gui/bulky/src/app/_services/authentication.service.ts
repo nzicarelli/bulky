@@ -6,6 +6,10 @@ import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class AuthenticationService {
+
+  public TYPE_CUSTOMER = 'CUSTOMER';
+  public TYPE_USER = 'USER';
+
   constructor(private http: HttpClient, private config: AppConfig) {
   }
 
@@ -21,9 +25,9 @@ export class AuthenticationService {
       .post(myUrl + '/auth/login', data).map((response: any) => {
         console.log('New login');
         const user = response;
-        const tk = user.access_token;
+        const tk = user.tk;
         const exp = user.expires_in;
-        const u = user.data;
+        const u = user.user;
 
         if ((tk)) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -40,11 +44,18 @@ export class AuthenticationService {
       });
   }
 
-  public register(periodo: string) {
+  public register(nome: string, cognome: string, username: string, password: string, cfPiva: string) {
     const myParam: any = {
-      PERIODO: periodo
+      cuname: nome,
+      cusurname: cognome,
+      cuusername: username,
+      cupassword: password,
+      cupiva: cfPiva,
+      cucf: cfPiva
     };
-    return this.http.post('/services/auth/login', myParam)
+
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/customer/signup', myParam)
       .toPromise()
       .then(res => {
         return res;
@@ -83,7 +94,7 @@ export class AuthenticationService {
   isAdmin() {
     const u = localStorage.getItem('currentUser');
     const u2 = JSON.parse(u);
-    if (u2.grpId === 4) {
+    if (u2.role === 'ROLE_ADMIN') {
       return true;
     } else {
       return false;
@@ -91,10 +102,34 @@ export class AuthenticationService {
 
   }
 
-  getUserId() {
+  getUserName() {
     const u = localStorage.getItem('currentUser');
     const u2 = JSON.parse(u);
-    return u2.usrId;
+    return u2.username;
+  }
+
+  getName() {
+    const u = localStorage.getItem('currentUser');
+    const u2 = JSON.parse(u);
+    return u2.name;
+  }
+
+  isCustomer() {
+    const u = localStorage.getItem('currentUser');
+    const u2 = JSON.parse(u);
+    if (u2.accountType === this.TYPE_CUSTOMER) {
+      return true;
+    }
+    return false;
+  }
+
+  isUser() {
+    const u = localStorage.getItem('currentUser');
+    const u2 = JSON.parse(u);
+    if (u2.accountType === this.TYPE_USER) {
+      return true;
+    }
+    return false;
   }
 
 }

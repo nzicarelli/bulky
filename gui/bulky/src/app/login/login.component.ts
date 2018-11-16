@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   }
 
   goToCustomer() {
-    this.router.navigate(['customer']);
+    this.router.navigate(['/customer']);
   }
 
   goToUser() {
@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     console.log('LOGIN: ' + this.user + ' - ' + this.password);
+    this.showError = false;
     this.userWrong = false;
     this.passwordWrong = false;
     if (!this.user || this.user.length < 6) {
@@ -52,21 +53,26 @@ export class LoginComponent implements OnInit {
     if (this.userWrong || this.passwordWrong) {
       return;
     }
-
+    this.loading = true;
     this.authService.login(this.user, this.password)
       .subscribe(
         data => {
+          this.loading = false;
           console.log('After login ' + data);
-          if (data.success) {
+          if (data.success || (data.tk && data.tk.length > 0)) {
             console.log('ROUTE TO ' + this.returnUrl);
             // this.permessi.loadPermessi();
-            this.router.navigate([this.returnUrl]);
+            // this.router.navigate([this.returnUrl]);
+            if (this.authService.TYPE_USER) {
+              this.goToUser();
+            } else {
+              this.goToCustomer();
+            }
           } else {
             console.log('NO LOGIN');
             this.showError = true;
             this.textError = data.msg;
           }
-          this.loading = false;
         },
         error => {
           this.loading = false;
@@ -76,6 +82,7 @@ export class LoginComponent implements OnInit {
   }
 
   noAlert() {
+    this.showError = false;
     this.userWrong = false;
     this.passwordWrong = false;
   }

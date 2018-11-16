@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import {AuthenticationService} from "../../_services/authentication.service";
 
 @Component({
   selector: 'app-customer-home',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomerHomeComponent implements OnInit {
 
-  constructor() { }
+  public myName = '';
+
+  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthenticationService) { }
 
   ngOnInit() {
+    this.myName = this.authService.getName();
   }
 
 }

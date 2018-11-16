@@ -10,46 +10,46 @@
 						Registrazione
 					</span>
 
-        <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-          <input pInputText  class="input100" type="text" name="cognome" placeholder="Cognome/Denominazione" [(ngModel)]="cognome">
+        <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': cognomeWrong}" data-validate = "Questo campo è obbligatorio">
+          <input pInputText  class="input100" type="text" name="cognome" placeholder="Cognome/Denominazione" [(ngModel)]="cognome" (focus)="noAlert()" (change)="noAlert()">
           <span class="focus-input100"></span>
           <span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
 						</span>
         </div>
-        <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-          <input pInputText  class="input100" type="text" name="nome" placeholder="nome" [(ngModel)]="nome">
+        <div class="wrap-input100 validate-input" >
+          <input pInputText  class="input100" type="text" name="nome" placeholder="nome" [(ngModel)]="nome" (focus)="noAlert()" (change)="noAlert()">
           <span class="focus-input100"></span>
           <span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
 						</span>
         </div>
-        <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-          <input pInputText  class="input100" type="text" name="cf" placeholder="Cod. Fiscale / Partita IVA" [(ngModel)]="cf">
-          <span class="focus-input100"></span>
-          <span class="symbol-input100">
-							<i class="fa fa-envelope" aria-hidden="true"></i>
-						</span>
-        </div>
-
-        <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-          <input pInputText  class="input100" type="text" name="email" placeholder="Email" [(ngModel)]="user">
+        <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': cfWrong}" data-validate = "Verificare il valore del campo">
+          <input pInputText  class="input100" type="text" name="cf" placeholder="Cod. Fiscale / Partita IVA" [(ngModel)]="cf" (focus)="noAlert()" (change)="noAlert()">
           <span class="focus-input100"></span>
           <span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
 						</span>
         </div>
 
-        <div class="wrap-input100 validate-input" data-validate = "Password is required">
-          <input pInputText  class="input100" type="password" name="pass" placeholder="Password" [(ngModel)]="password">
+        <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': emailWrong}" data-validate = "Campo obbligatorio, formato: aaa@bbb.xyz">
+          <input pInputText  class="input100" type="text" name="email" placeholder="Email" [(ngModel)]="user" (focus)="noAlert()" (change)="noAlert()">
+          <span class="focus-input100"></span>
+          <span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+        </div>
+
+        <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': psswWrong}" data-validate = "Verificare il valore del campo">
+          <input pInputText  class="input100" type="password" name="pass" placeholder="Password" [(ngModel)]="password" (focus)="noAlert()" (change)="noAlert()">
           <span class="focus-input100"></span>
           <span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
         </div>
 
-        <div class="wrap-input100 validate-input" data-validate = "Password is required">
-          <input pInputText  class="input100" type="password" name="pass2" placeholder="Ripati Password" [(ngModel)]="password2">
+        <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': pssw2Wrong}" data-validate = "Verificare il valore del campo">
+          <input pInputText  class="input100" type="password" name="pass2" placeholder="Ripati Password" [(ngModel)]="password2" (focus)="noAlert()" (change)="noAlert()">
           <span class="focus-input100"></span>
           <span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
@@ -57,8 +57,10 @@
         </div>
 
         <div class="container-login100-form-btn">
-          <button class="login100-form-btn" (click)="login()">
-            Registrati
+          <button class="login100-form-btn" (click)="register()">
+            <span *ngIf="loading"><i class="fa fa-spinner fa-spin" ></i>&nbsp; &nbsp; Loading...</span>
+            <span *ngIf="!loading">Registrati</span>
+
           </button>
         </div>
 
