@@ -17,7 +17,7 @@ public class UserData extends  org.springframework.security.core.userdetails.Use
 	private String role;
 	private Integer idAccount;
 	private String name;
-	
+	private String accountType;
 	
 
 	public UserData(String username, String password, boolean enabled, boolean accountNonExpired,
@@ -53,6 +53,14 @@ public class UserData extends  org.springframework.security.core.userdetails.Use
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
 	}
 
 	

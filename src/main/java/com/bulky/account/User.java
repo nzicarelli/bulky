@@ -21,7 +21,7 @@ public class User implements Serializable {
 	public static final String FIND_BY_ACCOUNT ="User.FindByAccount";
 	public static final String FIND_BY_USERNAME ="User.FindByUsername";
 	
-	public static enum ROLES {ROLE_ADMIN,ROLE_ACCOUNT,ROLE_USER,ROLE_EXTERNAL};
+	public static enum ROLES {ROLE_ADMIN,ROLE_ACCOUNT,ROLE_USER,ROLE_EXTERNAL,ROLE_CUSTOMER};
 
 
 	@Id

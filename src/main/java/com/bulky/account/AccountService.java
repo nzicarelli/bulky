@@ -6,17 +6,22 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.*;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.stereotype.Service;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.bulky.customer.Customer;
+import com.bulky.customer.CustomerRepository;
 
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -27,6 +32,9 @@ public class AccountService implements UserDetailsService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private CustomerRepository customerRep;
 
 	@PostConstruct	
 	protected void initialize() {
@@ -62,14 +70,45 @@ public class AccountService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User account = accountRepository.findOneByUemail(username);
+		
+		if (account==null) {
+			Customer cus = customerRep.findByUsername(username);
+			if (cus!=null) {
+				UserData udata = createUserFromCustomer(cus);
+				udata.setAccountType("CUSTOMER");
+				return udata;
+			}
+		}
 		if(account == null) {
 			throw new UsernameNotFoundException("user not found");
 		}
 		UserData user = createUser(account);
-		 
+		user.setAccountType("USER");
 		return user;
 	}
 	
+	private UserData createUserFromCustomer(Customer account) {
+		UserData user = new UserData(account.getCuusername(), account.getCupassword(), Collections.singleton(createAuthority(account)));
+		user.setIdAccount(account.getCufkaccount());
+		user.setName(account.getCuusername());
+		user.setRole(User.ROLES.ROLE_CUSTOMER.name());
+		
+		return user;
+	}
+
+	private GrantedAuthority createAuthority(Customer account) {
+		return new SimpleGrantedAuthority(User.ROLES.ROLE_CUSTOMER.name());
+	}
+	
+	
+	public void signin(Customer account) {
+		SecurityContextHolder.getContext().setAuthentication(authenticate(account));
+	}
+	
+	private Authentication authenticate(Customer account) {
+		return new UsernamePasswordAuthenticationToken(createUserFromCustomer(account), null, Collections.singleton(createAuthority(account)));		
+	}
+
 	public void signin(User account) {
 		SecurityContextHolder.getContext().setAuthentication(authenticate(account));
 	}
