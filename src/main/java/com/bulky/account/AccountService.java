@@ -1,5 +1,6 @@
 package com.bulky.account;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
@@ -87,11 +88,19 @@ public class AccountService implements UserDetailsService {
 		return user;
 	}
 	
-	private UserData createUserFromCustomer(Customer account) {
-		UserData user = new UserData(account.getCuusername(), account.getCupassword(), Collections.singleton(createAuthority(account)));
+	private UserData createUserFromCustomer(Customer account) {		
+		UserData user = new UserData(
+				account.getCuusername(), 
+				account.getCupassword(), 
+				/*enabled*/(account.getCuenabled()!=null && account.getCuenabled().booleanValue()?true:false),
+				/*accountNonExpired*/(account.getCuenabled()!=null && account.getCuenabled().booleanValue()?true:false),
+				/*credentialsNonExpired*/(account.getCuenabled()!=null && account.getCuenabled().booleanValue()?true:false),
+				/*accountNonLocked*/(account.getCuenabled()!=null && account.getCuenabled().booleanValue()?true:false),
+				Collections.singleton(createAuthority(account)));
 		user.setIdAccount(account.getCufkaccount());
 		user.setName(account.getCuusername());
 		user.setRole(User.ROLES.ROLE_CUSTOMER.name());
+		
 		
 		return user;
 	}

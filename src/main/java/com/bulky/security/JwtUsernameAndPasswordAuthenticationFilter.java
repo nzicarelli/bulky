@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.persistence.NoResultException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +20,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -109,6 +115,37 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 			throw new IOException(e);
 		}
 	
+	}
+	
+	
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException, ServletException {
+		// AccountExpiredException, CredentialsExpiredException, DisabledException, LockedException
+		SecurityContextHolder.clearContext();
+		Map<String, Object> body = new HashMap<>();		
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+		if (failed instanceof LockedException) {			
+			body.put("LOCKED", true);			
+		}else if (failed instanceof AccountExpiredException) {
+			body.put("EXPIRED", true);
+		}else if (failed instanceof CredentialsExpiredException) {
+			body.put("EXPIRED", true);
+		}else if (failed instanceof DisabledException) {
+			body.put("DISABLED", true);
+		}else if (failed.getCause() instanceof NoResultException) {
+			body.put("NOT_FOUND", true);
+		}else {
+			body.put("DISABLED", true);
+		}		
+		body.put("MSG", failed.getMessage());
+		try {
+			response.getWriter().println(AppUtil.toJson(body));
+		} catch (Exception e) {
+			throw new IOException(e);
+		}
+		
 	}
 	
 	// A (temporary) class just to represent the user credentials

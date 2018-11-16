@@ -104,6 +104,7 @@ class SignupController {
 			user.setCudtins( new Date());
 			user.setCudtmod( new Date() );
 			user.setCuenabled(Boolean.FALSE);
+			user.setCupassword(passwordEncoder.encode(user.getCupassword()));
 			customerRep.store(user);
 			return responseBuilder.customerNotFound(user.getCusurname(), request.getLocale());
 		}
