@@ -19,6 +19,7 @@ import { RecoveryPasswordComponent } from './recovery-password/recovery-password
 import {APP_BASE_HREF} from '@angular/common';
 
 import { getBaseUrl } from './shared/common-functions.util';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 export function initConfig(config: AppConfig) {
   return () => config.loadNew();
@@ -30,6 +31,7 @@ export function initConfig(config: AppConfig) {
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    BrowserAnimationsModule,
 
     // PRIMENG
     ButtonModule,

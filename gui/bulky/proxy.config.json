@@ -1,6 +1,6 @@
 {
 
-	"/services/*":{
+	"/api/*":{
 		"target":"http://localhost:8081/services/",
 		"secure":true,
 		"logLevel":"debug",

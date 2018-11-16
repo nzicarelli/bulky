@@ -16,6 +16,8 @@
 					<span class="login100-form-title">
 						Member Login
 					</span>
+<div style="text-align: center; color: red" *ngIf="showError">Credenziali non valide</div>
+
 
         <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': userWrong}" data-validate = "Valid email is required: ex@abc.xyz">
           <input pInputText  class="input100" type="text" name="email" placeholder="Email" [(ngModel)]="user" (focus)="noAlert()" (change)="noAlert()">
@@ -34,8 +36,9 @@
         </div>
 
         <div class="container-login100-form-btn">
-          <button class="login100-form-btn" (click)="login()">
-            Login
+          <button class="login100-form-btn" (click)="login()" [disabled]="loading">
+            <span *ngIf="loading"><i class="fa fa-spinner fa-spin" ></i>&nbsp; &nbsp; Loading...</span>
+            <span *ngIf="!loading">Login</span>
           </button>
         </div>
 
