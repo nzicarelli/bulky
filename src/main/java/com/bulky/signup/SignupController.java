@@ -91,7 +91,7 @@ class SignupController {
 			u = customerRep.findByUsername(user.getCuusername());
 		} catch (Exception e) {}
 		if (u !=null ) {
-			return responseBuilder.userAlreadyExists(user.getCusurname(), request.getLocale());
+			return responseBuilder.userAlreadyExists(user.getCuusername(), request.getLocale());
 		}
 		// find user by cf / piva
 		Customer umatch = null;
