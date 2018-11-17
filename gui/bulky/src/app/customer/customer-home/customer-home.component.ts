@@ -17,4 +17,8 @@ export class CustomerHomeComponent implements OnInit {
     this.myName = this.authService.getName();
   }
 
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login'], {});
+  }
 }

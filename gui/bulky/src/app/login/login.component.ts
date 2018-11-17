@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthenticationService} from "../_services/authentication.service";
+import {Util} from "../util";
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
   public user = '';
   loading = false;
   returnUrl: string;
-  public textError = '';
+  public textError = 'Credenziali non valide';
   public showError = false;
 
   public passwordWrong = false;
@@ -42,7 +43,7 @@ export class LoginComponent implements OnInit {
     this.showError = false;
     this.userWrong = false;
     this.passwordWrong = false;
-    if (!this.user || this.user.length < 6) {
+    if (!this.user || !Util.validateEmail(this.user)) {
       this.userWrong = true;
     }
 
@@ -63,7 +64,7 @@ export class LoginComponent implements OnInit {
             console.log('ROUTE TO ' + this.returnUrl);
             // this.permessi.loadPermessi();
             // this.router.navigate([this.returnUrl]);
-            if (this.authService.TYPE_USER) {
+            if (this.authService.isUser()) {
               this.goToUser();
             } else {
               this.goToCustomer();
@@ -77,7 +78,7 @@ export class LoginComponent implements OnInit {
         error => {
           this.loading = false;
           this.showError = true;
-          this.textError = 'Errore';
+          this.textError = error.error.MSG;
         });
   }
 
