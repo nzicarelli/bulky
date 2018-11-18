@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from "../_services/authentication.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Util} from "../util";
 
 @Component({
   selector: 'app-registration',
@@ -56,7 +57,7 @@ export class RegistrationComponent implements OnInit {
       this.cfWrong = true;
       hasWrong = true;
     }
-    if (!this.user || this.user.length < 3) {
+    if (!this.user || !Util.validateEmail(this.user)) {
       //TODO controllare formato
       this.emailWrong = true;
       hasWrong = true;

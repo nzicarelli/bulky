@@ -16,7 +16,7 @@
 					<span class="login100-form-title">
 						Member Login
 					</span>
-<div style="text-align: center; color: red" *ngIf="showError">Credenziali non valide</div>
+<div style="text-align: center; color: red" *ngIf="showError">{{textError}}</div>
 
 
         <div class="wrap-input100 validate-input" [ngClass]="{'alert-validate': userWrong}" data-validate = "Valid email is required: ex@abc.xyz">

@@ -9,7 +9,6 @@ export class AuthCustomerGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         // console.log('AUTOGUARD CUSTOMER');
-      return true;
         if ((localStorage.getItem('currentUser') || localStorage.getItem('bearer')) && this.authServ.isCustomer()) {
         //     // logged in so return true
         //     console.log('GUARDIA true');
