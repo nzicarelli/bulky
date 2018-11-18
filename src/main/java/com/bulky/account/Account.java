@@ -12,10 +12,13 @@ import java.util.Date;
 @Entity
 @Table(name="account")
 @NamedQueries({
-	@NamedQuery(name="Account.findAll", query="SELECT a FROM Account a")
+	@NamedQuery(name="Account.findAll", query="SELECT a FROM Account a"),
+	@NamedQuery(name=Account.FIND_BY_ID, query="SELECT a FROM Account a WHERE a.aid = :id ")
 })
 public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	public static final String FIND_BY_ID = "Account.findById";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

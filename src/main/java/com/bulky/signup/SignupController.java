@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bulky.account.AccountService;
@@ -33,18 +35,21 @@ class SignupController {
 
 	@Autowired
 	private AccountService accountService;
-	
+
 	@Autowired
 	private ResponseBuilder responseBuilder;
-	
+
 	@Autowired
 	private EmailService emailService;
-	
+
 	@Autowired
 	private CustomerRepository customerRep;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private MessageSource messageSource;
 
 	@GetMapping("signup")
 	String signup(Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
@@ -57,7 +62,7 @@ class SignupController {
 
 	@PostMapping("api/users/signup")
 	public @ResponseBody ResponseData signup(@ModelAttribute User user , HttpServletRequest request) {
-		
+
 		// test if user exists
 		User u = accountService.findByEmail(user.getUemail());
 		if (u !=null ) {
@@ -79,11 +84,11 @@ class SignupController {
 		}
 		return responseBuilder.fail(new Exception("Signup error"));
 	}
-	
-	
+
+
 	@PostMapping("api/customer/signup")
 	public @ResponseBody ResponseData signupCustomer(@RequestBody String payload, HttpServletRequest request) throws DataException {
-		
+
 		Customer user = AppUtil.bindObject(payload,Customer.class);
 		// test if user exists
 		Customer u = null;
@@ -109,25 +114,56 @@ class SignupController {
 			return responseBuilder.customerNotFound(user.getCusurname(), request.getLocale());
 		}
 		// check is already registered
-		if (!AppUtil.isEmpty(umatch.getCusurname()) ) {
-			return responseBuilder.customerAlreadyExists(user.getCusurname(), request.getLocale());
+		if (!AppUtil.isEmpty(umatch.getCuusername()) ) {
+			return responseBuilder.customerAlreadyExists(user.getCuusername(), request.getLocale());
 		}
 		umatch.setCupassword(passwordEncoder.encode(user.getCupassword()) );
 		umatch.setCudtmod( new Date());
 		umatch.setCusurname( user.getCusurname() );
+		umatch.setCuusername( user.getCuusername());
 		// FIXME DA AGGIUNGERE IL TELEFONO
 		customerRep.store(umatch);
-		
+
 		boolean success = true;
 		if (success) {
 			try {
 				// send email to user 
-				emailService.sendCustomerActivationMail(user.getCuid(), request.getLocale());
+				emailService.sendCustomerActivationMail(umatch.getCuid(), request.getLocale());
 			} catch (Exception e) {
 				return responseBuilder.fail(e);
 			}
 			return responseBuilder.success();
 		}
 		return responseBuilder.fail(new Exception("Signup error"));
+	}
+
+	@GetMapping("activateAccount")
+	public String activateAccountCustomer(
+			@RequestParam(name="token" , required = true) String tk,
+			@RequestParam(name="email", required = true) String email,
+			HttpServletRequest request, Model model) throws DataException {
+
+
+		// test if user exists
+		Customer u = null;
+		boolean success = false;
+		String msg = null;
+		try {
+			u = customerRep.findByUsername(email);
+		} catch (Exception e) {}
+		if (u ==null ) {
+			success = false;
+			msg = messageSource.getMessage("user.not.found",null, request.getLocale());
+		}else {
+			u.setCuenabled(Boolean.TRUE);
+			u.setCucode01(null);
+			customerRep.store(u);
+			success = true;
+		}
+		model.addAttribute("success", success);
+		model.addAttribute("msg", msg);
+
+		return "signup/ok_activate";
+
 	}
 }

@@ -17,6 +17,10 @@ public class DataException extends Exception{
 	public DataException(Exception e) {
 		super(e);
 	}
+	
+	public DataException(String msg) {
+		super(msg);
+	}
 
 
 }

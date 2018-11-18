@@ -47,6 +47,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.bulky.account.Account;
 import com.bulky.account.AccountService;
 import com.bulky.account.User;
 import com.bulky.config.SpringMailConfig;
@@ -296,6 +297,7 @@ public class EmailService {
 			@Override
 			public void run() {
 				User user = accountService.findById(userId);
+				
 				try {
 					
 					log.info("Invio mail di attivazione su  "+user.getUemail()+" ");
@@ -346,7 +348,7 @@ public class EmailService {
 			public void run() {
 				Customer user = custoRep.findById(cuid);
 				try {
-					
+					Account a = custoRep.findAccountById(user.getCufkaccount());
 					log.info("Invio mail di attivazione su  "+user.getCuusername()+" ");
 					String uuid = UUID.randomUUID().toString();
 					user.setCucode01(uuid);
@@ -354,6 +356,9 @@ public class EmailService {
 					final Context ctx = new Context(locale);
 					ctx.setVariable("email", user.getCuusername());
 					ctx.setVariable("token", uuid);
+					ctx.setVariable("name", user.getCuname());
+					ctx.setVariable("type", "C");
+					ctx.setVariable("owner", a.getAname());
 					ctx.setVariable("server_url", serverRoot + "/activateAccount?");
 					// Prepare message using a Spring helper
 					final MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -366,13 +371,13 @@ public class EmailService {
 					}
 					
 					// Create the HTML body using Thymeleaf
-					final String htmlContent = htmlTemplateEngine.process("confirm_email.html", ctx);
+					final String htmlContent = htmlTemplateEngine.process("html/confirm01.html", ctx);
 					message.setText(htmlContent, true /* isHtml */);
 					// Send email
 					mailSender.send(mimeMessage);
 					
 					custoRep.store(user);
-					log.info("Mail di attivazione su  "+user.getCuusername()+" Inviata con successo");
+					log.info("Mai di attivazione su  "+user.getCuusername()+" Inviata con successo");
 				} catch (Exception e) {
 					user.setCucode02(Const.ERR_SEND_MAIL);
 					custoRep.store(user);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bulky.account.Account;
 import com.bulky.account.User;
 
 /**
@@ -43,6 +44,11 @@ public class CustomerRepository {
 	@Transactional(readOnly=true)
 	public Customer findById(Integer cuid) {
 		return em.createNamedQuery(Customer.FIND_BY_ID,Customer.class).setParameter("id", cuid).getSingleResult();
+	}
+	
+	@Transactional(readOnly=true)
+	public Account findAccountById(Integer cuid) {
+		return em.createNamedQuery(Account.FIND_BY_ID,Account.class).setParameter("id", cuid).getSingleResult();
 	}
 
 

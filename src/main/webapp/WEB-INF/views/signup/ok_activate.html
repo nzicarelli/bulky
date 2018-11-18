@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+		<!-- Mobile Specific Meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+		<!-- Favicon-->
+		<link rel="shortcut icon" href="img/fav.png"/>
+		<!-- Author Meta -->
+		<meta name="author" content="codepixer"/>
+		<!-- Meta Description -->
+		<meta name="description" content=""/>
+		<!-- Meta Keyword -->
+		<meta name="keywords" content=""/>
+		<!-- meta character set -->
+		<meta charset="UTF-8"/>
+		<!-- Site Title -->
+		<title>Robotics</title>
+
+		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"/> 
+			<!--
+			CSS
+			============================================= -->
+			<link rel="stylesheet" href="css/linearicons.css" th:href="@{/resources/css/linearicons.css}" />
+			<link rel="stylesheet" href="css/font-awesome.min.css" th:href="@{/resources/css/font-awesome.min.css}"/>
+			<link rel="stylesheet" href="css/bootstrap.css" th:href="@{/resources/css/bootstrap.css}"/>
+			<link rel="stylesheet" href="css/magnific-popup.css" th:href="@{/resources/css/magnific-popup.css}"/>
+			<link rel="stylesheet" href="css/nice-select.css" th:href="@{/resources/css/nice-select.css}"/>	
+			<link rel="stylesheet" href="css/hexagons.min.css" th:href="@{/resources/css/hexagons.min.css}"/>							
+			<link rel="stylesheet" href="css/animate.min.css" th:href="@{/resources/css/animate.min.css}"/>
+			<link rel="stylesheet" href="css/owl.carousel.css" th:href="@{/resources/css/owl.carousel.css}"/>
+			<link rel="stylesheet" href="css/main.css" th:href="@{/resources/css/main.css}"/>
+		</head>
+		<body>	
+			  
+			<!-- start banner Area -->
+			<section class="banner-area" id="home">
+				<div class="container">
+					<div class="row fullscreen d-flex align-items-center justify-content-center">
+						<div class="banner-content col-lg-6 col-md-6" th:if="${success}">
+							<h1 >
+								L'account <span th:text="${name}"></span> <br>
+								E' stato attivato <br>
+								con successo			
+							</h1>
+							<p class="text-white text-uppercase">
+								Richiedi i nostri servizi
+							</p>
+							<a href="#" th:href="@{/}" class="primary-btn header-btn text-uppercase">Home</a>
+						</div>
+						<div class="banner-content col-lg-6 col-md-6" th:if="${!success}">
+							<h1 >
+								Si e' verificato il seguente errore: <br/>
+								<b style="color:red;" th:text="${msg}"></b> <br>
+								Se il problema persite contattare il servizio clienti.			
+							</h1>
+						</div>
+						<div class="banner-img col-lg-6 col-md-6">
+							<img class="img-fluid" src="img/banner-img.png" alt="">
+						</div>												
+					</div>
+				</div>
+			</section>
+			<!-- End banner Area -->
+
+			
+			<script src="js/vendor/jquery-2.2.4.min.js" th:src="@{/resources/js/vendor/jquery-2.2.4.min.js}"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+			<script src="js/vendor/bootstrap.min.js" th:src="@{/resources/js/vendor/bootstrap.min.js}"></script>			
+			<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhOdIF3Y9382fqJYt5I_sswSrEw5eihAA"></script>
+  			<script src="js/easing.min.js" th:src="@{/resources/js/easing.min.js}"></script>			
+			<script src="js/hoverIntent.js" th:src="@{/resources/js/hoverIntent.js}"></script>
+			<script src="js/superfish.min.js" th:src="@{/resources/js/superfish.min.js}"></script>	
+			<script src="js/jquery.ajaxchimp.min.js" th:src="@{/resources/js/jquery.ajaxchimp.min.js}"></script>
+			<script src="js/jquery.magnific-popup.min.js" th:src="@{/resources/js/jquery.magnific-popup.min.js}"></script>	
+			<script src="js/owl.carousel.min.js" th:src="@{/resources/js/owl.carousel.min.js}"></script>	
+			<script src="js/hexagons.min.js" th:src="@{/resources/img/js/hexagons.min.js}"></script>							
+			<script src="js/jquery.nice-select.min.js" th:src="@{/resources/js/jquery.nice-select.min.js}"></script>	
+			<script src="js/jquery.counterup.min.js" th:src="@{/resources/js/jquery.counterup.min.js}"></script>
+			<script src="js/waypoints.min.js" th:src="@{/resources/js/waypoints.min.js}"></script>							
+			<script src="js/mail-script.js" th:src="@{/resources/js/mail-script.js}"></script>	
+			<script src="js/main.js" th:src="@{/resources/js/main.js}"></script>	
+		</body>
+</html>

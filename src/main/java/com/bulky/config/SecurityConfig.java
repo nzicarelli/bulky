@@ -60,7 +60,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                     "/**/assets/**",
                     "/**/config/**",
                     "/*.jpg","/*.JPG","/*.ttf","/*.woff2","/*.woff",
-                    
+                    "/activateAccount",
 		    		"/signup", 
 		    		"/about",
 		    		"/api/customer/signup",
