@@ -89,12 +89,14 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 			Authentication auth) throws IOException, ServletException {
 		
 		Long now = System.currentTimeMillis();
+		UserData uData = (UserData)auth.getPrincipal();
 		String token = Jwts.builder()
 			.setSubject(auth.getName())	
 			// Convert to list of strings. 
 			// This is important because it affects the way we get them back in the Gateway.
 			.claim("authorities", auth.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+			.claim("account", uData.getIdAccount())
 			.setIssuedAt(new Date(now))
 			.setExpiration(new Date(now + jwtConfig.getExpiration() * 1000))  // in milliseconds
 			.signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret().getBytes())
@@ -106,7 +108,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 		Map<String, Object> body = new HashMap<>();
 		body.put("tk", token);
 		body.put("expire", jwtConfig.getExpiration());
-		UserData uData = (UserData)auth.getPrincipal();
+		
 		body.put("user", uData);
 		
 		try {

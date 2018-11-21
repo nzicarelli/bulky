@@ -45,6 +45,9 @@ public class CatgAction implements Serializable {
 
 	private Integer causermod;
 
+	@Column(name="cacusenable" ,columnDefinition="BIT NULL")
+	private Boolean customerEnabled;
+
 	public CatgAction() {
 	}
 
@@ -134,6 +137,14 @@ public class CatgAction implements Serializable {
 
 	public void setCausermod(Integer causermod) {
 		this.causermod = causermod;
+	}
+	
+	public Boolean getCustomerEnabled() {
+		return customerEnabled;
+	}
+
+	public void setCustomerEnabled(Boolean customerEnabled) {
+		this.customerEnabled = customerEnabled;
 	}
 
 }

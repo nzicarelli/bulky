@@ -3,6 +3,8 @@
  */
 package com.bulky.customer;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,11 @@ public class CustomerRepository {
 	@Transactional(readOnly=true)
 	public Account findAccountById(Integer cuid) {
 		return em.createNamedQuery(Account.FIND_BY_ID,Account.class).setParameter("id", cuid).getSingleResult();
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Address> listAddressByCustomer(Integer cuid) {
+		return em.createNamedQuery(Address.FIND_BY_CUSTOMER_ID,Address.class).setParameter("id", cuid).getResultList();
 	}
 
 

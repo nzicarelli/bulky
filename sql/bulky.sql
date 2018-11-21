@@ -131,5 +131,39 @@ CREATE TABLE lead (
 	lassign int null,
 	ldtmod datetime,
 	lstatus int null,
-	ldescr varchar(255) null
+	ldescr varchar(255) null,
+	lfkcustomer int null	
 );
+
+CREATE TABLE activity (
+	aid int not null primary key auto_increment,
+	aaccount int null,
+	afktype int null,
+	aowner int null,
+	aassign int null,
+	adtmod datetime,
+	astatus int null,
+	adescr varchar(255) null,
+	atitle varchar(255) null,
+	asubject varchar(255) null,	
+	afkcustomer int null	
+);
+
+CREATE TABLE act_booking (
+	bid int not null primary key auto_increment,
+	baccount int null,
+	bfkactivity int null,
+	bfkcatg int null,
+	bqty int null,
+	bdate datetime null,
+	bfkaddress int null,
+	bdtmod datetime null,
+	bstatus int null,
+	bdescr varchar(255) null,
+	bnote varchar(500) null,
+	bfkcustomer int null	
+);
+
+alter table catg_action add cacusenable bit null;
+
+

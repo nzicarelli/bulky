@@ -3,6 +3,8 @@
  */
 package com.bulky.support;
 
+import org.json.JSONObject;
+
 import com.bulky.error.DataException;
 import com.fasterxml.jackson.core.JsonGenerator.Feature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -41,5 +43,32 @@ public final class AppUtil {
 			throw new DataException(e);
 		}
 		
+	}
+
+	public static JSONObject toPayLoad(String payload) {
+		try {
+			return new JSONObject(payload);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new JSONObject();
+	}
+
+	public static Integer getIntegerValueOf(JSONObject payload, String key) {
+		if (payload!=null && payload.has(key)) {
+			try {
+				return Integer.valueOf(payload.getInt(key));
+			} catch (Exception e) {
+				try {
+					return Integer.valueOf(payload.getString(key));
+				} catch (Exception e2) {
+				}
+			}
+		}
+		return null;
+	}
+
+	public static boolean isEmpty(Integer id) {
+		return id==null || id.intValue()==0;		
 	}
 }
