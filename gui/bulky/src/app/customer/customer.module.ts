@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { CustomerRoutingModule } from './customer-routing.module';
 import {AuthCustomerGuard} from '../_guard/authCustomer.guard';
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
-import {ToolbarModule} from "primeng/primeng";
+import {SharedModule} from "../shared/shared/shared.module";
+import {ActionService} from "../_services/action.service";
 
 @NgModule({
   declarations: [CustomerHomeComponent],
@@ -13,8 +14,10 @@ import {ToolbarModule} from "primeng/primeng";
     CustomerRoutingModule,
 
     // PRIMENG
-    ToolbarModule
+
+
+    SharedModule
   ],
-  providers: [AuthCustomerGuard],
+  providers: [AuthCustomerGuard, ActionService],
 })
 export class CustomerModule { }

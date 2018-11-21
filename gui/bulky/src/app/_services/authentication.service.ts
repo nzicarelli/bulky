@@ -51,7 +51,8 @@ export class AuthenticationService {
       cuusername: username,
       cupassword: password,
       cupiva: cfPiva,
-      cucf: cfPiva
+      cucf: cfPiva,
+      cufkaccount: 1  // TODO Da gestire
     };
 
     const myUrl = this.config.getConfig('baseUrl');

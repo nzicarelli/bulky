@@ -6,3 +6,5 @@
 @import '../node_modules/primeng/resources/primeng.min.css';
 @import 'assets/styles/login.css';
 */
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
