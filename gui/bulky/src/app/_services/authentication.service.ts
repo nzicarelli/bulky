@@ -31,7 +31,7 @@ export class AuthenticationService {
 
         if ((tk)) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('bearer', tk);
+          localStorage.setItem('bearer', 'Bearer ' + tk);
           localStorage.setItem('expireToken', exp);
           localStorage.setItem('imgUserPath', u.img);
           localStorage.setItem('currentUser', JSON.stringify(u));
