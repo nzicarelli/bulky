@@ -16,16 +16,16 @@
 <section class="features-icons bg-light text-center">
   <div class="container">
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-4" *ngFor=" let a of listCatgAct">
         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
           <div class="features-icons-icon d-flex">
             <i class="icon-screen-desktop m-auto text-primary"></i>
           </div>
-          <h3>Ritiro Ingombranti</h3>
+          <h3>{{a.catitle}}</h3>
           <p class="lead mb-0">Utilizza questa funzione se vuoi prenotare un ritiro.</p>
         </div>
       </div>
-      <div class="col-lg-4">
+      <!--<div class="col-lg-4">
         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
           <div class="features-icons-icon d-flex">
             <i class="icon-layers m-auto text-primary"></i>
@@ -42,7 +42,7 @@
           <h3>Variazione Dati</h3>
           <p class="lead mb-0">Utilizza questa funzione per richiedere la variazioni dei dati.</p>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </section>

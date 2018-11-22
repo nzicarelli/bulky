@@ -11,6 +11,7 @@ import {ActionService} from "../../_services/action.service";
 export class CustomerHomeComponent implements OnInit {
 
   public myName = '';
+  public listCatgAct: any[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute,
               private authService: AuthenticationService, private actService: ActionService) { }
@@ -29,6 +30,9 @@ export class CustomerHomeComponent implements OnInit {
     this.actService.getCatgAction4customer()
       .then((res: any) => {
         console.log('ACTION LOADED ' + res);
+        if (res.success) {
+          this.listCatgAct = res.output;
+        }
       });
   }
 }

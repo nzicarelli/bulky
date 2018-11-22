@@ -12,7 +12,7 @@ export class ActionService {
 
   public getCatgAction4customer() {
     const myParam: any = {
-      cuid: 1
+      // cuid: 1
     };
 
     const myUrl = this.config.getConfig('baseUrl');
