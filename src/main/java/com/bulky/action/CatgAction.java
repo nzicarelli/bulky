@@ -18,6 +18,8 @@ public class CatgAction implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String FIND_ALL="CatgAction.findAll";
+	
+	public static enum DOC_TYPE {STANDARD, BULKY};
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -47,6 +49,9 @@ public class CatgAction implements Serializable {
 
 	@Column(name="cacusenable" ,columnDefinition="BIT NULL")
 	private Boolean customerEnabled;
+	
+	@Column(name="cadoctype" ,columnDefinition="VARCHAR(100) NULL")
+	private String cadoctype;
 
 	public CatgAction() {
 	}
@@ -145,6 +150,14 @@ public class CatgAction implements Serializable {
 
 	public void setCustomerEnabled(Boolean customerEnabled) {
 		this.customerEnabled = customerEnabled;
+	}
+
+	public String getCadoctype() {
+		return cadoctype;
+	}
+
+	public void setCadoctype(String cadoctype) {
+		this.cadoctype = cadoctype;
 	}
 
 }

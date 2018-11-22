@@ -166,4 +166,53 @@ CREATE TABLE act_booking (
 
 alter table catg_action add cacusenable bit null;
 
+alter table catg_action add cadoctype varchar(100) null;
 
+ALTER TABLE lead ADD ledtins datetime null;
+
+ALTER TABLE lead ADD lefkmediaarrivo int null;
+
+CREATE TABLE lead_catg_stato (
+	lcsid int not null primary key auto_increment,
+	lcsfkaccount int null,
+	lcsdescrizione varchar(250) null,
+	lcsfktipolead int null,
+	lcsorder int null,
+	lcsvisibleuser bit null,
+	lcsvisiblecustomer bit null
+);
+
+CREATE TABLE lead_catg_tipo (
+	lctid int not null primary key auto_increment,
+	lctfkaccount int null,
+	lctdescrizione varchar(250) null,	
+	lctorder int null,
+	lctvisibleuser bit null,
+	lctvisiblecustomer bit null
+);
+
+CREATE TABLE lead_catg_mediaarrivo (
+	lcmaid int not null primary key auto_increment,
+	lcmafkaccount int null,
+	lcmadescrizione varchar(250) null,
+	lcmafktipolead int null,
+	lcmaorder int null,
+	lcmavisibleuser bit null,
+	lcmavisiblecustomer bit null,
+	lcmaisweb bit null
+);
+
+INSERT INTO `bulky`.`lead_catg_mediaarrivo` (`lcmafkaccount`, `lcmadescrizione`, `lcmafktipolead`, `lcmaorder`, `lcmavisibleuser`, `lcmavisiblecustomer`, `lcmaisweb`) 
+VALUES ('1', 'Web', '1', '1', '1', '1', '1');
+INSERT INTO `bulky`.`lead_catg_mediaarrivo` (`lcmafkaccount`, `lcmadescrizione`, `lcmafktipolead`, `lcmaorder`, `lcmavisibleuser`, `lcmavisiblecustomer`, `lcmaisweb`) 
+VALUES ('1', 'Telefono', '1', '2', '1', '1', '0');
+
+INSERT INTO `bulky`.`lead_catg_mediaarrivo` (`lcmafkaccount`, `lcmadescrizione`, `lcmafktipolead`, `lcmaorder`, `lcmavisibleuser`, `lcmavisiblecustomer`, `lcmaisweb`) 
+VALUES ('1', 'Web', '2', '1', '1', '1', '1');
+INSERT INTO `bulky`.`lead_catg_mediaarrivo` (`lcmafkaccount`, `lcmadescrizione`, `lcmafktipolead`, `lcmaorder`, `lcmavisibleuser`, `lcmavisiblecustomer`, `lcmaisweb`) 
+VALUES ('1', 'Telefono', '2', '2', '1', '1', '0');
+
+INSERT INTO `bulky`.`lead_catg_mediaarrivo` (`lcmafkaccount`, `lcmadescrizione`, `lcmafktipolead`, `lcmaorder`, `lcmavisibleuser`, `lcmavisiblecustomer`, `lcmaisweb`) 
+VALUES ('1', 'Web', '3', '1', '1', '1', '1');
+INSERT INTO `bulky`.`lead_catg_mediaarrivo` (`lcmafkaccount`, `lcmadescrizione`, `lcmafktipolead`, `lcmaorder`, `lcmavisibleuser`, `lcmavisiblecustomer`, `lcmaisweb`) 
+VALUES ('1', 'Telefono', '3', '2', '1', '1', '0');
