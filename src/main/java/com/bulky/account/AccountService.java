@@ -100,7 +100,7 @@ public class AccountService implements UserDetailsService {
 		user.setIdAccount(account.getCufkaccount());
 		user.setName(account.getCuusername());
 		user.setRole(User.ROLES.ROLE_CUSTOMER.name());
-		
+		user.setUserId(account.getCuid());
 		
 		return user;
 	}
@@ -131,6 +131,7 @@ public class AccountService implements UserDetailsService {
 		user.setIdAccount(account.getUaccount());
 		user.setName(account.getUname());
 		user.setRole(account.getUrole());
+		user.setUserId(account.getUid());
 		
 		return user;
 	}

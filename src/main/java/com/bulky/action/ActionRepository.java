@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,6 +44,19 @@ public class ActionRepository {
 			tq.setParameter("customerEnabled", Boolean.TRUE);
 		}		
 		return tq.getResultList();
+	}
+
+	public CatgAction findCatgById(Integer id) {
+		return em.createNamedQuery(CatgAction.FIND_BY_ID,CatgAction.class).setParameter("id", id).getSingleResult();				
+	}
+
+	@Transactional
+	public Lead store(Lead lead) {		
+		return em.merge(lead);
+	}
+	@Transactional
+	public Activity store(Activity act) {
+		return em.merge(act);
 	}
 
 }

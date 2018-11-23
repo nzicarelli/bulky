@@ -39,6 +39,8 @@ public class Activity implements Serializable {
 	private String asubject;
 
 	private String atitle;
+	
+	private Integer afklead;
 
 	public Activity() {
 	}
@@ -129,6 +131,14 @@ public class Activity implements Serializable {
 
 	public void setAtitle(String atitle) {
 		this.atitle = atitle;
+	}
+
+	public Integer getAfklead() {
+		return afklead;
+	}
+
+	public void setAfklead(Integer afklead) {
+		this.afklead = afklead;
 	}
 
 }

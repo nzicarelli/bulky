@@ -216,3 +216,29 @@ INSERT INTO `bulky`.`lead_catg_mediaarrivo` (`lcmafkaccount`, `lcmadescrizione`,
 VALUES ('1', 'Web', '3', '1', '1', '1', '1');
 INSERT INTO `bulky`.`lead_catg_mediaarrivo` (`lcmafkaccount`, `lcmadescrizione`, `lcmafktipolead`, `lcmaorder`, `lcmavisibleuser`, `lcmavisiblecustomer`, `lcmaisweb`) 
 VALUES ('1', 'Telefono', '3', '2', '1', '1', '0');
+
+
+
+create table planning(
+	plnid int not null primary key auto_increment,
+	plnfkaccount int null,
+	plndescr varchar(250) null,
+	plnowner int null,
+	plndtins datetime null,
+	plndtmod datetime null,
+	plnusrmod int null
+);
+
+alter table planning add plnfkzona int null;
+
+create table plan_detail(
+	pldid int not null primary key auto_increment,
+	pldfkaccount int null,
+	pldfkplannig int null,
+	plddescr varchar(250) null,
+	plddatefrom datetime null,
+	plddateto datetime null,	
+	plddtins datetime null,
+	pldtmod datetime null,
+	pldusrmod int null
+);

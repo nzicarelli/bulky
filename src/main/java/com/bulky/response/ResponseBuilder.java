@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
+import com.bulky.customer.Address;
 import com.bulky.support.web.Message;
 
 /**
@@ -77,4 +78,14 @@ public class ResponseBuilder {
 		ResponseData r = new ResponseData(false,sz,null, null, new Message(msgKey, Message.Type.DANGER));
 		return r;
 	}
+
+	public ResponseData noZone4Address(Address addr, Locale locale) {
+		Object [] data = {addr.getAdcomune()+" ("+addr.getAdprov()+") "+addr.getAdaddress()+(addr.getAdnum()!=null?" ,"+addr.getAdnum():"")};
+		String msgKey = "no.zone.4.address";
+		String sz = messageSource.getMessage(msgKey,data, locale);
+		ResponseData r = new ResponseData(false,sz,null, null, new Message(msgKey, Message.Type.DANGER));
+		return r;
+	}
+	
+	
 }

@@ -3,6 +3,10 @@
  */
 package com.bulky.support;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import org.json.JSONObject;
 
 import com.bulky.error.DataException;
@@ -70,5 +74,20 @@ public final class AppUtil {
 
 	public static boolean isEmpty(Integer id) {
 		return id==null || id.intValue()==0;		
+	}
+
+	public static String formatDateAsText(Date start, Date end, Locale locale) {
+		SimpleDateFormat sdf = new SimpleDateFormat("EEEE dd MMMM",locale);
+		SimpleDateFormat year = new SimpleDateFormat("yyyy");
+		SimpleDateFormat hour = new SimpleDateFormat("HH:mm");
+		StringBuffer sb = new StringBuffer();
+		sb.append(year.format(end));
+		sb.append(" ");
+		sb.append(sdf.format(start));		
+		sb.append(" ");
+		sb.append(hour.format(start));
+		sb.append(" -- ");
+		sb.append(hour.format(end));		
+		return sb.toString();
 	}
 }

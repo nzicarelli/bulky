@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bulky.account.Account;
-import com.bulky.account.User;
 
 /**
  * @author kaala
@@ -57,6 +56,31 @@ public class CustomerRepository {
 	public List<Address> listAddressByCustomer(Integer cuid) {
 		return em.createNamedQuery(Address.FIND_BY_CUSTOMER_ID,Address.class).setParameter("id", cuid).getResultList();
 	}
+	
+	@Transactional(readOnly=true)
+	public Address findAddressById(Integer adid) {
+		return em.createNamedQuery(Address.FIND_BY_ID,Address.class).setParameter("id", adid).getSingleResult();
+	}
+
+	@Transactional(readOnly=true)
+	public AddressZone lookupZone(Address addr) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("SELECT "); 
+		sb.append("a "); 
+		sb.append("FROM AddressZone a "); 
+		sb.append("WHERE a.azcomune = :comune "); 
+		sb.append("AND ( a.azaddress = :address OR a.azaddress IS NULL ) "); 
+		sb.append("ORDER BY a.azaddress DESC ");
+		
+		return em.createQuery(sb.toString(),AddressZone.class)
+				.setParameter("comune", addr.getAdcomune())
+				.setParameter("address", addr.getAdaddress())
+				.getSingleResult();
+	}
+	
+	
+	
+	
 
 
 }

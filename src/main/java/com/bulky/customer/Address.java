@@ -12,12 +12,15 @@ import java.util.Date;
 @Entity
 @Table(name="address")
 @NamedQueries({
-	@NamedQuery(name=Address.FIND_BY_CUSTOMER_ID, query="SELECT a FROM Address a WHERE a.adfkcustomer = :id ORDER BY a.adaddress ")	
+	@NamedQuery(name=Address.FIND_BY_CUSTOMER_ID, query="SELECT a FROM Address a WHERE a.adfkcustomer = :id ORDER BY a.adaddress ")	,
+	@NamedQuery(name=Address.FIND_BY_ID, query="SELECT a FROM Address a WHERE a.adid = :id  ")
 })
 public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public static final String FIND_BY_CUSTOMER_ID = "Address.findByCustomerId";
+
+	public static final String FIND_BY_ID = "Address.findById";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
