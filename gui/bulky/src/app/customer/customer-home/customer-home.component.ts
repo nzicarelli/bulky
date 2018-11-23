@@ -11,14 +11,16 @@ import {ActionService} from "../../_services/action.service";
 export class CustomerHomeComponent implements OnInit {
 
   public myName = '';
-  public listCatgAct: any[] = [];
+
 
   constructor(private router: Router, private route: ActivatedRoute,
               private authService: AuthenticationService, private actService: ActionService) { }
 
   ngOnInit() {
+
+    this.router.navigate([{ outlets: { customerOut: ['home-act'] } }],
+      { skipLocationChange: true, relativeTo: this.route });
     this.myName = this.authService.getName();
-    this.loadAction();
   }
 
   logout() {
@@ -26,13 +28,12 @@ export class CustomerHomeComponent implements OnInit {
     this.router.navigate(['/login'], {});
   }
 
-  loadAction() {
-    this.actService.getCatgAction4customer()
-      .then((res: any) => {
-        console.log('ACTION LOADED ' + res);
-        if (res.success) {
-          this.listCatgAct = res.output;
-        }
-      });
+  gotoAction(act) {
+    console.log(act);
+    // this.router.navigate(['(customerOut:act-standard)'], {});
+
+    this.router.navigate([{ outlets: { customerOut: ['act-standard'] } }],
+       { skipLocationChange: true, relativeTo: this.route });
   }
+
 }

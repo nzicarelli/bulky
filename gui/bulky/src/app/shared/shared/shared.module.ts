@@ -3,12 +3,21 @@ import { CommonModule } from '@angular/common';
 import {InputTextModule} from "primeng/primeng";
 import {ButtonModule} from "primeng/button";
 import {CardModule} from "primeng/card";
-import {MatButtonModule} from "@angular/material";
+import {MatInputModule} from "@angular/material/input";
+import {MatCardModule} from '@angular/material/card';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+import {MatSelectModule} from '@angular/material/select';
+import {MatStepperModule} from '@angular/material/stepper';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
 
     // PRIMENG *********
     ButtonModule,
@@ -16,17 +25,30 @@ import {MatButtonModule} from "@angular/material";
     CardModule,
 
     // MATERIAL *****
-    MatButtonModule
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatSelectModule,
+    MatStepperModule
   ],
   exports: [
-
+    FormsModule,
+    ReactiveFormsModule,
     // PRIMNG
     ButtonModule,
     InputTextModule,
     CardModule,
 
     // MATERIAL
-    MatButtonModule
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatSelectModule,
+    MatStepperModule
     ]
 })
 export class SharedModule { }

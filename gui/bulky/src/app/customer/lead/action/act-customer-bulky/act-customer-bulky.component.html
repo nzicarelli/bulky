@@ -1,0 +1,67 @@
+<mat-card class="md-elevation-z1" style="margin: 2em; padding: 0px;">
+
+  <mat-card-content>
+    <mat-toolbar >
+      <mat-toolbar-row>
+        <span><B>Nuova Richiesta: </B> {{myCatgAct?.catitle}}</span>
+        <span class="spacer"></span>
+        <button mat-flat-button color="primary" (click)="salva()">Salva</button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <div style="padding: 10px 20px 10px 20px;">
+      <form >
+        <h4>Basic mat-select</h4>
+
+
+        <mat-form-field style="width: 100%;">
+          <input matInput placeholder="Oggetto" [(ngModel)]="oggetto" name="oggetto">
+        </mat-form-field>
+        <mat-form-field style="width: 100%;">
+          <textarea matInput placeholder="Inserisci il tuo testo" [(ngModel)]="descr" name="descr"></textarea>
+        </mat-form-field>
+      </form>
+
+      <mat-horizontal-stepper [linear]="isLinear" #stepper>
+        <mat-step [stepControl]="firstFormGroup">
+          <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Indirizzo</ng-template>
+            <mat-form-field style="width: 100%;">
+              <mat-select placeholder="Indirizzo">
+                <mat-option *ngFor="let i of listAddress" [value]="i.adid">
+                  {{i.adnormalizzato}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+          <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Rifiuti</ng-template>
+            <mat-form-field style="width: 100%;">
+              <mat-select placeholder="Tipo Rifiuto">
+                <mat-option *ngFor="let r of listCatgIngom" [value]="r.crid">
+                  {{r.crname}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Riepilogo e Data</ng-template>
+          You are now done.
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </mat-card-content>
+</mat-card>
