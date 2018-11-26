@@ -86,6 +86,14 @@ public class ResponseBuilder {
 		ResponseData r = new ResponseData(false,sz,null, null, new Message(msgKey, Message.Type.DANGER));
 		return r;
 	}
+
+	public ResponseData noDataFound(Locale locale) {
+		Object [] data = null;
+		String msgKey = "data.not.found";
+		String sz = messageSource.getMessage(msgKey,data, locale);
+		ResponseData r = new ResponseData(false,sz,null, null, new Message(msgKey, Message.Type.DANGER));
+		return r;
+	}
 	
 	
 }
