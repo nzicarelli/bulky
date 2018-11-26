@@ -1,0 +1,97 @@
+<mat-card class="md-elevation-z1" style="margin: 2em; padding: 0px;">
+
+  <mat-card-content>
+    <mat-toolbar >
+      <mat-toolbar-row>
+        <span><B>Nuova Richiesta: </B> {{myCatgAct?.catitle}}</span>
+        <span class="spacer"></span>
+        <button mat-flat-button color="primary" (click)="salva()">Salva</button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <div style="padding: 10px 20px 10px 20px;">
+      <form >
+        <h4>Basic mat-select</h4>
+
+
+        <mat-form-field style="width: 100%;">
+          <input matInput placeholder="Oggetto" [(ngModel)]="oggetto" name="oggetto">
+        </mat-form-field>
+        <mat-form-field style="width: 100%;">
+          <textarea matInput placeholder="Inserisci il tuo testo" [(ngModel)]="descr" name="descr"></textarea>
+        </mat-form-field>
+      </form>
+
+      <mat-horizontal-stepper [linear]="isLinear" #stepper>
+        <mat-step [stepControl]="firstFormGroup">
+          <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Indirizzo e Data</ng-template>
+            <div class="row">
+              <div class="col-md-6" style="border-right: 1px solid lightgray">
+                Seleziona l'indirizzo:
+                <br><br>
+                <mat-radio-group class="example-radio-group" [(ngModel)]="selectAddress" [ngModelOptions]="{standalone: true}">
+                  <mat-radio-button class="example-radio-button" *ngFor="let i of listAddress" [value]="i">
+                    {{i.adnormalizzato}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="col-md-6">
+                Seleziona la data di conferimento:
+                <br><br>
+                <mat-radio-group class="example-radio-group" [(ngModel)]="selectPlanning" [ngModelOptions]="{standalone: true}">
+                  <mat-radio-button class="example-radio-button" *ngFor="let p of listPlanning" [value]="p">
+                    {{p.plddescr}}
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="col-md-12" style="text-align: right">
+                <button mat-button matStepperNext>Next</button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+          <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Rifiuti</ng-template>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+            </div>
+            <br>
+            <div class="row" *ngFor="let rb of listRowBulky">
+              <div class="col-md-9">
+                <mat-form-field style="width: 100%;">
+                  <mat-select placeholder="Tipo Rifiuto">
+                    <mat-option *ngFor="let r of listCatgIngom" [value]="r.crid">
+                      {{r.crname}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Quantità" value="1">
+                </mat-form-field>
+              </div>
+              <div class="col-md-1">
+                <button mat-raised-button color="primary" (click)="addRow()">Aggiungi</button>
+              </div>
+            </div>
+
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Riepilogo</ng-template>
+          You are now done.
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </mat-card-content>
+</mat-card>

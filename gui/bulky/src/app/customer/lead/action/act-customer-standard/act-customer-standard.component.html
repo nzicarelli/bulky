@@ -1,0 +1,23 @@
+
+<mat-card class="md-elevation-z1" style="margin: 2em; padding: 0px;">
+
+  <mat-card-content>
+    <mat-toolbar >
+      <mat-toolbar-row>
+        <span><B>Nuova Richiesta: </B> {{myCatgAct?.catitle}}</span>
+        <span class="spacer"></span>
+        <button mat-flat-button color="primary" (click)="salva()">Salva</button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <div style="padding: 10px 20px 10px 20px;">
+      <form >
+        <mat-form-field style="width: 100%;">
+          <input matInput placeholder="Oggetto" [(ngModel)]="oggetto" name="oggetto">
+        </mat-form-field>
+        <mat-form-field style="width: 100%;">
+          <textarea matInput placeholder="Inserisci il tuo testo" [(ngModel)]="descr" name="descr"></textarea>
+        </mat-form-field>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>

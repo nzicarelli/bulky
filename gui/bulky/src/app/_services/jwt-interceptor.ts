@@ -16,7 +16,8 @@ import {AppConfig} from '../app.config';
 export class JwtInterceptor implements HttpInterceptor {
 
   private bUrl = '';
-  constructor(public router: Router, private inj: Injector, private config: AppConfig,  @Inject('BASE_URL') baseUrl: string) {
+  constructor(public router: Router, private inj: Injector, private config: AppConfig,  @Inject('BASE_URL') baseUrl: string,
+              private authService: AuthenticationService) {
     this.bUrl = baseUrl;
   }
 
@@ -46,6 +47,7 @@ export class JwtInterceptor implements HttpInterceptor {
         if (err.status === 401) {
           // redirect to the login route
           // or show a modal
+          this.authService.logout();
           this.router.navigate(['/login']);
         }
       }
