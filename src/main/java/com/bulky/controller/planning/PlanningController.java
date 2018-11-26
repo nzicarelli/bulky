@@ -119,7 +119,12 @@ public class PlanningController {
 			}
 			
 		}
-		Address addr = customerRep.findAddressById( adid );
+		Address addr = null;
+		try {
+			addr = customerRep.findAddressById(adid);
+		} catch (Exception e) {
+			return builder.noDataFound(request.getLocale());
+		}
 		AddressZone zona = customerRep.lookupZone(addr);
 		if (zona==null || zona.getAzfkzona()==null) {
 			return builder.noZone4Address(addr, request.getLocale());
