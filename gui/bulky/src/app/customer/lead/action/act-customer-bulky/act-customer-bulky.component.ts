@@ -15,10 +15,15 @@ export class ActCustomerBulkyComponent implements OnInit {
   public myCatgAct: any;
   public listAddress: any[] = [];
   public listCatgIngom: any[] = [];
+  public listPlanning: any[] = [];
+  public listRowBulky: any[] = [{}];
 
   isLinear = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
+
+  public selectAddress: any;
+  public  selectPlanning: any;
 
   constructor(private parameterService: ParameterService, private actionServ: ActionService,
               private custService: CustomerService, private bulkyService: BulkyService, private _formBuilder: FormBuilder) { }
@@ -29,6 +34,7 @@ export class ActCustomerBulkyComponent implements OnInit {
     }
     this.loadIndirizzi();
     this.loadCatgIngombranti();
+    this.loadPlanning4addr();
 
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required]
@@ -47,13 +53,23 @@ export class ActCustomerBulkyComponent implements OnInit {
   loadCatgIngombranti() {
     this.bulkyService.getCatgIngombranti().then( (res: any) => {
       this.listCatgIngom = res.output;
-    })
+    });
+  }
+
+  loadPlanning4addr() {
+    this.bulkyService.getPlanning4addr(2).then( (res: any) => {
+      this.listPlanning = res.output;
+    });
   }
 
   salva() {
     this.actionServ.saveAction(undefined, undefined, undefined, this.myCatgAct.caid).then( (res: any) => {
 
     });
+  }
+
+  addRow() {
+    this.listRowBulky.push({});
   }
 
 }

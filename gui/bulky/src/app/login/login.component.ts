@@ -31,8 +31,10 @@ export class LoginComponent implements OnInit {
 
     if (this.authService.isUser()) {
       this.goToUser();
-    } else {
+    } else if (this.authService.isCustomer()) {
       this.goToCustomer();
+    } else {
+      this.authService.logout();
     }
   }
 
