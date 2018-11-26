@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {InputTextModule} from "primeng/primeng";
 import {ButtonModule} from "primeng/button";
 import {CardModule} from "primeng/card";
+import {SpinnerModule} from 'primeng/spinner';
 import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from '@angular/material/card';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -11,6 +12,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatIconModule} from '@angular/material/icon';
+
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
@@ -24,6 +27,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     ButtonModule,
     InputTextModule,
     CardModule,
+    SpinnerModule,
 
     // MATERIAL *****
     MatFormFieldModule,
@@ -33,7 +37,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MatToolbarModule,
     MatSelectModule,
     MatStepperModule,
-    MatRadioModule
+    MatRadioModule,
+    MatIconModule
   ],
   exports: [
     FormsModule,
@@ -42,6 +47,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     ButtonModule,
     InputTextModule,
     CardModule,
+    SpinnerModule,
 
     // MATERIAL
     MatFormFieldModule,
@@ -51,7 +57,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MatToolbarModule,
     MatSelectModule,
     MatStepperModule,
-    MatRadioModule
+    MatRadioModule,
+    MatIconModule
     ]
 })
 export class SharedModule { }

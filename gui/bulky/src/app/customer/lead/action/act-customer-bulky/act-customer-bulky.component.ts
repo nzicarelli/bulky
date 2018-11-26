@@ -24,6 +24,7 @@ export class ActCustomerBulkyComponent implements OnInit {
 
   public selectAddress: any;
   public  selectPlanning: any;
+  public myPerc = 0;
 
   constructor(private parameterService: ParameterService, private actionServ: ActionService,
               private custService: CustomerService, private bulkyService: BulkyService, private _formBuilder: FormBuilder) { }
@@ -70,6 +71,37 @@ export class ActCustomerBulkyComponent implements OnInit {
 
   addRow() {
     this.listRowBulky.push({});
+  }
+
+  removeRow(row: any) {
+    console.log('REMOVE ROW');
+  }
+
+  selectCatgRifiuto(evt) {
+    console.log('SELECT CATG RIFIUTO');
+    if (!this.listRowBulky.some( r => !r.crif)) {
+      this.addRow();
+    }
+
+    let a = this.listRowBulky;
+    let p = this.selectPlanning;
+    let ad = this.selectAddress;
+
+    let newPer = 0;
+    let myIngrombro = 0;
+    let ingMax = 10;
+    for (let r of this.listRowBulky) {
+      if (!r.qty && r.crif && r.crif.crqtymin) {
+        r.qty = r.crif.crqtymin;
+      }
+
+      if(r && r.crif && r.crif.crincombro && r.crif.crincombro > 0 && r.qty && r.qty > 0) {
+        myIngrombro += r.qty * r.crif.crincombro;
+      }
+    }
+
+    newPer = (100 * myIngrombro ) / ingMax;
+    this.myPerc = newPer;
   }
 
 }

@@ -51,29 +51,32 @@
           </form>
         </mat-step>
         <mat-step [stepControl]="secondFormGroup">
-          <form [formGroup]="secondFormGroup">
+          <!--<form [formGroup]="secondFormGroup">-->
             <ng-template matStepLabel>Rifiuti</ng-template>
             <div class="progress">
-              <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+              <div class="progress-bar" role="progressbar"  [attr.aria-valuenow]="myPerc" [style.width]="myPerc+'%'" aria-valuemin="0" aria-valuemax="100">{{myPerc}}%</div>
             </div>
             <br>
             <div class="row" *ngFor="let rb of listRowBulky">
               <div class="col-md-9">
-                <mat-form-field style="width: 100%;">
-                  <mat-select placeholder="Tipo Rifiuto">
-                    <mat-option *ngFor="let r of listCatgIngom" [value]="r.crid">
+                <button mat-icon-button color="warn" *ngIf="rb.crif">
+                  <mat-icon aria-label="Rimuovi" (click)="removeRow(rb)">delete_forever</mat-icon>
+                </button>
+                &nbsp;
+                <mat-form-field style="width: 90%;">
+                  <mat-select placeholder="Tipo Rifiuto" (selectionChange)="selectCatgRifiuto($event)" [(ngModel)]="rb.crif">
+                    <mat-option *ngFor="let r of listCatgIngom" [value]="r">
                       {{r.crname}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
-              <div class="col-md-2">
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Quantità" value="1">
-                </mat-form-field>
-              </div>
-              <div class="col-md-1">
-                <button mat-raised-button color="primary" (click)="addRow()">Aggiungi</button>
+              <div class="col-md-3">
+                <p-spinner size="10" (onChange)="selectCatgRifiuto($event)" [(ngModel)]="rb.qty"  [min]="(rb && rb.crif && rb.crif.crqtymin) ? rb.crif.crqtymin : 0" [max]="(rb && rb.crif && rb.crif.crqtymax) ? rb.crif.crqtymax : 0"></p-spinner>
+                <!--<mat-form-field style="width: 50%">-->
+                  <!--<input matInput placeholder="Quantità" [(ngModel)]="rb.qty" >-->
+                <!--</mat-form-field>-->
+                &nbsp;&nbsp;<i>[min: {{(rb && rb.crif && rb.crif.crqtymin) ? rb.crif.crqtymin : 0}} . max: {{(rb && rb.crif && rb.crif.crqtymax) ? rb.crif.crqtymax : 0}}]</i>
               </div>
             </div>
 
@@ -81,7 +84,7 @@
               <button mat-button matStepperPrevious>Back</button>
               <button mat-button matStepperNext>Next</button>
             </div>
-          </form>
+          <!--</form>-->
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Riepilogo</ng-template>
