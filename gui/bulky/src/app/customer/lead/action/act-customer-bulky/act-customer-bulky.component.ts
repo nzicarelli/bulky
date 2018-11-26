@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {ActionService} from "../../../../_services/action.service";
-import {ParameterService} from "../../../../_services/parameter.service";
-import {CustomerService} from "../../../../_services/customer.service";
-import {BulkyService} from "../../../../_services/bulky.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ActionService} from '../../../../_services/action.service';
+import {ParameterService} from '../../../../_services/parameter.service';
+import {CustomerService} from '../../../../_services/customer.service';
+import {BulkyService} from '../../../../_services/bulky.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { MatStepper } from '@angular/material';
+import {Util} from '../../../../util';
 
 @Component({
   selector: 'app-act-customer-bulky',
@@ -71,7 +72,11 @@ export class ActCustomerBulkyComponent implements OnInit {
   }
 
   addRow() {
-    this.listRowBulky.push({});
+    if (this.myPerc >= 100) {
+
+    } else {
+      this.listRowBulky.push({});
+    }
   }
 
   removeRow(row: any) {
@@ -113,10 +118,36 @@ export class ActCustomerBulkyComponent implements OnInit {
     if (stepper.selectedIndex === 0) {
       if (!this.selectAddress || !this.selectPlanning) {
         console.log('ERRORE - Selezionare Indirizzo e Planning');
+        Util.alertMsg(Util.alertWarning, 'Attenzione', 'E\' necessario selezionare l\'indirizzo e la data prima di procedere');
         return;
       }
     }
+    if (stepper.selectedIndex === 1 && this.myPerc > 100) {
+      Util.alertMsg(Util.alertError, 'Errore', 'Hai superato la quantia\' di materiali conferibili, rivedi i tuoi dati.');
+      return;
+    }
     stepper.next();
   }
+
+
+  haveConfigurationRifiuti() {
+    return this.listRowBulky.some( r => r.crif);
+  }
+
+  radioChange(evt) {
+    // if (this.listRowBulky.some( r => r.crif)) {
+    //   console.log('ALERT');
+    //   Util.confirmAdvanced('Attezione', 'Modificando la pianificazione i dati presenti sui rifiuti da conferire saranno eliminati. Continuare?',
+    //     Util.alertWarning, 'SI', 'Annulla', () => {
+    //       this.listRowBulky = [{}];
+    //       return true;
+    //     }, () => {
+    //       evt.preventDefault();
+    //       return false;
+    //     });
+    // }
+  }
+
+
 
 }

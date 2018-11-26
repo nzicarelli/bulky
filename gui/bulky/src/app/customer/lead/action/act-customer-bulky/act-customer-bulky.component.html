@@ -5,20 +5,25 @@
       <mat-toolbar-row>
         <span><B>Nuova Richiesta: </B> {{myCatgAct?.catitle}}</span>
         <span class="spacer"></span>
-        <button mat-flat-button color="primary" (click)="salva()">Salva</button>
+        <button mat-flat-button color="primary" (click)="salva()" [disabled]="myPerc > 100 || !haveConfigurationRifiuti() || !selectAddress || !selectPlanning">Salva</button>
       </mat-toolbar-row>
     </mat-toolbar>
     <div style="padding: 10px 20px 10px 20px;">
 
-      <mat-horizontal-stepper [linear]="isLinear" #stepper>
-        <mat-step [stepControl]="firstFormGroup">
+      <mat-horizontal-stepper [linear]="false" #stepper >
+        <mat-step [stepControl]="firstFormGroup" >
           <form [formGroup]="firstFormGroup">
             <ng-template matStepLabel>Indirizzo e Data</ng-template>
+            <div class="row" *ngIf="haveConfigurationRifiuti()">
+              <div class="col-md-12">
+                <span style="color: red"><i>Per effettuare modifiche e' necessario rimuovere i dati allo step 2.</i></span>
+              </div>
+            </div>
             <div class="row">
               <div class="col-md-6" style="border-right: 1px solid lightgray">
                 <B>Seleziona l'indirizzo:</B>
                 <br><br>
-                <mat-radio-group class="example-radio-group" [(ngModel)]="selectAddress" [ngModelOptions]="{standalone: true}">
+                <mat-radio-group class="example-radio-group" [(ngModel)]="selectAddress" [ngModelOptions]="{standalone: true}" (click)="radioChange($event)" [disabled]="haveConfigurationRifiuti()">
                   <mat-radio-button class="example-radio-button" *ngFor="let i of listAddress" [value]="i">
                     {{i.adnormalizzato}}
                   </mat-radio-button>
@@ -27,14 +32,14 @@
               <div class="col-md-6">
                 <B>Seleziona la data di conferimento:</B>
                 <br><br>
-                <mat-radio-group class="example-radio-group" [(ngModel)]="selectPlanning" [ngModelOptions]="{standalone: true}">
+                <mat-radio-group class="example-radio-group" [(ngModel)]="selectPlanning" [ngModelOptions]="{standalone: true}" (click)="radioChange($event)" [disabled]="haveConfigurationRifiuti()">
                   <mat-radio-button class="example-radio-button" *ngFor="let p of listPlanning" [value]="p">
                     {{p.plddescr}}
                   </mat-radio-button>
                 </mat-radio-group>
               </div>
               <div class="col-md-12" style="text-align: right">
-                <button mat-button  (click)="goForward(stepper)" >Next</button>
+                <button mat-raised-button color="accent"  (click)="goForward(stepper)" >Next</button>
               </div>
             </div>
           </form>
@@ -49,7 +54,7 @@
             <div class="row" *ngFor="let rb of listRowBulky">
               <div class="col-md-9">
                 <button mat-icon-button color="warn" *ngIf="rb.crif">
-                  <mat-icon aria-label="Rimuovi" (click)="removeRow(rb)">delete_forever</mat-icon>
+                  <mat-icon aria-label="Rimuovi" (click)="removeRow(rb)" matTooltip="Rimuovi">delete_forever</mat-icon>
                 </button>
                 &nbsp;
                 <mat-form-field style="width: 90%;">
@@ -70,16 +75,29 @@
             </div>
 
             <div>
-              <button mat-button (click)="goBack(stepper)">Back</button>
-              <button mat-button (click)="goForward(stepper)" style="float: right">Next</button>
+              <button mat-raised-button (click)="goBack(stepper)">Back</button>
+              <button mat-raised-button color="accent" (click)="goForward(stepper)" style="float: right">Next</button>
             </div>
           <!--</form>-->
         </mat-step>
         <mat-step>
-          <ng-template matStepLabel>Riepilogo</ng-template>
-          You are now done.
+          <ng-template matStepLabel>Riepilogo Ritiro</ng-template>
+            <div class="row">
+              <div class="col-md-5">Giorno: <B>{{selectPlanning?.plddescr}}</B></div>
+              <div class="col-md-7">Presso: <B>{{selectAddress?.adnormalizzato}}</B></div>
+            </div>
+            <br>
+            <span style="color: midnightblue"><B>Riepilogo Merce:</B></span>
+            <div class="row" *ngFor="let r of listRowBulky" style="height: 3em;">
+              <div class="col-md-1" style="text-align: right; padding-right: 5px; padding-left: 15px" *ngIf="r.crif">
+                <mat-chip-list>
+                  <mat-chip color="primary" selected>{{r.qty}}</mat-chip>
+                </mat-chip-list>
+              </div>
+              <div class="col-md-11" style="padding-left: 10px">{{r?.crif?.crname}}</div>
+            </div>
           <div>
-            <button mat-button (click)="goBack(stepper)">Indietro</button>
+            <button mat-raised-button (click)="goBack(stepper)">Indietro</button>
             <!--<button mat-button (click)="stepper.reset()">Reset</button>-->
           </div>
         </mat-step>

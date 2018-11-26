@@ -13,7 +13,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatIconModule} from '@angular/material/icon';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatChipsModule} from '@angular/material/chips';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
@@ -38,7 +39,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MatSelectModule,
     MatStepperModule,
     MatRadioModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule,
+    MatChipsModule
   ],
   exports: [
     FormsModule,
@@ -58,7 +61,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MatSelectModule,
     MatStepperModule,
     MatRadioModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule,
+    MatChipsModule
     ]
 })
 export class SharedModule { }
