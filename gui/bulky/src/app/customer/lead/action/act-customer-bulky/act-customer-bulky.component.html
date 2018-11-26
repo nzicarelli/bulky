@@ -9,17 +9,6 @@
       </mat-toolbar-row>
     </mat-toolbar>
     <div style="padding: 10px 20px 10px 20px;">
-      <form >
-        <h4>Basic mat-select</h4>
-
-
-        <mat-form-field style="width: 100%;">
-          <input matInput placeholder="Oggetto" [(ngModel)]="oggetto" name="oggetto">
-        </mat-form-field>
-        <mat-form-field style="width: 100%;">
-          <textarea matInput placeholder="Inserisci il tuo testo" [(ngModel)]="descr" name="descr"></textarea>
-        </mat-form-field>
-      </form>
 
       <mat-horizontal-stepper [linear]="isLinear" #stepper>
         <mat-step [stepControl]="firstFormGroup">
@@ -27,7 +16,7 @@
             <ng-template matStepLabel>Indirizzo e Data</ng-template>
             <div class="row">
               <div class="col-md-6" style="border-right: 1px solid lightgray">
-                Seleziona l'indirizzo:
+                <B>Seleziona l'indirizzo:</B>
                 <br><br>
                 <mat-radio-group class="example-radio-group" [(ngModel)]="selectAddress" [ngModelOptions]="{standalone: true}">
                   <mat-radio-button class="example-radio-button" *ngFor="let i of listAddress" [value]="i">
@@ -36,7 +25,7 @@
                 </mat-radio-group>
               </div>
               <div class="col-md-6">
-                Seleziona la data di conferimento:
+                <B>Seleziona la data di conferimento:</B>
                 <br><br>
                 <mat-radio-group class="example-radio-group" [(ngModel)]="selectPlanning" [ngModelOptions]="{standalone: true}">
                   <mat-radio-button class="example-radio-button" *ngFor="let p of listPlanning" [value]="p">
@@ -45,7 +34,7 @@
                 </mat-radio-group>
               </div>
               <div class="col-md-12" style="text-align: right">
-                <button mat-button matStepperNext>Next</button>
+                <button mat-button  (click)="goForward(stepper)" >Next</button>
               </div>
             </div>
           </form>
@@ -81,8 +70,8 @@
             </div>
 
             <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button mat-button matStepperNext>Next</button>
+              <button mat-button (click)="goBack(stepper)">Back</button>
+              <button mat-button (click)="goForward(stepper)" style="float: right">Next</button>
             </div>
           <!--</form>-->
         </mat-step>
@@ -90,8 +79,8 @@
           <ng-template matStepLabel>Riepilogo</ng-template>
           You are now done.
           <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="stepper.reset()">Reset</button>
+            <button mat-button (click)="goBack(stepper)">Indietro</button>
+            <!--<button mat-button (click)="stepper.reset()">Reset</button>-->
           </div>
         </mat-step>
       </mat-horizontal-stepper>

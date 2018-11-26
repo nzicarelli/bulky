@@ -4,6 +4,7 @@ import {ParameterService} from "../../../../_services/parameter.service";
 import {CustomerService} from "../../../../_services/customer.service";
 import {BulkyService} from "../../../../_services/bulky.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { MatStepper } from '@angular/material';
 
 @Component({
   selector: 'app-act-customer-bulky',
@@ -102,6 +103,20 @@ export class ActCustomerBulkyComponent implements OnInit {
 
     newPer = (100 * myIngrombro ) / ingMax;
     this.myPerc = newPer;
+  }
+
+  goBack(stepper: MatStepper){
+    stepper.previous();
+  }
+
+  goForward(stepper: MatStepper){
+    if (stepper.selectedIndex === 0) {
+      if (!this.selectAddress || !this.selectPlanning) {
+        console.log('ERRORE - Selezionare Indirizzo e Planning');
+        return;
+      }
+    }
+    stepper.next();
   }
 
 }
