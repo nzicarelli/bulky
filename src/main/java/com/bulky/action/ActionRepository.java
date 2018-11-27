@@ -3,7 +3,10 @@
  */
 package com.bulky.action;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -13,6 +16,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bulky.account.User.ROLES;
+import com.bulky.customer.Customer;
+import com.bulky.support.AppUtil;
+import com.mysql.fabric.xmlrpc.base.Array;
 
 /**
  * @author kaala
@@ -57,6 +63,103 @@ public class ActionRepository {
 	@Transactional
 	public Activity store(Activity act) {
 		return em.merge(act);
+	}
+	
+	
+	@Transactional(readOnly=true)
+	public List<Map<String,Object>> listLead(Integer account, int start, int limit, Integer cuid, Date dal, Date al) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("SELECT "); 
+		sb.append("lid, "); 
+		sb.append("laccount, "); 
+		sb.append("ltype, "); 
+		sb.append("lowner, "); 
+		sb.append("lassign, "); 
+		sb.append("ldtmod, "); 
+		sb.append("lstatus, "); 
+		sb.append("ldescr, "); 
+		sb.append("lfkcustomer, "); 
+		sb.append("ledtins, "); 
+		sb.append("lefkmediaarrivo, "); 
+		sb.append("lctdescrizione, "); 
+		sb.append("lcmadescrizione, "); 
+		sb.append("lcsdescrizione, "); 
+		sb.append("cuname, "); 
+		sb.append("cusurname, "); 
+		sb.append("nact.N "); 
+		sb.append("FROM lead l "); 
+		sb.append("LEFT OUTER JOIN lead_catg_tipo t on l.ltype = t.lctid "); 
+		sb.append("LEFT OUTER JOIN lead_catg_mediaarrivo m ON m.lcmaid = l.lefkmediaarrivo "); 
+		sb.append("LEFT OUTER JOIN lead_catg_stato s ON s.lcsid = l.lstatus "); 
+		sb.append("LEFT OUTER JOIN customer c ON c.cuid = l.lfkcustomer "); 
+		sb.append("LEFT OUTER JOIN "); 
+		sb.append("( "); 
+		sb.append("   SELECT "); 
+		sb.append("   COUNT(*) AS N, "); 
+		sb.append("   afklead "); 
+		sb.append("   FROM activity "); 
+		sb.append("   group by afklead "); 
+		sb.append(") "); 
+		sb.append("nact ON afklead = l.lid "); 
+		sb.append("WHERE l.laccount = :account "); 
+		sb.append("AND (lfkcustomer = :cuid OR :cuid IS NULL ) "); 
+		sb.append("AND (ledtins>=:dal OR :dal IS NULL) AND (ledtins<=:al OR :al IS NULL ) "); 
+		sb.append("ORDER BY ledtins DESC,cuname,cusurname LIMIT :start,:limit ");
+		
+		List<?> results = em.createNativeQuery(sb.toString(), Customer.class)
+				.setParameter("cuid", cuid)
+				.setParameter("start", start)
+				.setParameter("limit", limit)
+				.setParameter("account", account)
+				.setParameter("dal", dal)
+				.setParameter("al", al)
+				.getResultList();
+		List<Map<String,Object>> rs = new ArrayList<>();
+		String[] keys = {"lid","laccount","ltype","lowner","lassign","ldtmod","lstatus","ldescr","lfkcustomer","ledtins","lefkmediaarrivo",
+				"lctdescrizione","lcmadescrizione","lcsdescrizione","cuname","cusurname","N"};
+		
+		if (results!=null && results.size()>0) {
+			for( Object o: results) {
+				Map<String,Object> v = AppUtil.toMap(keys,(Object[])o);
+				rs.add(v);
+			}
+		}
+		return rs;
+	}
+		
+	
+	@Transactional(readOnly=true)
+	public List<Map<String,Object>> listActivityByLead(Integer account, int start, int limit, Integer lead) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("SELECT "); 
+		sb.append("aid,aaccount,afktype,aowner,aassign,adtmod,astatus,adescr,atitle,asubject,afkcustomer, "); 
+		sb.append("afklead,cuname,cusurname,cadescr,asdescr "); 
+		sb.append("FROM activity a "); 
+		sb.append("INNER JOIN lead l ON l.lid = a.afklead "); 
+		sb.append("INNER JOIN customer c ON c.cuid = l.lfkcustomer "); 
+		sb.append("LEFT OUTER JOIN catg_action ca ON ca.caid = a.afktype "); 
+		sb.append("LEFT OUTER JOIN act_status st ON st.asid = a.astatus "); 
+		sb.append("WHERE a.aaccount = :account "); 
+		sb.append("AND a.afklead = :lead "); 
+		sb.append("ORDER BY a.adtmod DESC LIMIT :start,:limit ");
+		
+		List<?> results = em.createNativeQuery(sb.toString(), Customer.class)
+				.setParameter("lead", lead)
+				.setParameter("start", start)
+				.setParameter("limit", limit)
+				.setParameter("account", account)				
+				.getResultList();
+		List<Map<String,Object>> rs = new ArrayList<>();
+		String[] keys = {"aid","aaccount","afktype","aowner","aassign","adtmod","astatus","adescr","atitle","asubject","afkcustomer",
+				"afklead","cuname","cusurname","cadescr","asdescr"};
+		
+		if (results!=null && results.size()>0) {
+			for( Object o: results) {
+				Map<String,Object> v = AppUtil.toMap(keys,(Object[])o);
+				rs.add(v);
+			}
+		}
+		return rs;
 	}
 
 }

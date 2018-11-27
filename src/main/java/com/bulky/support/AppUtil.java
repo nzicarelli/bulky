@@ -5,7 +5,9 @@ package com.bulky.support;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.json.JSONObject;
 
@@ -21,6 +23,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 public final class AppUtil {
+	
+	public static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd'T'HH:mm");
+	public static SimpleDateFormat DATE_FORMAT_ITA = new SimpleDateFormat("dd/MM/yyyy");
+	public static SimpleDateFormat DATE_TIME_FORMAT_ITA = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	public static SimpleDateFormat DATE_TIME2_FORMAT_ITA = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	public static SimpleDateFormat[] DATE_FORMATS = {DATE_FORMAT,DATE_TIME2_FORMAT_ITA,DATE_TIME_FORMAT_ITA,DATE_FORMAT_ITA};
 
 	public static boolean isEmpty(String value) {
 		return value == null || value.trim().length()==0;
@@ -96,5 +104,66 @@ public final class AppUtil {
 			return plObj.getString(key);
 		}
 		return null;
+	}
+
+	public static synchronized Map<String, Object> toMap(String[] keys, Object[] o) {
+		Map<String, Object> result = new HashMap<>();
+		for (int i = 0; i < keys.length; i++) {
+			String k = keys[i];
+			Object value = o[i];
+			if (value==null) {
+				
+			}else if (value instanceof Date) {
+				Date v = (Date) value;
+				value = toSzDate(v);				
+			}else if (value instanceof java.sql.Date) {
+				java.sql.Date v = (java.sql.Date) value;
+				if (v!=null) {
+					value = toSzDate(new Date(v.getTime()));
+				}
+			} else if (value instanceof java.sql.Timestamp) {
+				java.sql.Timestamp v = (java.sql.Timestamp) value;
+				if (v!=null) {
+					value = toSzDate(new Date(v.getTime()));
+				}
+			} 
+			result.put(k, value);
+		}
+		return result;
+	}
+
+	public static String toSzDate(Date v) {
+		if (v!=null) {
+			return DATE_FORMAT.format(v);
+		}
+		return null;
+	}
+
+	public static Date getDateValueOf(JSONObject plo, String key) {
+		if (!plo.has(key)) {
+			return null;
+		}
+		String szVal = plo.getString(key);
+		if (AppUtil.isEmpty(szVal)) {
+			return null;
+		}
+		for(SimpleDateFormat sdf:DATE_FORMATS) {
+			try {
+				return sdf.parse(szVal);
+			} catch (Exception e) {
+			}
+		}
+		return null;
+		
+	}
+	
+	public static StartLimit startLimit(JSONObject plo) {
+		Integer _limit = getIntegerValueOf(plo, "limit");
+		Integer _start = getIntegerValueOf(plo, "start");
+		int limit = _limit == null ?1000:_limit.intValue();
+		int start = _start == null ?0:_start.intValue();
+		
+		return new StartLimit(start,limit);
+		
 	}
 }

@@ -78,12 +78,24 @@ public class CustomerRepository {
 				.getSingleResult();
 	}
 
-	public List<Customer> listCustomerByComune(String comune) {
-		// TODO Auto-generated method stub
-		return null;
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public List<Customer> listCustomerByComune(Integer account,String comune, int start, int limit) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("SELECT "); 
+		sb.append("DISTINCT c.* "); 
+		sb.append("FROM customer c "); 
+		sb.append("LEFT OUTER JOIN address a ON c.cuid = a.adfkaccount "); 
+		sb.append("WHERE c.cufkaccount = :account AND  a.adcomune = :comune "); 
+		sb.append("ORDER BY c.cusurname,c.cuname LIMIT :start,:limit ");
+		
+		return em.createNativeQuery(sb.toString(), Customer.class)
+				.setParameter("comune", comune)
+				.setParameter("start", start)
+				.setParameter("limit", limit)
+				.setParameter("account", account)
+				.getResultList();
 	}
-	
-	
 	
 	
 

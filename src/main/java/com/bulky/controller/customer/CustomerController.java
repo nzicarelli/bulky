@@ -14,14 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bulky.action.ActionRepository;
-import com.bulky.action.CatgAction;
 import com.bulky.customer.Address;
 import com.bulky.customer.Customer;
 import com.bulky.customer.CustomerRepository;
 import com.bulky.error.DataException;
 import com.bulky.response.ResponseBuilder;
 import com.bulky.response.ResponseData;
+import com.bulky.security.TokenHelper;
 import com.bulky.support.AppUtil;
 
 /**
@@ -37,6 +36,9 @@ public class CustomerController {
 	@Autowired
 	private ResponseBuilder builder;
 	
+	@Autowired
+	private TokenHelper tokenHelper;
+	
 	@PostMapping("api/customer/address")
 	public @ResponseBody ResponseData listAction(@RequestBody String payload, HttpServletRequest request) throws DataException {
 		JSONObject plObj = AppUtil.toPayLoad(payload);
@@ -50,12 +52,18 @@ public class CustomerController {
 	
 	@PostMapping("api/customer/list-by-comune")
 	public @ResponseBody ResponseData listCustomerByComune(@RequestBody String payload, HttpServletRequest request) throws DataException {
+		
+		Integer account = tokenHelper.getIdAccount(request);
 		JSONObject plObj = AppUtil.toPayLoad(payload);
 		String comune = AppUtil.getStringValueOf(plObj,"comune");
 		if (AppUtil.isEmpty(comune)) {
 			return builder.insufficienParameters("comune", request.getLocale());
 		}
-		List<Customer> customers = customerRep.listCustomerByComune(comune);
+		Integer _limit = AppUtil.getIntegerValueOf(plObj, "limit");
+		Integer _start = AppUtil.getIntegerValueOf(plObj, "start");
+		int limit = _limit == null ?1000:_limit.intValue();
+		int start = _start == null ?0:_start.intValue();
+		List<Customer> customers = customerRep.listCustomerByComune(account,comune,start,limit);
 		return builder.success(customers);
 	}
 

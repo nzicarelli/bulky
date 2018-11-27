@@ -6,9 +6,11 @@ package com.bulky.controller.action;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,7 @@ import com.bulky.response.ResponseBuilder;
 import com.bulky.response.ResponseData;
 import com.bulky.security.TokenHelper;
 import com.bulky.support.AppUtil;
+import com.bulky.support.StartLimit;
 
 /**
  * @author kaala
@@ -64,13 +67,13 @@ public class ActionController {
 		Activity act = AppUtil.bindObject(payload, Activity.class);
 		Lead lead = null;
 		
-		String userKind = tokenHelper.getUserKind(request);
-		Integer idAccount = tokenHelper.getIdAccount(request);
-		Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
-		ROLES r = null;
-		if (userKind!=null) {
-			r = ROLES.valueOf(userKind);
-		}
+//		String userKind = tokenHelper.getUserKind(request);
+//		Integer idAccount = tokenHelper.getIdAccount(request);
+//		Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
+//		ROLES r = null;
+//		if (userKind!=null) {
+//			r = ROLES.valueOf(userKind);
+//		}
 		if (AppUtil.isEmpty(act.getAfklead())){
 			// crea Lead
 			lead = leadService.buildLead(act);
@@ -82,5 +85,57 @@ public class ActionController {
 		
 		return builder.success(Arrays.asList(act));
 	}
+	
+	@PostMapping("api/action/list-lead")
+	public @ResponseBody ResponseData listLead(@RequestBody String payload, HttpServletRequest request) throws DataException {
+				
+		JSONObject plo = AppUtil.toPayLoad(payload);
+		String userKind = tokenHelper.getUserKind(request);
+		Integer idAccount = tokenHelper.getIdAccount(request);
+		Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
+		Integer cuid = null;
+		ROLES r = null;
+		if (userKind!=null) {
+			r = ROLES.valueOf(userKind);
+		}
+		if (r!=null && r.equals(ROLES.ROLE_CUSTOMER)) {
+			cuid = idUtente;
+		}else {
+			cuid = AppUtil.getIntegerValueOf(plo, "cuid");
+		}
+		Date dal = AppUtil.getDateValueOf(plo,"dal");
+		Date al = AppUtil.getDateValueOf(plo,"dal");
+		StartLimit startLimit = AppUtil.startLimit(plo);
+		
+		List<Map<String,Object>> leads = actRep.listLead(idAccount, startLimit.getStart(), startLimit.getLimit(), cuid, dal, al);
+		
+		
+		return builder.success(Arrays.asList(leads));
+	}
+	
+	@PostMapping("api/action/list-activity-4lead")
+	public @ResponseBody ResponseData listActivityByLead(@RequestBody String payload, HttpServletRequest request) throws DataException {
+				
+		JSONObject plo = AppUtil.toPayLoad(payload);
+//		String userKind = tokenHelper.getUserKind(request);
+		Integer idAccount = tokenHelper.getIdAccount(request);
+		// Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
+		
+//		ROLES r = null;
+//		if (userKind!=null) {
+//			r = ROLES.valueOf(userKind);
+//		}		
+		StartLimit startLimit = AppUtil.startLimit(plo);
+		Integer lead = AppUtil.getIntegerValueOf(plo, "lead");
+		
+		List<Map<String,Object>> leads = actRep.listActivityByLead(idAccount, startLimit.getStart(), startLimit.getLimit(), lead);
+		
+		
+		return builder.success(Arrays.asList(leads));
+	}
+	
+	
+	
+	
 
 }

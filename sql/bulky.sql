@@ -242,3 +242,15 @@ create table plan_detail(
 	pldtmod datetime null,
 	pldusrmod int null
 );
+
+
+CREATE TABLE act_status(
+	asid int not null PRIMARY KEY auto_increment,
+	asfkaccount int null,
+	asfkcatgact int null,
+	asdescr varchar(200) null,
+	asdtmod datetime null,
+	asdtins datetime null,
+	asusermod int null
+);
+
