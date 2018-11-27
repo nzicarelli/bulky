@@ -14,7 +14,7 @@ import java.util.Date;
 @NamedQueries({
 	@NamedQuery(name=Customer.FIND_BY_USERNAME, query="SELECT c FROM Customer c WHERE c.cuusername = :name ORDER BY c.cuid "),
 	@NamedQuery(name=Customer.FIND_BY_ID, query="SELECT c FROM Customer c WHERE c.cuid = :id ORDER BY c.cuid "),
-	@NamedQuery(name=Customer.FIND_BY_CF_PIVA, query="SELECT c FROM Customer c WHERE c.cucf = :cf OR c.cupiva= :piva ORDER BY c.cuid ")
+	@NamedQuery(name=Customer.FIND_BY_CF_PIVA, query="SELECT c FROM Customer c WHERE c.cucf = :cf OR c.cupiva= :piva ORDER BY c.cuid ")	
 })
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;

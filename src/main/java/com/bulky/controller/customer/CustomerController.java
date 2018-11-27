@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bulky.action.ActionRepository;
 import com.bulky.action.CatgAction;
 import com.bulky.customer.Address;
+import com.bulky.customer.Customer;
 import com.bulky.customer.CustomerRepository;
 import com.bulky.error.DataException;
 import com.bulky.response.ResponseBuilder;
@@ -45,6 +46,17 @@ public class CustomerController {
 		}
 		List<Address> addresses = customerRep.listAddressByCustomer(id);
 		return builder.success(addresses);
+	}
+	
+	@PostMapping("api/customer/list-by-comune")
+	public @ResponseBody ResponseData listCustomerByComune(@RequestBody String payload, HttpServletRequest request) throws DataException {
+		JSONObject plObj = AppUtil.toPayLoad(payload);
+		String comune = AppUtil.getStringValueOf(plObj,"comune");
+		if (AppUtil.isEmpty(comune)) {
+			return builder.insufficienParameters("comune", request.getLocale());
+		}
+		List<Customer> customers = customerRep.listCustomerByComune(comune);
+		return builder.success(customers);
 	}
 
 }

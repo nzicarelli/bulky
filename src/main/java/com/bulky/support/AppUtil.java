@@ -90,4 +90,11 @@ public final class AppUtil {
 		sb.append(hour.format(end));		
 		return sb.toString();
 	}
+
+	public static String getStringValueOf(JSONObject plObj, String key) {
+		if (plObj!=null && plObj.has(key)) {
+			return plObj.getString(key);
+		}
+		return null;
+	}
 }

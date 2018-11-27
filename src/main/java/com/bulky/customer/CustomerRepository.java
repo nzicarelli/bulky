@@ -77,6 +77,11 @@ public class CustomerRepository {
 				.setParameter("address", addr.getAdaddress())
 				.getSingleResult();
 	}
+
+	public List<Customer> listCustomerByComune(String comune) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	
