@@ -5,90 +5,100 @@
       <mat-toolbar-row>
         <span><B>Nuova Richiesta: </B> {{myCatgAct?.catitle}}</span>
         <span class="spacer"></span>
-        <button mat-flat-button color="primary" (click)="salva()">Salva</button>
+        <button mat-flat-button color="primary" (click)="salva()" [disabled]="myPerc > 100 || !haveConfigurationRifiuti() || !selectAddress || !selectPlanning">Salva</button>
       </mat-toolbar-row>
     </mat-toolbar>
     <div style="padding: 10px 20px 10px 20px;">
-      <form >
-        <h4>Basic mat-select</h4>
 
-
-        <mat-form-field style="width: 100%;">
-          <input matInput placeholder="Oggetto" [(ngModel)]="oggetto" name="oggetto">
-        </mat-form-field>
-        <mat-form-field style="width: 100%;">
-          <textarea matInput placeholder="Inserisci il tuo testo" [(ngModel)]="descr" name="descr"></textarea>
-        </mat-form-field>
-      </form>
-
-      <mat-horizontal-stepper [linear]="isLinear" #stepper>
-        <mat-step [stepControl]="firstFormGroup">
+      <mat-horizontal-stepper [linear]="false" #stepper >
+        <mat-step [stepControl]="firstFormGroup" >
           <form [formGroup]="firstFormGroup">
             <ng-template matStepLabel>Indirizzo e Data</ng-template>
+            <div class="row" *ngIf="haveConfigurationRifiuti()">
+              <div class="col-md-12">
+                <span style="color: red"><i>Per effettuare modifiche e' necessario rimuovere i dati allo step 2.</i></span>
+              </div>
+            </div>
             <div class="row">
               <div class="col-md-6" style="border-right: 1px solid lightgray">
-                Seleziona l'indirizzo:
+                <B>Seleziona l'indirizzo:</B>
                 <br><br>
-                <mat-radio-group class="example-radio-group" [(ngModel)]="selectAddress" [ngModelOptions]="{standalone: true}">
+                <mat-radio-group class="example-radio-group" [(ngModel)]="selectAddress" [ngModelOptions]="{standalone: true}" (click)="radioChange($event)" [disabled]="haveConfigurationRifiuti()">
                   <mat-radio-button class="example-radio-button" *ngFor="let i of listAddress" [value]="i">
                     {{i.adnormalizzato}}
                   </mat-radio-button>
                 </mat-radio-group>
               </div>
               <div class="col-md-6">
-                Seleziona la data di conferimento:
+                <B>Seleziona la data di conferimento:</B>
                 <br><br>
-                <mat-radio-group class="example-radio-group" [(ngModel)]="selectPlanning" [ngModelOptions]="{standalone: true}">
+                <mat-radio-group class="example-radio-group" [(ngModel)]="selectPlanning" [ngModelOptions]="{standalone: true}" (click)="radioChange($event)" [disabled]="haveConfigurationRifiuti()">
                   <mat-radio-button class="example-radio-button" *ngFor="let p of listPlanning" [value]="p">
                     {{p.plddescr}}
                   </mat-radio-button>
                 </mat-radio-group>
               </div>
               <div class="col-md-12" style="text-align: right">
-                <button mat-button matStepperNext>Next</button>
+                <button mat-raised-button color="accent"  (click)="goForward(stepper)" >Next</button>
               </div>
             </div>
           </form>
         </mat-step>
         <mat-step [stepControl]="secondFormGroup">
-          <form [formGroup]="secondFormGroup">
+          <!--<form [formGroup]="secondFormGroup">-->
             <ng-template matStepLabel>Rifiuti</ng-template>
             <div class="progress">
-              <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+              <div class="progress-bar" role="progressbar"  [attr.aria-valuenow]="myPerc" [style.width]="myPerc+'%'" aria-valuemin="0" aria-valuemax="100">{{myPerc}}%</div>
             </div>
             <br>
             <div class="row" *ngFor="let rb of listRowBulky">
               <div class="col-md-9">
-                <mat-form-field style="width: 100%;">
-                  <mat-select placeholder="Tipo Rifiuto">
-                    <mat-option *ngFor="let r of listCatgIngom" [value]="r.crid">
+                <button mat-icon-button color="warn" *ngIf="rb.crif">
+                  <mat-icon aria-label="Rimuovi" (click)="removeRow(rb)" matTooltip="Rimuovi">delete_forever</mat-icon>
+                </button>
+                &nbsp;
+                <mat-form-field style="width: 90%;">
+                  <mat-select placeholder="Tipo Rifiuto" (selectionChange)="selectCatgRifiuto($event)" [(ngModel)]="rb.crif">
+                    <mat-option *ngFor="let r of listCatgIngom" [value]="r">
                       {{r.crname}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
-              <div class="col-md-2">
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Quantità" value="1">
-                </mat-form-field>
-              </div>
-              <div class="col-md-1">
-                <button mat-raised-button color="primary" (click)="addRow()">Aggiungi</button>
+              <div class="col-md-3">
+                <p-spinner size="10" (onChange)="selectCatgRifiuto($event)" [(ngModel)]="rb.qty"  [min]="(rb && rb.crif && rb.crif.crqtymin) ? rb.crif.crqtymin : 0" [max]="(rb && rb.crif && rb.crif.crqtymax) ? rb.crif.crqtymax : 0"></p-spinner>
+                <!--<mat-form-field style="width: 50%">-->
+                  <!--<input matInput placeholder="Quantità" [(ngModel)]="rb.qty" >-->
+                <!--</mat-form-field>-->
+                &nbsp;&nbsp;<i>[min: {{(rb && rb.crif && rb.crif.crqtymin) ? rb.crif.crqtymin : 0}} . max: {{(rb && rb.crif && rb.crif.crqtymax) ? rb.crif.crqtymax : 0}}]</i>
               </div>
             </div>
 
             <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button mat-button matStepperNext>Next</button>
+              <button mat-raised-button (click)="goBack(stepper)">Back</button>
+              <button mat-raised-button color="accent" (click)="goForward(stepper)" style="float: right">Next</button>
             </div>
-          </form>
+          <!--</form>-->
         </mat-step>
         <mat-step>
-          <ng-template matStepLabel>Riepilogo</ng-template>
-          You are now done.
+          <ng-template matStepLabel>Riepilogo Ritiro</ng-template>
+            <div class="row">
+              <div class="col-md-5">Giorno: <B>{{selectPlanning?.plddescr}}</B></div>
+              <div class="col-md-7">Presso: <B>{{selectAddress?.adnormalizzato}}</B></div>
+            </div>
+            <br>
+            <span style="color: midnightblue"><B>Riepilogo Merce:</B></span>
+            <div class="row" *ngFor="let r of listRowBulky" style="height: 3em;">
+              <div class="col-md-1" style="text-align: right; padding-right: 5px; padding-left: 15px" *ngIf="r.crif">
+                <mat-chip-list>
+                  <mat-chip color="primary" selected>{{r.qty}}</mat-chip>
+                </mat-chip-list>
+              </div>
+              <div class="col-md-11" style="padding-left: 10px">{{r?.crif?.crname}}</div>
+            </div>
           <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="stepper.reset()">Reset</button>
+            <button mat-raised-button (click)="goBack(stepper)">Indietro</button>
+            <!--<button mat-button (click)="stepper.reset()">Reset</button>-->
           </div>
         </mat-step>
       </mat-horizontal-stepper>
