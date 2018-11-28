@@ -13,6 +13,7 @@ import { UserPlanningComponent } from './lead/user-planning/user-planning.compon
 import { ElencoClientiComponent } from './anagrafiche/elenco-clienti/elenco-clienti.component';
 import { UserComponent } from './anagrafiche/user/user.component';
 import { ClienteComponent } from './anagrafiche/cliente/cliente.component';
+import {AnagraficheService} from "../_services/anagrafiche.service";
 
 
 @NgModule({
@@ -26,6 +27,6 @@ import { ClienteComponent } from './anagrafiche/cliente/cliente.component';
 
     SharedModule
   ],
-  providers: [AuthUserGuard],
+  providers: [AuthUserGuard, AnagraficheService],
 })
 export class UserModule { }
