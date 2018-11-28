@@ -20,9 +20,8 @@
           Anagrafiche
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
+          <a class="dropdown-item" [routerLink]="[{ outlets: { userOut:'list-clienti'} }]">Clienti</a>
+          <a class="dropdown-item" [routerLink]="[{ outlets: { userOut:'list-user'} }]">Utenti</a>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -30,9 +29,8 @@
           Gestione Lead
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
+          <a class="dropdown-item" [routerLink]="[{ outlets: { userOut:'list-lead'} }]">Elenco lead</a>
+          <a class="dropdown-item" [routerLink]="[{ outlets: { userOut:'planning'} }]">Planning</a>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -48,11 +46,6 @@
     </ul>
   </div>
 </nav>
-
-<p><a [routerLink]="[{ outlets: { userOut:'list-lead'} }]">Try to navigate to /main/(dummy//aux:dummy) aux route (OK!)</a></p>
-<p><a [routerLink]="[{ outlets: { userOut:'list-user'} }]">Try to navigate to /main/(dummy//aux:dummy) aux route (OK!)</a></p>
-
-
 
 <router-outlet></router-outlet>
 

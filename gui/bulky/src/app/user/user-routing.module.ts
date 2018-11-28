@@ -5,11 +5,15 @@ import {AuthUserGuard} from "../_guard/authUser.guard";
 import {UserLeadListComponent} from "./lead/user-lead-list/user-lead-list.component";
 import {UserListComponent} from "./lead/user-list/user-list.component";
 import { ProxyRouteComponent } from './proxy-route/proxy-route.component';
+import {ElencoClientiComponent} from "./anagrafiche/elenco-clienti/elenco-clienti.component";
+import {UserPlanningComponent} from "./lead/user-planning/user-planning.component";
 
 const routes: Routes = [
   { path: '', component: UserHomeComponent, canActivate: [AuthUserGuard]  } ,
   { path: 'list-user', component: UserListComponent, outlet: 'userOut', canActivate: [AuthUserGuard]  },
-  { path: 'list-lead', component: UserLeadListComponent, outlet: 'userOut', canActivate: [AuthUserGuard]  }
+  { path: 'list-lead', component: UserLeadListComponent, outlet: 'userOut', canActivate: [AuthUserGuard]  },
+  { path: 'list-clienti', component: ElencoClientiComponent, outlet: 'userOut', canActivate: [AuthUserGuard]  },
+  { path: 'planning', component: UserPlanningComponent, outlet: 'userOut', canActivate: [AuthUserGuard]  }
 ];
 
 @NgModule({

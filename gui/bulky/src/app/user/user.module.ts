@@ -9,10 +9,14 @@ import { UserLeadListComponent } from './lead/user-lead-list/user-lead-list.comp
 import { UserListComponent } from './lead/user-list/user-list.component';
 import {ProxyRouteComponent} from "./proxy-route/proxy-route.component";
 import {SharedModule} from "../shared/shared/shared.module";
+import { UserPlanningComponent } from './lead/user-planning/user-planning.component';
+import { ElencoClientiComponent } from './anagrafiche/elenco-clienti/elenco-clienti.component';
+import { UserComponent } from './anagrafiche/user/user.component';
+import { ClienteComponent } from './anagrafiche/cliente/cliente.component';
 
 
 @NgModule({
-  declarations: [UserHomeComponent, UserLeadListComponent, UserListComponent, ProxyRouteComponent],
+  declarations: [UserHomeComponent, UserLeadListComponent, UserListComponent, ProxyRouteComponent, UserPlanningComponent, ElencoClientiComponent, UserComponent, ClienteComponent],
   imports: [
     CommonModule,
     UserRoutingModule,
