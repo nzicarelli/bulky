@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ActionService} from "../../_services/action.service";
 import {ParameterService} from "../../_services/parameter.service";
+import {LeadService} from "../../_services/lead.service";
 
 @Component({
   selector: 'app-customer-home-act',
@@ -11,13 +12,15 @@ import {ParameterService} from "../../_services/parameter.service";
 export class CustomerHomeActComponent implements OnInit {
 
   public listCatgAct: any[] = [];
+  public listLead: any[] = [];
 
-  constructor(private router: Router, private route: ActivatedRoute,
+  constructor(private router: Router, private route: ActivatedRoute, private leadService: LeadService,
               private actService: ActionService, private parameterServ: ParameterService) { }
 
   ngOnInit() {
 
     this.loadAction();
+    this.loadList();
   }
 
   loadAction() {
@@ -37,6 +40,12 @@ export class CustomerHomeActComponent implements OnInit {
     this.router.navigate([{ outlets: { customerOut: [  act.cadoctype ] }}],
       { skipLocationChange: true, relativeTo: this.route.parent });
 
+  }
+
+  loadList() {
+    this.leadService.listLead(undefined, undefined, undefined).then( (res: any) => {
+      this.listLead = res.output;
+    });
   }
 
 }
