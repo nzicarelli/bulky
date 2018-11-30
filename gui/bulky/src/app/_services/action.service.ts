@@ -29,7 +29,7 @@ export class ActionService {
   public saveAction(id: number, descr: string, oggetto: string, idType: number) {
     const myParam: any = {
       aid: id,
-      aaccount: 1,
+      aaccount: undefined,
       afktype: idType,
       aowner: null,
       aassign: null,
@@ -40,7 +40,7 @@ export class ActionService {
       afkcustomer: undefined
     };
     const myUrl = this.config.getConfig('baseUrl');
-    return this.http.post(myUrl + '/api/action/save', myParam)
+    return this.http.post(myUrl + '/api/action/store', myParam)
       .toPromise()
       .then(res => {
         return res;

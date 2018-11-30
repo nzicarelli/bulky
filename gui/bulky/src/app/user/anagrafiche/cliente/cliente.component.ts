@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AnagraficheService} from "../../../_services/anagrafiche.service";
 
 @Component({
   selector: 'app-cliente',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClienteComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(private anagrServ: AnagraficheService) { }
 
   ngOnInit() {
+
   }
+
 
 }

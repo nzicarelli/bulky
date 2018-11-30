@@ -67,6 +67,11 @@ export class ActCustomerBulkyComponent implements OnInit {
 
   salva() {
     this.actionServ.saveAction(undefined, undefined, undefined, this.myCatgAct.caid).then( (res: any) => {
+      if (res.success) {
+        Util.alertMsg(Util.alertSuccess, 'OK', 'Salvataggio effettuato con successo');
+      } else {
+        Util.alertMsg(Util.alertError, 'KO', 'Si è verificato un errore, riprova!');
+      }
 
     });
   }

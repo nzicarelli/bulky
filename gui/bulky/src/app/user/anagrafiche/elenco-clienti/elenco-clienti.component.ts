@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AnagraficheService} from "../../../_services/anagrafiche.service";
 
 @Component({
   selector: 'app-elenco-clienti',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ElencoClientiComponent implements OnInit {
 
-  constructor() { }
+  public listClienti: any[] = [];
+
+  constructor(private anagrServ: AnagraficheService) { }
 
   ngOnInit() {
+    this.loadList();
+  }
+
+  loadList() {
+    this.anagrServ.listClienti('RENDE').then( (res: any) => {
+      this.listClienti = res.output;
+    })
   }
 
 }

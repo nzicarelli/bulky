@@ -4,6 +4,7 @@ import {InputTextModule} from "primeng/primeng";
 import {ButtonModule} from "primeng/button";
 import {CardModule} from "primeng/card";
 import {SpinnerModule} from 'primeng/spinner';
+import {TableModule} from 'primeng/table';
 import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from '@angular/material/card';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -29,6 +30,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     InputTextModule,
     CardModule,
     SpinnerModule,
+    TableModule,
 
     // MATERIAL *****
     MatFormFieldModule,
@@ -51,6 +53,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     InputTextModule,
     CardModule,
     SpinnerModule,
+    TableModule,
 
     // MATERIAL
     MatFormFieldModule,

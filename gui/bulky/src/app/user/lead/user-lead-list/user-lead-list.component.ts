@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {LeadService} from "../../../_services/lead.service";
 
 @Component({
   selector: 'app-user-lead-list',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserLeadListComponent implements OnInit {
 
-  constructor() { }
+  public listLead: any[] = [];
+  constructor(private leadService: LeadService) { }
 
   ngOnInit() {
+    this.loadList();
+  }
+
+  loadList() {
+    this.leadService.listLead(undefined, undefined, undefined).then( (res: any) => {
+      this.listLead = res.output;
+    });
   }
 
 }

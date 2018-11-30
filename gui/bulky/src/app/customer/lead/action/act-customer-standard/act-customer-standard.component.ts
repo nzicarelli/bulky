@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ParameterService} from "../../../../_services/parameter.service";
 import {ActionService} from "../../../../_services/action.service";
+import {Util} from "../../../../util";
 
 @Component({
   selector: 'app-act-customer-standard',
@@ -23,8 +24,13 @@ export class ActCustomerStandardComponent implements OnInit {
 
   salva() {
     this.actionServ.saveAction(undefined, this.descr, this.oggetto, this.myCatgAct.caid).then( (res: any) => {
-
+      if (res.success) {
+        Util.alertMsg(Util.alertSuccess, 'OK', 'Salvataggio effettuato con successo');
+      } else {
+        Util.alertMsg(Util.alertError, 'KO', 'Si è verificato un errore, riprova!');
+      }
     });
   }
+
 
 }
