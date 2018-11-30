@@ -492,11 +492,6 @@
   </connection>
   <order>
     <hop>
-      <from>CSV file input</from>
-      <to>lookup CF</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>lookup CF</from>
       <to>Filter rows</to>
       <enabled>Y</enabled>
@@ -524,6 +519,26 @@
     <hop>
       <from>Filter rows 2</from>
       <to>Table output</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>CSV file input</from>
+      <to>Add constants</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Add constants</from>
+      <to>lookup CF</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Update4cf</from>
+      <to>lookup Addres</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>lookup Addres</from>
+      <to>Insert / Update</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -946,105 +961,7 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>112</xloc>
-      <yloc>112</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Table output</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>Bulky</connection>
-    <schema/>
-    <table>customer</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>cusurname</column_name>
-        <stream_name>Denominazione</stream_name>
-      </field>
-      <field>
-        <column_name>cucf</column_name>
-        <stream_name>Codice Fiscale / Partita IVA</stream_name>
-      </field>
-    </fields>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>384</xloc>
-      <yloc>336</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>lookup CF</name>
-    <type>DBLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>Bulky</connection>
-    <cache>N</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <lookup>
-      <schema/>
-      <table>customer</table>
-      <orderby/>
-      <fail_on_multiple>N</fail_on_multiple>
-      <eat_row_on_failure>N</eat_row_on_failure>
-      <key>
-        <name>Codice Fiscale / Partita IVA</name>
-        <field>cucf</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>cuid</name>
-        <rename>ID_CLI</rename>
-        <default/>
-        <type>None</type>
-      </value>
-    </lookup>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>240</xloc>
+      <xloc>48</xloc>
       <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1105,7 +1022,152 @@
     </GUI>
   </step>
   <step>
+    <name>Filter rows 2</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to>Update4piva</send_true_to>
+    <send_false_to>Table output</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>ID_CLI</leftvalue>
+        <function>&gt;</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>Integer</type>
+          <text>0</text>
+          <length>-1</length>
+          <precision>0</precision>
+          <isnull>N</isnull>
+          <mask>####0;-####0</mask>
+        </value>
+      </condition>
+    </compare>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>544</xloc>
+      <yloc>224</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Table output</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>Bulky</connection>
+    <schema/>
+    <table>customer</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>cusurname</column_name>
+        <stream_name>Denominazione</stream_name>
+      </field>
+      <field>
+        <column_name>cucf</column_name>
+        <stream_name>Codice Fiscale / Partita IVA</stream_name>
+      </field>
+      <field>
+        <column_name>cufkaccount</column_name>
+        <stream_name>ID_ACCOUNT</stream_name>
+      </field>
+    </fields>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>544</xloc>
+      <yloc>352</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Update4cf</name>
+    <type>InsertUpdate</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>Bulky</connection>
+    <commit>100</commit>
+    <update_bypassed>N</update_bypassed>
+    <lookup>
+      <schema/>
+      <table>customer</table>
+      <key>
+        <name>ID_CLI</name>
+        <field>cuid</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>cusurname</name>
+        <rename>Denominazione</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>cucf</name>
+        <rename>Codice Fiscale / Partita IVA</rename>
+        <update>Y</update>
+      </value>
+    </lookup>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>592</xloc>
+      <yloc>112</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Update4piva</name>
     <type>InsertUpdate</type>
     <description/>
     <distribute>Y</distribute>
@@ -1136,7 +1198,54 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>592</xloc>
+      <xloc>720</xloc>
+      <yloc>224</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>lookup CF</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>Bulky</connection>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema/>
+      <table>customer</table>
+      <orderby/>
+      <fail_on_multiple>N</fail_on_multiple>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <key>
+        <name>Codice Fiscale / Partita IVA</name>
+        <field>cucf</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>cuid</name>
+        <rename>ID_CLI</rename>
+        <default/>
+        <type>None</type>
+      </value>
+    </lookup>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>240</xloc>
       <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1189,7 +1298,116 @@
     </GUI>
   </step>
   <step>
-    <name>Update4piva</name>
+    <name>Add constants</name>
+    <type>Constant</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>ID_ACCOUNT</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>1</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>144</xloc>
+      <yloc>112</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>lookup Addres</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>Bulky</connection>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema/>
+      <table>address</table>
+      <orderby/>
+      <fail_on_multiple>N</fail_on_multiple>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <key>
+        <name>Comune Res./Sede Leg.</name>
+        <field>adcomune</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>Prov. Res./Sede Leg.</name>
+        <field>adsiglaprov</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>Indirizzo Utenza</name>
+        <field>adaddress</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>N°_1</name>
+        <field>adnum</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <key>
+        <name>ID_CLI</name>
+        <field>adfkcustomer</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>adid</name>
+        <rename>IND_ID</rename>
+        <default/>
+        <type>None</type>
+      </value>
+    </lookup>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>784</xloc>
+      <yloc>112</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Insert / Update</name>
     <type>InsertUpdate</type>
     <description/>
     <distribute>Y</distribute>
@@ -1204,13 +1422,48 @@
     <update_bypassed>N</update_bypassed>
     <lookup>
       <schema/>
-      <table>customer</table>
+      <table>address</table>
       <key>
-        <name>ID_CLI</name>
-        <field>cuid</field>
+        <name>IND_ID</name>
+        <field>adid</field>
         <condition>=</condition>
         <name2/>
       </key>
+      <value>
+        <name>adfkaccount</name>
+        <rename>ID_ACCOUNT</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>adfkcustomer</name>
+        <rename>ID_CLI</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>adcomune</name>
+        <rename>Comune Res./Sede Leg.</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>adsiglaprov</name>
+        <rename>Prov. Res./Sede Leg.</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>adaddress</name>
+        <rename>Indirizzo Utenza</rename>
+        <update>N</update>
+      </value>
+      <value>
+        <name>adnum</name>
+        <rename>N°_1</rename>
+        <update>Y</update>
+      </value>
+      <value>
+        <name>adcap</name>
+        <rename>CAP Res./Sede Leg.</rename>
+        <update>Y</update>
+      </value>
     </lookup>
     <cluster_schema/>
     <remotesteps>
@@ -1220,234 +1473,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>720</xloc>
-      <yloc>224</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Filter rows 2</name>
-    <type>FilterRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <send_true_to>Update4piva</send_true_to>
-    <send_false_to>Table output</send_false_to>
-    <compare>
-      <condition>
-        <negated>N</negated>
-        <leftvalue>ID_CLI</leftvalue>
-        <function>&gt;</function>
-        <rightvalue/>
-        <value>
-          <name>constant</name>
-          <type>Integer</type>
-          <text>0</text>
-          <length>-1</length>
-          <precision>0</precision>
-          <isnull>N</isnull>
-          <mask>####0;-####0</mask>
-        </value>
-      </condition>
-    </compare>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>544</xloc>
-      <yloc>224</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Table output 2</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>Bulky</connection>
-    <schema/>
-    <table>STAGE_cli</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-      <field>
-        <column_name>Denominazione</column_name>
-        <stream_name>Denominazione</stream_name>
-      </field>
-      <field>
-        <column_name>CodiceFiscale_PartitaIVA</column_name>
-        <stream_name>Codice Fiscale / Partita IVA</stream_name>
-      </field>
-      <field>
-        <column_name>DataNascita</column_name>
-        <stream_name>Data di Nascita</stream_name>
-      </field>
-      <field>
-        <column_name>Comp</column_name>
-        <stream_name>Comp.</stream_name>
-      </field>
-      <field>
-        <column_name>CO</column_name>
-        <stream_name>C/O</stream_name>
-      </field>
-      <field>
-        <column_name>IndirizzoRes_SedeLeg</column_name>
-        <stream_name>Indirizzo Res./Sede Leg.</stream_name>
-      </field>
-      <field>
-        <column_name>N</column_name>
-        <stream_name>N°</stream_name>
-      </field>
-      <field>
-        <column_name>EsponRes_SedeLeg</column_name>
-        <stream_name>"Espon. Res./Sede Leg."</stream_name>
-      </field>
-      <field>
-        <column_name>LocalitaRes_SedeLeg</column_name>
-        <stream_name>"Località  Res./Sede Leg."</stream_name>
-      </field>
-      <field>
-        <column_name>CAPRes_SedeLeg</column_name>
-        <stream_name>CAP Res./Sede Leg.</stream_name>
-      </field>
-      <field>
-        <column_name>ComuneRes_SedeLeg</column_name>
-        <stream_name>Comune Res./Sede Leg.</stream_name>
-      </field>
-      <field>
-        <column_name>ProvRes_SedeLeg</column_name>
-        <stream_name>Prov. Res./Sede Leg.</stream_name>
-      </field>
-      <field>
-        <column_name>DataPresentazione</column_name>
-        <stream_name>Data Presentazione</stream_name>
-      </field>
-      <field>
-        <column_name>StatoDenuncia</column_name>
-        <stream_name>Stato Denuncia</stream_name>
-      </field>
-      <field>
-        <column_name>ProgressivoUtenza</column_name>
-        <stream_name>Progressivo Utenza</stream_name>
-      </field>
-      <field>
-        <column_name>Sezione</column_name>
-        <stream_name>Sezione</stream_name>
-      </field>
-      <field>
-        <column_name>Foglio</column_name>
-        <stream_name>Foglio</stream_name>
-      </field>
-      <field>
-        <column_name>Particella</column_name>
-        <stream_name>Particella</stream_name>
-      </field>
-      <field>
-        <column_name>Sub</column_name>
-        <stream_name>Sub</stream_name>
-      </field>
-      <field>
-        <column_name>CategoriaCatastale</column_name>
-        <stream_name>Categoria Catastale</stream_name>
-      </field>
-      <field>
-        <column_name>ClasseCatastale</column_name>
-        <stream_name>Classe Catastale</stream_name>
-      </field>
-      <field>
-        <column_name>Superficie</column_name>
-        <stream_name>Superficie</stream_name>
-      </field>
-      <field>
-        <column_name>CodiceStradaUtenza</column_name>
-        <stream_name>Codice Strada Utenza</stream_name>
-      </field>
-      <field>
-        <column_name>IndirizzoUtenza</column_name>
-        <stream_name>Indirizzo Utenza</stream_name>
-      </field>
-      <field>
-        <column_name>NUtenza</column_name>
-        <stream_name>N°_1</stream_name>
-      </field>
-      <field>
-        <column_name>EsponCivicoUtenza</column_name>
-        <stream_name>Espon. Civico Utenza</stream_name>
-      </field>
-      <field>
-        <column_name>ScalaUtenza</column_name>
-        <stream_name>Scala Utenza</stream_name>
-      </field>
-      <field>
-        <column_name>InternoUtenza</column_name>
-        <stream_name>Interno Utenza</stream_name>
-      </field>
-      <field>
-        <column_name>PianoUtenza</column_name>
-        <stream_name>Piano Utenza</stream_name>
-      </field>
-      <field>
-        <column_name>TipoUtenza</column_name>
-        <stream_name>Tipo Utenza</stream_name>
-      </field>
-      <field>
-        <column_name>NOccupanti</column_name>
-        <stream_name>N° Occupanti</stream_name>
-      </field>
-      <field>
-        <column_name>DestinazioneUso</column_name>
-        <stream_name>Destinazione Uso</stream_name>
-      </field>
-      <field>
-        <column_name>DataDecorrenzaUtenza</column_name>
-        <stream_name>Data Decorrenza Utenza</stream_name>
-      </field>
-      <field>
-        <column_name>DataChiusuraUtenza</column_name>
-        <stream_name>Data Chiusura Utenza</stream_name>
-      </field>
-      <field>
-        <column_name>Riduzioni</column_name>
-        <stream_name>Riduzioni</stream_name>
-      </field>
-    </fields>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>896</xloc>
-      <yloc>320</yloc>
+      <xloc>944</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
