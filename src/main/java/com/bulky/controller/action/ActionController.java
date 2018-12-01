@@ -67,13 +67,29 @@ public class ActionController {
 		Activity act = AppUtil.bindObject(payload, Activity.class);
 		Lead lead = null;
 		
-//		String userKind = tokenHelper.getUserKind(request);
-//		Integer idAccount = tokenHelper.getIdAccount(request);
-//		Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
-//		ROLES r = null;
-//		if (userKind!=null) {
-//			r = ROLES.valueOf(userKind);
-//		}
+		String userKind = tokenHelper.getUserKind(request);
+		Integer idAccount = tokenHelper.getIdAccount(request);
+		Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
+		Integer cuid = null;
+		ROLES r = null;
+		if (userKind!=null) {
+			r = ROLES.valueOf(userKind);
+		}
+		if (r!=null && r.equals(ROLES.ROLE_CUSTOMER)) {
+			cuid = idUtente;
+		}else {
+			if (act.getAassign() == null) {
+				act.setAassign( idUtente );
+			}
+		}
+		if (act.getAaccount() == null) {
+			act.setAaccount(idAccount);
+		}
+		if (act.getAfkcustomer() == null && cuid!=null) {
+			act.setAfkcustomer( cuid );
+		}else {
+			return builder.insufficienParameters("afkcustomer", request.getLocale());
+		}
 		if (AppUtil.isEmpty(act.getAfklead())){
 			// crea Lead
 			lead = leadService.buildLead(act);

@@ -105,7 +105,7 @@ public class ActionRepository {
 		sb.append("AND (ledtins>=:dal OR :dal IS NULL) AND (ledtins<=:al OR :al IS NULL ) "); 
 		sb.append("ORDER BY ledtins DESC,cuname,cusurname LIMIT :start,:limit ");
 		
-		List<?> results = em.createNativeQuery(sb.toString(), Customer.class)
+		List<?> results = em.createNativeQuery(sb.toString())
 				.setParameter("cuid", cuid)
 				.setParameter("start", start)
 				.setParameter("limit", limit)
@@ -142,7 +142,7 @@ public class ActionRepository {
 		sb.append("AND a.afklead = :lead "); 
 		sb.append("ORDER BY a.adtmod DESC LIMIT :start,:limit ");
 		
-		List<?> results = em.createNativeQuery(sb.toString(), Customer.class)
+		List<?> results = em.createNativeQuery(sb.toString())
 				.setParameter("lead", lead)
 				.setParameter("start", start)
 				.setParameter("limit", limit)

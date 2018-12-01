@@ -3,7 +3,9 @@
  */
 package com.bulky.customer;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bulky.account.Account;
+import com.bulky.support.AppUtil;
 
 /**
  * @author kaala
@@ -85,7 +88,7 @@ public class CustomerRepository {
 		sb.append("SELECT "); 
 		sb.append("DISTINCT c.* "); 
 		sb.append("FROM customer c "); 
-		sb.append("LEFT OUTER JOIN address a ON c.cuid = a.adfkaccount "); 
+		sb.append("LEFT OUTER JOIN address a ON c.cuid = a.adfkcustomer "); 
 		sb.append("WHERE c.cufkaccount = :account AND  a.adcomune = :comune "); 
 		sb.append("ORDER BY c.cusurname,c.cuname LIMIT :start,:limit ");
 		
@@ -95,6 +98,26 @@ public class CustomerRepository {
 				.setParameter("limit", limit)
 				.setParameter("account", account)
 				.getResultList();
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Map<String, Object>> listComuni(Integer account, Integer cuid) {
+		List<Map<String, Object>> results = new ArrayList<>();
+		List<?> addrs = em.createQuery("SELECT DISTINCT a.adcap, a.adcomune, a.adsiglaprov "
+				+ " FROM Address a WHERE (a.adfkcustomer=:cuid OR :cuid IS NULL ) AND a.adfkaccount=:account "
+				+ " ORDER BY a.adcomune, a.adsiglaprov " )
+				.setParameter("account", account)
+				.setParameter("cuid", cuid)
+				.getResultList();
+		String[] keys = {"adcap","adcomune","adsiglaprov"};
+		
+		if (addrs!=null && addrs.size()>0) {
+			for( Object o: addrs) {
+				Map<String,Object> v = AppUtil.toMap(keys,(Object[])o);
+				results.add(v);
+			}
+		}
+		return results;
 	}
 	
 	
