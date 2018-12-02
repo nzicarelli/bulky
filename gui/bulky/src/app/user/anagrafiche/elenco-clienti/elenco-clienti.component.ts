@@ -9,6 +9,7 @@ import {AnagraficheService} from "../../../_services/anagrafiche.service";
 export class ElencoClientiComponent implements OnInit {
 
   public listClienti: any[] = [];
+  public loading = false;
 
   constructor(private anagrServ: AnagraficheService) { }
 
@@ -17,7 +18,9 @@ export class ElencoClientiComponent implements OnInit {
   }
 
   loadList() {
+    this.loading = true;
     this.anagrServ.listClienti('RENDE').then( (res: any) => {
+      this.loading = false;
       this.listClienti = res.output;
     })
   }

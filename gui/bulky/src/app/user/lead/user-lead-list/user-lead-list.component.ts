@@ -9,6 +9,7 @@ import {LeadService} from "../../../_services/lead.service";
 export class UserLeadListComponent implements OnInit {
 
   public listLead: any[] = [];
+  public loading = false;
   constructor(private leadService: LeadService) { }
 
   ngOnInit() {
@@ -16,8 +17,12 @@ export class UserLeadListComponent implements OnInit {
   }
 
   loadList() {
+    this.loading = true;
     this.leadService.listLead(undefined, undefined, undefined).then( (res: any) => {
+      this.loading = false;
       this.listLead = res.output;
+    }).catch( e => {
+      this.loading = false;
     });
   }
 

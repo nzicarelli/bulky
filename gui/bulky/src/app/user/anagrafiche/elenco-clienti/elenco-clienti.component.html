@@ -1,18 +1,31 @@
-<p-table [value]="listClienti">
+<p-table [value]="listClienti" [paginator]="true" [rows]="15" [responsive]="true" [loading]="loading"
+         [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]">
   <ng-template pTemplate="header">
     <tr>
-      <th>Vin</th>
-      <th>Year</th>
-      <th>Brand</th>
-      <th>Color</th>
+      <th>Denominazione/cognome</th>
+      <th>Nome</th>
+      <th>Cod. Fiscale</th>
+      <th>P. IVA</th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-car>
+  <ng-template pTemplate="body" let-obj>
     <tr>
-      <td>{{car.vin}}</td>
-      <td>{{car.year}}</td>
-      <td>{{car.brand}}</td>
-      <td>{{car.color}}</td>
+      <td>
+        <span class="ui-column-title">Denominazione/Cognome</span>
+        {{obj.cusurname}}
+      </td>
+      <td>
+        <span class="ui-column-title">Nome</span>
+        {{obj.cname}}
+      </td>
+      <td>
+        <span class="ui-column-title">Cod. Fiscale</span>
+        {{obj.cucf}}
+      </td>
+      <td>
+        <span class="ui-column-title">P. IVA</span>
+        {{obj.cupiva}}
+      </td>
     </tr>
   </ng-template>
 </p-table>
