@@ -1,15 +1,34 @@
+<div class="row">
+  <div class="col-md-2">
+    <mat-form-field>
+      <mat-select placeholder="Comune" [(ngModel)]="cSel">
+        <mat-option *ngFor="let c of comuni" [value]="p.ID">
+          {{c.DESCRIZIONE}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
 <p-table [value]="listClienti" [paginator]="true" [rows]="15" [responsive]="true" [loading]="loading"
-         [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]">
+         [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]"
+         dataKey="cuid" (onRowExpand)="loadAddress($event)">
   <ng-template pTemplate="header">
     <tr>
+      <th style="width: 3em"></th>
       <th>Denominazione/cognome</th>
       <th>Nome</th>
       <th>Cod. Fiscale</th>
       <th>P. IVA</th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-obj>
+  <ng-template pTemplate="body" let-obj let-expanded="expanded">
     <tr>
+      <td>
+        <a href="#" [pRowToggler]="obj">
+          <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+        </a>
+      </td>
       <td>
         <span class="ui-column-title">Denominazione/Cognome</span>
         {{obj.cusurname}}
@@ -28,4 +47,14 @@
       </td>
     </tr>
   </ng-template>
+  <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+    <tr>
+      <td [attr.colspan]="5">
+        <div *ngFor="let a of listIndirizzi">
+        {{a.adaddress}}
+        </div>
+      </td>
+    </tr>
+  </ng-template>
 </p-table>
+

@@ -1,22 +1,17 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {AppConfig} from "../app.config";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AnagraficheService {
+export class DataUtilService {
 
   constructor(private http: HttpClient, private config: AppConfig) { }
 
-
-  public listClienti(comune: string) {
-    const myParam: any = {
-      comune: comune
-    };
-
+  public getPeriodi() {
     const myUrl = this.config.getConfig('baseUrl');
-    return this.http.post(myUrl + '/api/customer/list-by-comune', myParam)
+    return this.http.post(myUrl + '/api/calendar/periodi', {})
       .toPromise()
       .then(res => {
         return res;
@@ -26,13 +21,9 @@ export class AnagraficheService {
       );
   }
 
-  public listAddress4cli(idCli: number) {
-    const myParam: any = {
-      cuid: idCli
-    };
-
+  public getComuni() {
     const myUrl = this.config.getConfig('baseUrl');
-    return this.http.post(myUrl + '/api/customer/address', myParam)
+    return this.http.post(myUrl + '/api/calendar/periodi', {})
       .toPromise()
       .then(res => {
         return res;
@@ -41,6 +32,4 @@ export class AnagraficheService {
         Promise.reject(error.message || error)
       );
   }
-
-
 }

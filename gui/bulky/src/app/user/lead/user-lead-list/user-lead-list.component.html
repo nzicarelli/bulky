@@ -1,3 +1,24 @@
+<div class="row">
+  <div class="col-md-2">
+    <mat-form-field>
+      <mat-select placeholder="Periodo" [(ngModel)]="pSel">
+        <mat-option *ngFor="let p of periodi" [value]="p.ID">
+          {{p.DESCRIZIONE}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-md-2">
+    <mat-form-field>
+      <mat-select placeholder="Comune" [(ngModel)]="cSel">
+        <mat-option *ngFor="let c of comuni" [value]="p.ID">
+          {{c.DESCRIZIONE}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
 <div>
   <p-table [value]="listLead" [paginator]="true" [rows]="20" [responsive]="true" [loading]="loading"
            [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]">
