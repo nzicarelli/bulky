@@ -14,6 +14,7 @@ import { ElencoClientiComponent } from './anagrafiche/elenco-clienti/elenco-clie
 import { UserComponent } from './anagrafiche/user/user.component';
 import { ClienteComponent } from './anagrafiche/cliente/cliente.component';
 import {AnagraficheService} from "../_services/anagrafiche.service";
+import {DataUtilService} from "../_services/data-util.service";
 
 
 @NgModule({
@@ -27,6 +28,6 @@ import {AnagraficheService} from "../_services/anagrafiche.service";
 
     SharedModule
   ],
-  providers: [AuthUserGuard, AnagraficheService],
+  providers: [AuthUserGuard, AnagraficheService, DataUtilService],
 })
 export class UserModule { }

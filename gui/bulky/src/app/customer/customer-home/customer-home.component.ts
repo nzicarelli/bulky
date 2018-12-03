@@ -9,7 +9,8 @@ interface IBreadcrumb {
   params: {
     [key: string]: any;
   };
-  url: string;
+  // url: string;
+  routerLink: any[];
   append: boolean;
   noRoute: boolean;
 }
@@ -146,8 +147,16 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     //iterate over each children
     for (let child of children) {
       //verify primary route
-      if (child.outlet !== 'primary') {
+      /*if (child.outlet !== 'primary') {
         continue;
+      }*/
+
+      if ((child.outlet === 'primary') && !child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
+        return this.getBreadcrumbs(child, url, breadcrumbs);
+      } else {
+        if (child.outlet === 'primary') {
+          continue;
+        }
       }
 
       //verify the custom data property "breadcrumb" is specified on the route
@@ -159,13 +168,14 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
       let routeURL: string = child.snapshot.url.map(segment => segment.path).join("/");
 
       //append route URL to URL
-      url += `/${routeURL}`;
+      url += `${routeURL}`;
 
       //add breadcrumb
+      //url: url
       let breadcrumb: IBreadcrumb = {
         label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
         params: child.snapshot.params,
-        url: url,
+        routerLink: [{ outlets: { customerOut: url} }],
         append: child.snapshot.data[ROUTE_DATA_APPEND],
         noRoute: child.snapshot.data[ROUTE_DATA_NOROUTE]
       };
