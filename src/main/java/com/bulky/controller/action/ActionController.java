@@ -148,7 +148,7 @@ public class ActionController {
 		List<Map<String,Object>> leads = actRep.listActivityByLead(idAccount, startLimit.getStart(), startLimit.getLimit(), lead);
 		
 		
-		return builder.success(Arrays.asList(leads));
+		return builder.success(leads);
 	}
 	
 	
