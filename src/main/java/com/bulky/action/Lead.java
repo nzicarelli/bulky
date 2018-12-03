@@ -45,6 +45,12 @@ public class Lead implements Serializable {
 	private Integer lstatus;
 
 	private Integer ltype;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date ledtins;
+
+	private Integer lefkmediaarrivo;
+	
 
 	public Lead() {
 	}
@@ -120,5 +126,23 @@ public class Lead implements Serializable {
 	public void setLtype(Integer ltype) {
 		this.ltype = ltype;
 	}
+
+	public Date getLedtins() {
+		return ledtins;
+	}
+
+	public void setLedtins(Date ledtins) {
+		this.ledtins = ledtins;
+	}
+
+	public Integer getLefkmediaarrivo() {
+		return lefkmediaarrivo;
+	}
+
+	public void setLefkmediaarrivo(Integer lefkmediaarrivo) {
+		this.lefkmediaarrivo = lefkmediaarrivo;
+	}
+	
+	
 
 }

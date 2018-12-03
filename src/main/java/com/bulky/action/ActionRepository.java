@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bulky.account.User.ROLES;
-import com.bulky.customer.Customer;
 import com.bulky.support.AppUtil;
 
 /**
@@ -56,7 +55,13 @@ public class ActionRepository {
 	}
 
 	@Transactional
-	public Lead store(Lead lead) {		
+	public Lead store(Lead lead) {	
+		if (lead.getLdtmod()==null) {
+			lead.setLdtmod( new Date() );
+		}
+		if (lead.getLedtins()==null) {
+			lead.setLedtins( new Date() );
+		}
 		return em.merge(lead);
 	}
 	@Transactional

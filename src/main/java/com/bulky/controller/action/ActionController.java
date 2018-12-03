@@ -93,6 +93,7 @@ public class ActionController {
 		if (AppUtil.isEmpty(act.getAfklead())){
 			// crea Lead
 			lead = leadService.buildLead(act);
+			//FIXME MANCA LA GESTIONE DEL MEDIA DI ARRIVO
 			lead = actRep.store(lead);
 			act.setAfklead(lead.getLid());
 		}
@@ -120,13 +121,13 @@ public class ActionController {
 			cuid = AppUtil.getIntegerValueOf(plo, "cuid");
 		}
 		Date dal = AppUtil.getDateValueOf(plo,"dal");
-		Date al = AppUtil.getDateValueOf(plo,"dal");
+		Date al = AppUtil.getDateValueOf(plo,"al");
 		StartLimit startLimit = AppUtil.startLimit(plo);
 		
 		List<Map<String,Object>> leads = actRep.listLead(idAccount, startLimit.getStart(), startLimit.getLimit(), cuid, dal, al);
 		
 		
-		return builder.success(Arrays.asList(leads));
+		return builder.success(leads);
 	}
 	
 	@PostMapping("api/action/list-activity-4lead")
