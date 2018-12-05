@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-2">
     <mat-form-field>
-      <mat-select placeholder="Periodo" [(ngModel)]="pSel">
+      <mat-select placeholder="Periodo" [(ngModel)]="pSel" (selectionChange)="changePeriodo($event)">
         <mat-option *ngFor="let p of periodi" [value]="p.ID">
           {{p.DESCRIZIONE}}
         </mat-option>
@@ -21,12 +21,14 @@
 
 <div>
   <p-table [value]="listLead" [paginator]="true" [rows]="20" [responsive]="true" [loading]="loading"
-           [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]">
+           [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]" dataKey="lid"
+           (onRowExpand)="loadAction($event)" rowExpandMode="single">
     <ng-template pTemplate="caption">
       Lista LEADS
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
+        <th style="width: 3em"></th>
         <th>Cliente</th>
         <th>Tipo</th>
         <th>Data</th>
@@ -34,8 +36,13 @@
         <th>Assegnatario</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-obj>
+    <ng-template pTemplate="body" let-obj let-expanded="expanded">
       <tr>
+        <td>
+          <a href="#" [pRowToggler]="obj">
+            <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+          </a>
+        </td>
         <td>
           <span class="ui-column-title">Cliente</span>
           {{obj.cuname}} {{obj.cusername}}
@@ -46,7 +53,7 @@
         </td>
         <td>
           <span class="ui-column-title">Data</span>
-          {{obj.ldtmod}}
+          {{obj.ldtmod | date: 'dd/MM/yyyy HH:mm'}}
         </td>
         <td>
           <span class="ui-column-title">Stato</span>
@@ -62,6 +69,16 @@
       <tr>
         <td [attr.colspan]="5">
           No records found
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+      <tr *ngFor="let a of rowData.action">
+        <td>&nbsp;</td>
+        <td [attr.colspan]="5">
+          <B>{{a.atitle}}</B><BR>
+          Data:&nbsp;{{a.adtmod | date: 'dd/MM/yyyy HH:mm'}}&emsp;Assegnatario:&nbsp;{{a.assign}}<br>
+          {{a.adescr}}
         </td>
       </tr>
     </ng-template>

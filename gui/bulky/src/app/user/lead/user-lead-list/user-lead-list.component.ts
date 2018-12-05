@@ -62,4 +62,16 @@ export class UserLeadListComponent implements OnInit {
     });
   }
 
+  loadAction(evt) {
+    this.leadService.listAction4Lead(evt.data.lid).then( (res: any) => {
+      evt.data.action = res.output;
+    }).catch( e => {
+
+    });
+  }
+
+  changePeriodo(evt) {
+    this.loadList();
+  }
+
 }

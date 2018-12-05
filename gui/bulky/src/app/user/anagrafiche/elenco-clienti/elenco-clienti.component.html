@@ -12,7 +12,7 @@
 
 <p-table [value]="listClienti" [paginator]="true" [rows]="15" [responsive]="true" [loading]="loading"
          [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]"
-         dataKey="cuid" (onRowExpand)="loadAddress($event)">
+         dataKey="cuid" (onRowExpand)="loadAddress($event)" rowExpandMode="single">
   <ng-template pTemplate="header">
     <tr>
       <th style="width: 3em"></th>
@@ -50,8 +50,13 @@
   <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
     <tr>
       <td [attr.colspan]="5">
-        <div *ngFor="let a of listIndirizzi">
-        {{a.adaddress}}
+        <div class="ui-g">
+          <div class="ui-g-2" style="text-align: right"><B>Indirizzi:</B></div>
+          <div class="ui-g-10">
+            <div *ngFor="let a of listIndirizzi">
+              {{a.adaddress}}, {{a.adnum}} - {{a.adcap}} {{a.adcomune}} ({{a.adsiglaprov}})
+            </div>
+          </div>
         </div>
       </td>
     </tr>
