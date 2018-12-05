@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bulky.account.User.ROLES;
 import com.bulky.customer.Address;
 import com.bulky.customer.AddressZone;
+import com.bulky.customer.Catgzone;
 import com.bulky.customer.CustomerRepository;
 import com.bulky.error.DataException;
 import com.bulky.plannig.PlanDetail;
+import com.bulky.plannig.Planning;
 import com.bulky.plannig.PlanningRepository;
 import com.bulky.response.ResponseBuilder;
 import com.bulky.response.ResponseData;
@@ -131,6 +133,41 @@ public class PlanningController {
 		}
 		List<PlanDetail> detail = planRep.listPlanDetail(zona.getAzfkzona());		
 		return builder.success(detail);
+	}
+	
+	@PostMapping("api/planning/list-zone")
+	public @ResponseBody ResponseData listZoneByAccount(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		Integer idAccount = tokenHelper.getIdAccount(request);		
+		List<Catgzone > zone = customerRep.listZone(idAccount);		
+		return builder.success(zone);
+	}
+	
+	@PostMapping("api/planning/list-planning")
+	public @ResponseBody ResponseData listPlanningByZona(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		// Integer idAccount = tokenHelper.getIdAccount(request);		
+		
+		JSONObject plObj = AppUtil.toPayLoad(payload);
+		Integer id = AppUtil.getIntegerValueOf(plObj, "zone");
+		
+		if (AppUtil.isEmpty(id)) {			
+			return builder.insufficienParameters("zone", request.getLocale());
+		}
+		List<Planning > plans = planRep.listPlanningByZone(id);		
+		return builder.success(plans);
+	}
+	
+	@PostMapping("api/planning/list-planning-detail")
+	public @ResponseBody ResponseData listPlanningDetail(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		// Integer idAccount = tokenHelper.getIdAccount(request);		
+		
+		JSONObject plObj = AppUtil.toPayLoad(payload);
+		Integer id = AppUtil.getIntegerValueOf(plObj, "planning");
+		
+		if (AppUtil.isEmpty(id)) {			
+			return builder.insufficienParameters("planning", request.getLocale());
+		}
+		List<PlanDetail > plans = planRep.listPlanningDeatil(id);		
+		return builder.success(plans);
 	}
 
 }

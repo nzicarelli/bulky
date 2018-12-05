@@ -120,6 +120,12 @@ public class CustomerRepository {
 		return results;
 	}
 	
+	@Transactional(readOnly=true)
+	public List<Catgzone> listZone(Integer accountId) {
+		return em.createQuery("SELECT c FROM Catgzone c WHERE c.zfkaccount = :id ORDER BY c.zdescr ",Catgzone.class).
+				setParameter("id", accountId).getResultList();
+	}
+	
 	
 	
 	

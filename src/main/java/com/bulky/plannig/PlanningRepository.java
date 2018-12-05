@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bulky.customer.AddressZone;
+import com.bulky.customer.Catgzone;
 
 /**
  * @author kaala
@@ -68,5 +69,17 @@ public class PlanningRepository {
 				.setParameter("id", idZona)				
 				.getResultList();
 	}
+	
+	@Transactional(readOnly=true)
+	public List<Planning> listPlanningByZone(Integer idZona) {
+		return em.createQuery("SELECT c FROM Planning c WHERE c.plnfkzona = :id ORDER BY c.plndescr ",Planning.class).
+				setParameter("id", idZona).getResultList();
+	}
 
+	
+	@Transactional(readOnly=true)
+	public List<PlanDetail> listPlanningDeatil(Integer idPlan) {
+		return em.createQuery("SELECT c FROM PlanDetail c WHERE c.pldfkplannig = :id ORDER BY c.plddatefrom,c.plddateto ",PlanDetail.class).
+				setParameter("id", idPlan).getResultList();
+	}
 }
