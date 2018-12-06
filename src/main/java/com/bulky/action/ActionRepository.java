@@ -49,7 +49,8 @@ public class ActionRepository {
 		}		
 		return tq.getResultList();
 	}
-
+	
+	@Transactional(readOnly=true)
 	public CatgAction findCatgById(Integer id) {
 		return em.createNamedQuery(CatgAction.FIND_BY_ID,CatgAction.class).setParameter("id", id).getSingleResult();				
 	}
@@ -165,5 +166,18 @@ public class ActionRepository {
 		}
 		return rs;
 	}
+	
+	
+	@Transactional(readOnly=true)
+	public List<LeadCatgTipo> listCatgTipoLead(Integer idAccount) {
+		return em.createNamedQuery(LeadCatgTipo.FIND_BY_ACCOUNT,LeadCatgTipo.class).setParameter("id", idAccount).getResultList();				
+	}
+	
+	@Transactional(readOnly=true)
+	public List<CatgAction> findCatgActionByTipoLead(Integer id) {
+		return em.createNamedQuery(CatgAction.FIND_BY_LEAD,CatgAction.class).setParameter("id", id).getResultList();				
+	}
+	
+	
 
 }

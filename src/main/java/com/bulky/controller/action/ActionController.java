@@ -22,6 +22,7 @@ import com.bulky.action.ActionRepository;
 import com.bulky.action.Activity;
 import com.bulky.action.CatgAction;
 import com.bulky.action.Lead;
+import com.bulky.action.LeadCatgTipo;
 import com.bulky.action.LeadServiceUtil;
 import com.bulky.error.DataException;
 import com.bulky.response.ResponseBuilder;
@@ -150,6 +151,56 @@ public class ActionController {
 		
 		return builder.success(leads);
 	}
+	
+	@PostMapping("api/action/list-tipo-lead")
+	public @ResponseBody ResponseData listTipoLead(@RequestBody String payload, HttpServletRequest request) throws DataException {
+				
+		JSONObject plo = AppUtil.toPayLoad(payload);
+		String userKind = tokenHelper.getUserKind(request);
+		Integer idAccount = tokenHelper.getIdAccount(request);
+		Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
+		Integer cuid = null;
+		ROLES r = null;
+		if (userKind!=null) {
+			r = ROLES.valueOf(userKind);
+		}
+		if (r!=null && r.equals(ROLES.ROLE_CUSTOMER)) {
+			cuid = idUtente;
+		}else {
+			cuid = AppUtil.getIntegerValueOf(plo, "cuid");
+		}
+		
+		
+		List<LeadCatgTipo> leads = actRep.listCatgTipoLead(idAccount);
+		
+		
+		return builder.success(leads);
+	}
+	
+	@PostMapping("api/action/list-catgactivity-4lead")
+	public @ResponseBody ResponseData listActivity4Lead(@RequestBody String payload, HttpServletRequest request) throws DataException {
+		JSONObject plo = AppUtil.toPayLoad(payload);
+		String userKind = tokenHelper.getUserKind(request);
+		Integer idAccount = tokenHelper.getIdAccount(request);
+		Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
+		Integer cuid = null;
+		ROLES r = null;
+		if (userKind!=null) {
+			r = ROLES.valueOf(userKind);
+		}
+		if (r!=null && r.equals(ROLES.ROLE_CUSTOMER)) {
+			cuid = idUtente;
+		}else {
+			cuid = AppUtil.getIntegerValueOf(plo, "cuid");
+		}
+		Integer idTipoLead = AppUtil.getIntegerValueOf(plo, "tlead");
+				
+		List<CatgAction> leads = actRep.findCatgActionByTipoLead(idTipoLead);
+		
+		
+		return builder.success(leads);
+	}
+	
 	
 	
 	

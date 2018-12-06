@@ -10,9 +10,13 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="lead_catg_tipo")
-@NamedQuery(name="LeadCatgTipo.findAll", query="SELECT l FROM LeadCatgTipo l")
+@NamedQueries({
+	@NamedQuery(name=LeadCatgTipo.FIND_BY_ACCOUNT, query="SELECT l FROM LeadCatgTipo l WHERE l.lctfkaccount = :id ORDER BY l.lctdescrizione ")
+})
 public class LeadCatgTipo implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	public static final String FIND_BY_ACCOUNT = "LeadCatgTipo.FindByAccount";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

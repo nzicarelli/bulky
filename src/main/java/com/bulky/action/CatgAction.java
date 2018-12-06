@@ -13,7 +13,8 @@ import java.util.Date;
 @Table(name="catg_action")
 @NamedQueries({
 	@NamedQuery(name=CatgAction.FIND_ALL, query="SELECT c FROM CatgAction c ORDER BY c.caid "),
-	@NamedQuery(name=CatgAction.FIND_BY_ID, query="SELECT c FROM CatgAction c WHERE c.caid = :id  ")
+	@NamedQuery(name=CatgAction.FIND_BY_ID, query="SELECT c FROM CatgAction c WHERE c.caid = :id  "),
+	@NamedQuery(name=CatgAction.FIND_BY_LEAD, query="SELECT c FROM CatgAction c WHERE c.cafktlead = :id ORDER BY c.cadescr  ")
 })
 public class CatgAction implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -21,6 +22,7 @@ public class CatgAction implements Serializable {
 	public static final String FIND_ALL="CatgAction.findAll";
 
 	public static final String FIND_BY_ID = "CatgAction.FINDBYID";
+	public static final String FIND_BY_LEAD = "CatgAction.FINDBYTIPOLEAD";
 	
 	public static enum DOC_TYPE {STANDARD, BULKY};
 
