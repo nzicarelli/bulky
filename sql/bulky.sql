@@ -253,4 +253,9 @@ CREATE TABLE act_status(
 	asdtins datetime null,
 	asusermod int null
 );
+INSERT INTO act_status(asfkaccount,asfkcatgact,asdescr) VALUES(1,1,'OPEN');
+INSERT INTO act_status(asfkaccount,asfkcatgact,asdescr) VALUES(1,1,'PROGRESS');
+INSERT INTO act_status(asfkaccount,asfkcatgact,asdescr) VALUES(1,1,'CLOSE');
+
+alter table act_booking add bfkplandetail int null;
 

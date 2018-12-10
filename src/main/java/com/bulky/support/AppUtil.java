@@ -18,6 +18,7 @@ import com.fasterxml.jackson.core.JsonGenerator.Feature;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 
 
 
@@ -55,7 +56,9 @@ public final class AppUtil {
 			mapper.getFactory().configure(Feature.ESCAPE_NON_ASCII, true);
 			mapper.getFactory().configure(Feature.IGNORE_UNKNOWN, true);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			return mapper.readValue(payload,  new TypeReference<List<T>>() { });
+			CollectionType javaType = mapper.getTypeFactory()
+				      .constructCollectionType(List.class, valueType);
+			return mapper.readValue(payload, javaType);
 		} catch (Exception e) {
 			throw new DataException(e);
 		}
@@ -69,6 +72,8 @@ public final class AppUtil {
 		} catch (Exception e) {
 			throw new DataException(e);
 		}
+		
+		
 		
 	}
 

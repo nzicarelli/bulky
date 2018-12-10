@@ -42,6 +42,8 @@ public class ActBooking implements Serializable {
 	private Integer bqty;
 
 	private Integer bstatus;
+	
+	private Integer bfkplandetail;
 
 	public ActBooking() {
 	}
@@ -142,4 +144,11 @@ public class ActBooking implements Serializable {
 		this.bstatus = bstatus;
 	}
 
+	public void setBfkplandetail(Integer bfkplandetail) {
+		this.bfkplandetail = bfkplandetail;
+	}
+	
+	public Integer getBfkplandetail() {
+		return bfkplandetail;
+	}
 }

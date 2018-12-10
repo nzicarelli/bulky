@@ -178,6 +178,15 @@ public class ActionRepository {
 		return em.createNamedQuery(CatgAction.FIND_BY_LEAD,CatgAction.class).setParameter("id", id).getResultList();				
 	}
 	
+	@Transactional
+	public void store(List<ActBooking> bookingList) {
+		// FIXME CONTROLLARE LA CAPIENZA MAX
+		for(ActBooking act:bookingList) {
+			ActBooking actStored = em.merge(act);
+			act.setBid( actStored.getBid() );
+		}
+	}
+	
 	
 
 }
