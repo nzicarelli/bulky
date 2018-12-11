@@ -1,0 +1,31 @@
+<section>
+  <div class="ui-g">
+    <p-card class="ui-g-9" subheader="Dati Contatto">
+      DATI CLIENTE
+    </p-card>
+    <p-card class="ui-g-3" subheader="Attività Programmate">
+      azioni da eseguire
+    </p-card>
+  </div>
+</section>
+
+<section>
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Azioni eseguibili
+        </mat-panel-title>
+        <mat-panel-description>
+          &nbsp;
+          <mat-icon>account_circle</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      ciao
+    </mat-expansion-panel>
+  </mat-accordion>
+</section>
+<section>
+  <app-act-customer-standard></app-act-customer-standard>
+</section>

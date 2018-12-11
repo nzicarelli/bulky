@@ -12,7 +12,7 @@ import { CustomerHomeActComponent } from './customer-home-act/customer-home-act.
 import {ParameterService} from "../_services/parameter.service";
 
 @NgModule({
-  declarations: [CustomerHomeComponent, ActCustomerStandardComponent, ActCustomerBulkyComponent, CustomerHomeActComponent],
+  declarations: [CustomerHomeComponent, CustomerHomeActComponent],
   imports: [
     CommonModule,
     CustomerRoutingModule,
@@ -23,5 +23,6 @@ import {ParameterService} from "../_services/parameter.service";
     SharedModule
   ],
   providers: [AuthCustomerGuard, ActionService, ParameterService],
+
 })
 export class CustomerModule { }

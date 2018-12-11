@@ -7,6 +7,8 @@ import {SidebarModule} from 'primeng/sidebar';
 import {BreadcrumbModule} from 'primeng/breadcrumb';
 import {SpinnerModule} from 'primeng/spinner';
 import {TableModule} from 'primeng/table';
+import {DialogModule} from 'primeng/dialog';
+import {RadioButtonModule} from 'primeng/radiobutton';
 import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from '@angular/material/card';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -18,10 +20,18 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatExpansionModule} from '@angular/material/expansion';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ActCustomerStandardComponent} from "../../customer/lead/action/act-customer-standard/act-customer-standard.component";
+import {ActCustomerBulkyComponent} from "../../customer/lead/action/act-customer-bulky/act-customer-bulky.component";
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    // BULKY
+    ActCustomerStandardComponent,
+    ActCustomerBulkyComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -35,6 +45,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     TableModule,
     BreadcrumbModule,
     SidebarModule,
+    DialogModule,
+    RadioButtonModule,
 
     // MATERIAL *****
     MatFormFieldModule,
@@ -47,7 +59,11 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MatRadioModule,
     MatIconModule,
     MatTooltipModule,
-    MatChipsModule
+    MatChipsModule,
+    MatButtonToggleModule,
+    MatExpansionModule
+
+
   ],
   exports: [
     FormsModule,
@@ -60,6 +76,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     TableModule,
     BreadcrumbModule,
     SidebarModule,
+    DialogModule,
+    RadioButtonModule,
 
     // MATERIAL
     MatFormFieldModule,
@@ -72,7 +90,14 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     MatRadioModule,
     MatIconModule,
     MatTooltipModule,
-    MatChipsModule
+    MatChipsModule,
+    MatButtonToggleModule,
+    MatExpansionModule,
+
+
+    // BULKY
+    ActCustomerStandardComponent,
+    ActCustomerBulkyComponent
     ]
 })
 export class SharedModule { }

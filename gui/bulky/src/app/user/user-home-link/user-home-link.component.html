@@ -1,0 +1,43 @@
+<section class="features-icons bg-light text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4" >
+        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3" (click)="gotoAnagrafica()">
+          <div class="features-icons-icon d-flex">
+            <i class="icon-screen-desktop m-auto text-primary"></i>
+          </div>
+          <h4>Clienti</h4>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3" (click)="gotoLead()">
+          <div class="features-icons-icon d-flex">
+            <i class="icon-layers m-auto text-primary"></i>
+          </div>
+          <h4>Lead</h4>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="features-icons-item mx-auto mb-0 mb-lg-3" (click)="gotoPlanning()">
+          <div class="features-icons-icon d-flex">
+            <i class="icon-check m-auto text-primary"></i>
+          </div>
+          <h4>Planning</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="ui-g">
+    <div class="ui-g-3">
+      <p-chart type="doughnut" [data]="dataChartXcomune" [options]="optionsChartXcomune" [responsive]="true"></p-chart>
+    </div>
+    <div class="ui-g-3">
+      <p-chart type="polarArea" [data]="dataChartXstato" [options]="optionsChartXstato" [responsive]="true"></p-chart>
+    </div>
+    <div class="ui-g-6">
+      <p-chart type="line" [data]="dataChartXmese" [options]="optionsChartXmese" [responsive]="true"></p-chart>
+    </div>
+  </div>
+</section>

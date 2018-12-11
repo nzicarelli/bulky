@@ -13,6 +13,7 @@ export class CustomerHomeActComponent implements OnInit {
 
   public listCatgAct: any[] = [];
   public listLead: any[] = [];
+  public loading = false;
 
   constructor(private router: Router, private route: ActivatedRoute, private leadService: LeadService,
               private actService: ActionService, private parameterServ: ParameterService) { }
@@ -43,8 +44,10 @@ export class CustomerHomeActComponent implements OnInit {
   }
 
   loadList() {
+    this.loading = true;
     this.leadService.listLead(undefined, undefined, undefined).then( (res: any) => {
       this.listLead = res.output;
+      this.loading = false;
     });
   }
 

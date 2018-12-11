@@ -40,17 +40,6 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
 
     this.home = {icon: 'pi pi-home', routerLink: '/customer'};
 
-    this.breadcrumbs = [
-      {label:'Categories'},
-      {label:'Sports'},
-      {label:'Football'},
-      {label:'Countries'},
-      {label:'Spain'},
-      {label:'F.C. Barcelona'},
-      {label:'Squad'},
-      {label:'Lionel Messi', url: 'https://en.wikipedia.org/wiki/Lionel_Messi', icon: 'pi pi-external-link'}
-    ];
-
     this.listner = this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
       //set breadcrumbs
       let root: ActivatedRoute = this.route.root;

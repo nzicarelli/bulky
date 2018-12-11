@@ -23,7 +23,7 @@ export class DataUtilService {
 
   public getComuni() {
     const myUrl = this.config.getConfig('baseUrl');
-    return this.http.post(myUrl + '/api/calendar/periodi', {})
+    return this.http.post(myUrl + '/api/data/list-comuni', {})
       .toPromise()
       .then(res => {
         return res;

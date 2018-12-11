@@ -11,8 +11,8 @@
   <div class="col-md-2">
     <mat-form-field>
       <mat-select placeholder="Comune" [(ngModel)]="cSel">
-        <mat-option *ngFor="let c of comuni" [value]="p.ID">
-          {{c.DESCRIZIONE}}
+        <mat-option *ngFor="let c of comuni" [value]="c">
+          {{c.adcomune}}
         </mat-option>
       </mat-select>
     </mat-form-field>

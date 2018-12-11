@@ -37,4 +37,24 @@ export class BulkyService {
         Promise.reject(error.message || error)
       );
   }
+
+  public saveBookingBulky(addressId: number, customerId: number, planningId: number, tipoAzioneId: number, listIngombranti: any[]) {
+    // list ingombranti: lista di { "bqty": 1, "bfkcatg": 40, "bnote": "Note della raccolta"  }
+    const myData = {
+      adid: addressId,
+      cuid: customerId,
+      pldid: planningId,
+      tact: tipoAzioneId,
+      bks: listIngombranti
+    }
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/booking/store', myData)
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
 }
