@@ -187,6 +187,15 @@ public class ActionRepository {
 		}
 	}
 	
+	@Transactional(readOnly=true)
+	public Lead findLeadById(Integer lid) {		
+		try {
+			return em.createNamedQuery(Lead.FIND_BY_ID, Lead.class).setParameter("id", lid).getSingleResult();
+		} catch (Exception e) {
+		}
+		return null;
+	}
+	
 	
 
 }

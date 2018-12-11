@@ -29,6 +29,7 @@ public class LeadServiceUtil {
 		lead.setLdtmod( new Date() );
 		lead.setLfkcustomer(act.getAfkcustomer() );
 		lead.setLtype(idTipoLead );
+		lead.setLaccount( act.getAaccount());
 		return lead;
 	}
 

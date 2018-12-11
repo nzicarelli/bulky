@@ -15,7 +15,8 @@ import java.util.Date;
 	@NamedQuery(name=Lead.FIND_BY_ACCOUNT, query="SELECT l FROM Lead l WHERE l.laccount = :id ORDER BY l.ldtmod DESC"),
 	@NamedQuery(name=Lead.FIND_BY_OWNER, query="SELECT l FROM Lead l WHERE l.lowner = :id ORDER BY l.ldtmod DESC"),
 	@NamedQuery(name=Lead.FIND_BY_ASSIGN, query="SELECT l FROM Lead l WHERE l.lassign = :id ORDER BY l.ldtmod DESC"),
-	@NamedQuery(name=Lead.FIND_BY_CUSTOMER, query="SELECT l FROM Lead l WHERE l.lfkcustomer = :id ORDER BY l.ldtmod DESC")
+	@NamedQuery(name=Lead.FIND_BY_CUSTOMER, query="SELECT l FROM Lead l WHERE l.lfkcustomer = :id ORDER BY l.ldtmod DESC"),
+	@NamedQuery(name=Lead.FIND_BY_ID, query="SELECT l FROM Lead l WHERE l.lid = :id ")
 })
 public class Lead implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -24,6 +25,7 @@ public class Lead implements Serializable {
 	public static final String FIND_BY_OWNER="Lead.findOwner";
 	public static final String FIND_BY_ACCOUNT="Lead.findAccount";
 	public static final String FIND_BY_CUSTOMER= "Lead.findByCustomer";
+	public static final String FIND_BY_ID = "Lead.findById";;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
