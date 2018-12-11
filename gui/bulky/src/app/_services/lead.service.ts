@@ -72,4 +72,40 @@ export class LeadService {
         Promise.reject(error.message || error)
       );
   }
+
+  public storeLead(tipoLead: number, descrizione: string, customerId: number, mediaArrivo: number) {
+
+    const myParam: any = {
+      ltype: tipoLead,
+      lstatus: 1,
+      ldescr: descrizione,
+      lfkcustomer: customerId,
+      lefkmediaarrivo: mediaArrivo
+    };
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/action/lead-store', myParam)
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
+
+  public loadLead(idLead: number) {
+
+    const myParam: any = {
+      id: idLead
+    };
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/action/lead-load', myParam)
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
 }

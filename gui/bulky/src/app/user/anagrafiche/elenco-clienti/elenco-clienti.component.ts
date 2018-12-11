@@ -21,7 +21,7 @@ export class ElencoClientiComponent implements OnInit {
 
   public selectedCli: any;
   public displayNewLead = false;
-  public typeLead = '';
+  public typeLead: number;
   public tipiLead: any[] = [];
 
   constructor(private anagrServ: AnagraficheService, private dataServ: DataUtilService,
@@ -72,8 +72,11 @@ export class ElencoClientiComponent implements OnInit {
 
   doNewContact() {
     console.log('CREO LEAD - TYPE: ' + this.typeLead);
-    this.router.navigate([{ outlets: { userOut: ['lead'] } }],
-      { skipLocationChange: true, relativeTo:  this.route.parent });
+    this.leadServ.storeLead(this.typeLead, undefined, this.selectedCli.cuid, undefined).then( (res: any) => {
+      this.router.navigate([{ outlets: { userOut: ['lead'] } }],
+        { skipLocationChange: true, relativeTo:  this.route.parent });
+    })
+
 
   }
 }
