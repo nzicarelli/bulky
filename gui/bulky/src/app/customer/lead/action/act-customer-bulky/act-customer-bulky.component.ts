@@ -37,7 +37,7 @@ export class ActCustomerBulkyComponent implements OnInit {
     }
     this.loadIndirizzi();
     this.loadCatgIngombranti();
-    this.loadPlanning4addr();
+    // this.loadPlanning4addr();
 
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required]
@@ -60,13 +60,41 @@ export class ActCustomerBulkyComponent implements OnInit {
   }
 
   loadPlanning4addr() {
-    this.bulkyService.getPlanning4addr(2).then( (res: any) => {
+    this.listPlanning = [];
+    if (!this.selectAddress || !this.selectAddress.adid || this.selectAddress.adid  <= 0) {
+      return;
+    }
+    this.bulkyService.getPlanning4addr(this.selectAddress.adid).then( (res: any) => {
       this.listPlanning = res.output;
     });
   }
 
   salva() {
-    this.actionServ.saveAction(undefined, undefined, undefined, this.myCatgAct.caid).then( (res: any) => {
+    if (!this.selectAddress || !this.selectAddress.adid || this.selectAddress.adid  <= 0) {
+      Util.alertMsg(Util.alertWarning, 'Attenzione', 'Selezionare l\'indirizzo');
+      return;
+    }
+
+    if (!this.selectPlanning || !this.selectPlanning.pldid || this.selectPlanning.pldid  <= 0) {
+      Util.alertMsg(Util.alertWarning, 'Attenzione', 'Selezionare la data di ritiro');
+      return;
+    }
+
+    if (!this.listRowBulky || this.listRowBulky.length  <= 0) {
+      Util.alertMsg(Util.alertWarning, 'Attenzione', 'Selezionare almeno un oggetto da ritirare');
+      return;
+    }
+
+    const b: any[] = [];
+    for (let m of this.listRowBulky){
+      if (!m.qty || m.qty <= 0 || !m.crif) {
+        continue;
+      }
+      b.push({bqty: m.qty, bfkcatg: m.crif.crid, bnote: undefined });
+    }
+
+
+    this.bulkyService.saveBookingBulky(this.selectAddress.adid, undefined, this.selectPlanning.pldid, this.myCatgAct.caid, b).then( (res: any) => {
       if (res.success) {
         Util.alertMsg(Util.alertSuccess, 'OK', 'Salvataggio effettuato con successo');
       } else {
@@ -139,18 +167,8 @@ export class ActCustomerBulkyComponent implements OnInit {
     return this.listRowBulky.some( r => r.crif);
   }
 
-  radioChange(evt) {
-    // if (this.listRowBulky.some( r => r.crif)) {
-    //   console.log('ALERT');
-    //   Util.confirmAdvanced('Attezione', 'Modificando la pianificazione i dati presenti sui rifiuti da conferire saranno eliminati. Continuare?',
-    //     Util.alertWarning, 'SI', 'Annulla', () => {
-    //       this.listRowBulky = [{}];
-    //       return true;
-    //     }, () => {
-    //       evt.preventDefault();
-    //       return false;
-    //     });
-    // }
+  radioAddressChange(evt) {
+    this.loadPlanning4addr();
   }
 
 

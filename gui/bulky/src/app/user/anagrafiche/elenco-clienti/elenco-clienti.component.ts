@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AnagraficheService} from "../../../_services/anagrafiche.service";
 import {DataUtilService} from "../../../_services/data-util.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {LeadService} from "../../../_services/lead.service";
 
 @Component({
   selector: 'app-elenco-clienti',
@@ -18,12 +20,17 @@ export class ElencoClientiComponent implements OnInit {
   public listIndirizzi: any[] = [];
 
   public selectedCli: any;
+  public displayNewLead = false;
+  public typeLead = '';
+  public tipiLead: any[] = [];
 
-  constructor(private anagrServ: AnagraficheService, private dataServ: DataUtilService) { }
+  constructor(private anagrServ: AnagraficheService, private dataServ: DataUtilService,
+              private router: Router, private route: ActivatedRoute, private leadServ: LeadService) { }
 
   ngOnInit() {
     this.loadComuni();
     this.loadList();
+    this.loadTipoContatti();
   }
 
   loadList() {
@@ -50,5 +57,23 @@ export class ElencoClientiComponent implements OnInit {
     this.anagrServ.listAddress4cli(idCli).then( (res: any) => {
       this.listIndirizzi = res.output;
     });
+  }
+
+  onRowSelect(evt) {
+    console.log('SELECT CLI: ' + evt.data);
+    this.displayNewLead = true;
+  }
+
+  loadTipoContatti() {
+    this.leadServ.listTipoLead().then( (res: any) => {
+      this.tipiLead = res.output;
+    })
+  }
+
+  doNewContact() {
+    console.log('CREO LEAD - TYPE: ' + this.typeLead);
+    this.router.navigate([{ outlets: { userOut: ['lead'] } }],
+      { skipLocationChange: true, relativeTo:  this.route.parent });
+
   }
 }

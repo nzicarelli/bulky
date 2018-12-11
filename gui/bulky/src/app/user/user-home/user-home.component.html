@@ -6,12 +6,14 @@
         {{myName}}
       </button>
       <div class="dropdown-menu">
+        <a class="dropdown-item" role="button" [routerLink]="[{ outlets: { userOut:'list-user'} }]">Utenti</a>
         <a class="dropdown-item" role="button" (click)="logout()">Logout</a>
       </div>
     </div>
   </form>
 </nav>
-<nav class="navbar navbar-expand-lg navbar-light  bg-light " >
+<!--<p-breadcrumb *ngIf="breadcrumbs && breadcrumbs.length > 0" [model]="breadcrumbs" [home]="home"></p-breadcrumb>-->
+<!--<nav class="navbar navbar-expand-lg navbar-light  bg-light " >
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav">
 
@@ -45,7 +47,9 @@
       </li>
     </ul>
   </div>
-</nav>
+</nav>-->
+
+
 
 <router-outlet></router-outlet>
 

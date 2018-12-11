@@ -2,8 +2,8 @@
   <div class="col-md-2">
     <mat-form-field>
       <mat-select placeholder="Comune" [(ngModel)]="cSel">
-        <mat-option *ngFor="let c of comuni" [value]="p.ID">
-          {{c.DESCRIZIONE}}
+        <mat-option *ngFor="let c of comuni" [value]="c">
+          {{c.adcomune}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -12,7 +12,8 @@
 
 <p-table [value]="listClienti" [paginator]="true" [rows]="15" [responsive]="true" [loading]="loading"
          [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]"
-         dataKey="cuid" (onRowExpand)="loadAddress($event)" rowExpandMode="single">
+         dataKey="cuid" (onRowExpand)="loadAddress($event)" rowExpandMode="single"
+         selectionMode="single" [(selection)]="selectedCli" (onRowSelect)="onRowSelect($event)">
   <ng-template pTemplate="header">
     <tr>
       <th style="width: 3em"></th>
@@ -23,7 +24,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-obj let-expanded="expanded">
-    <tr>
+    <tr [pSelectableRow]="obj">
       <td>
         <a href="#" [pRowToggler]="obj">
           <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
@@ -63,3 +64,20 @@
   </ng-template>
 </p-table>
 
+
+<p-dialog header="Nuovo Lead" [(visible)]="displayNewLead" [minWidth]="450" [modal]="true" [responsive]="true" [maximizable]="true" [baseZIndex]="10000">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      Nuovo Lead per: <B>{{selectedCli?.cusername}}</B>
+    </div>
+  </div>
+  <div class="ui-g">
+    <div class="ui-g-4" *ngFor="let t of tipiLead">
+      <p-radioButton name="group1" value="{{t.lctid}}"  label="{{t.lctdescrizione}}" [(ngModel)]="typeLead" ></p-radioButton>
+    </div>
+  </div>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-close" (click)="displayNewLead=false" label="Annulla" class="ui-button-secondary"></button>
+    <button type="button" pButton icon="pi pi-check" (click)="doNewContact()" label="Crea Lead"></button>
+  </p-footer>
+</p-dialog>

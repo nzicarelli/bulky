@@ -45,4 +45,31 @@ export class LeadService {
         Promise.reject(error.message || error)
       );
   }
+
+  public listTipoLead() {
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/action/list-tipo-lead', {})
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
+
+  public listTipoAction4TipoLead(tLead: number) {
+    const myParam: any = {
+      tlead: tLead
+    };
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/action/list-catgactivity-4lead', myParam)
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
 }
