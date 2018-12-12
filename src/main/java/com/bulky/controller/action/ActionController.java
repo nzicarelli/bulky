@@ -5,6 +5,7 @@ package com.bulky.controller.action;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,9 @@ import com.bulky.action.CatgAction;
 import com.bulky.action.Lead;
 import com.bulky.action.LeadCatgTipo;
 import com.bulky.action.LeadServiceUtil;
+import com.bulky.customer.Address;
+import com.bulky.customer.Customer;
+import com.bulky.customer.CustomerRepository;
 import com.bulky.error.DataException;
 import com.bulky.response.ResponseBuilder;
 import com.bulky.response.ResponseData;
@@ -49,6 +53,9 @@ public class ActionController {
 
 	@Autowired
 	private LeadServiceUtil leadService;
+	
+	@Autowired
+	private CustomerRepository customerRep;
 
 	@PostMapping("api/action/list")
 	public @ResponseBody ResponseData listAction(@RequestBody String payload, HttpServletRequest request) throws DataException {
@@ -261,7 +268,13 @@ public class ActionController {
 		if (lead == null ) {
 			return builder.fail(new Exception("Data Not Found"));
 		}
-		return builder.success(Arrays.asList(lead));		
+		Customer customer = customerRep.findById(lead.getLfkcustomer());
+		List<Address> addrs = customerRep.listAddressByCustomer(lead.getLfkcustomer());
+		Map<String,Object> result = new HashMap<>();
+		result.put("lead", lead);
+		result.put("customer", customer);
+		result.put("addresses", addrs);
+		return builder.success(result);		
 	}
 
 

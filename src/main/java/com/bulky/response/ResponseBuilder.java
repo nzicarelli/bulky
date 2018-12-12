@@ -5,6 +5,7 @@ package com.bulky.response;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -34,6 +35,11 @@ public class ResponseBuilder {
 	public ResponseData success() {
 		
 		ResponseData r = new ResponseData(true,"Operation OK",null, null, new Message("OK", Message.Type.SUCCESS));
+		return r;
+	}
+	
+	public ResponseData success(Map<String, Object> result) {
+		ResponseData r = new ResponseData(true,"Operation OK",result, null, new Message("OK", Message.Type.SUCCESS));
 		return r;
 	}
 
@@ -94,6 +100,8 @@ public class ResponseBuilder {
 		ResponseData r = new ResponseData(false,sz,null, null, new Message(msgKey, Message.Type.DANGER));
 		return r;
 	}
+
+	
 	
 	
 }

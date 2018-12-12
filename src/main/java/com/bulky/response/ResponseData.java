@@ -22,9 +22,9 @@ public class ResponseData implements Serializable{
 	private boolean success = false;
 	private String msg = null;
 	private Message message = null;
-	private List<?> output = new ArrayList<>();
+	private Object output = new Object();
 	
-	public ResponseData(boolean success, String message,List<?> output,
+	public ResponseData(boolean success, String message,Object output,
 			Throwable tr, Message detail) {
 		 this.success = success;
 		 this.output = output;
@@ -53,11 +53,11 @@ public class ResponseData implements Serializable{
 
 	
 
-	public List<?> getOutput() {
+	public Object getOutput() {
 		return output;
 	}
 
-	public void setOutput(List<?> output) {
+	public void setOutput(Object output) {
 		this.output = output;
 	}
 
