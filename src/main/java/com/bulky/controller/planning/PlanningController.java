@@ -3,10 +3,13 @@
  */
 package com.bulky.controller.planning;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -158,7 +161,7 @@ public class PlanningController {
 	
 	@PostMapping("api/planning/list-planning-detail")
 	public @ResponseBody ResponseData listPlanningDetail(@RequestBody String payload, HttpServletRequest request) throws DataException {		
-		// Integer idAccount = tokenHelper.getIdAccount(request);		
+		Integer idAccount = tokenHelper.getIdAccount(request);		
 		
 		JSONObject plObj = AppUtil.toPayLoad(payload);
 		Integer id = AppUtil.getIntegerValueOf(plObj, "planning");
@@ -166,8 +169,25 @@ public class PlanningController {
 		if (AppUtil.isEmpty(id)) {			
 			return builder.insufficienParameters("planning", request.getLocale());
 		}
-		List<PlanDetail > plans = planRep.listPlanningDeatil(id);		
-		return builder.success(plans);
+		List<PlanDetail > plans = planRep.listPlanningDeatil(id);
+		List<Map<String,Object>> planMap = new ArrayList<>();
+		if ( plans!=null) {
+			for(PlanDetail pd:plans) {
+				Map<String,Object> qty = planRep.calcQty(idAccount, pd.getPldid());
+				Map<String,Object> map = new HashMap<>();
+				map.put("plan", pd);
+				map.put("qty", qty);
+				planMap.add(map);
+			}
+		}
+		return builder.success(planMap);
+	}
+	
+	@PostMapping("api/planning/list-zone-planning")
+	public @ResponseBody ResponseData listZoneAndPlanningByAccount(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		Integer idAccount = tokenHelper.getIdAccount(request);		
+		List<Map<String,Object> > zone = planRep.listZoneAndPlanning(idAccount);		
+		return builder.success(zone);
 	}
 
 }

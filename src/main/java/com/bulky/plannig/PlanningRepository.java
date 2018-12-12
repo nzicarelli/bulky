@@ -3,8 +3,11 @@
  */
 package com.bulky.plannig;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 
@@ -12,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bulky.customer.AddressZone;
-import com.bulky.customer.Catgzone;
+import com.bulky.support.AppUtil;
 
 /**
  * @author kaala
@@ -81,5 +83,50 @@ public class PlanningRepository {
 	public List<PlanDetail> listPlanningDeatil(Integer idPlan) {
 		return em.createQuery("SELECT c FROM PlanDetail c WHERE c.pldfkplannig = :id ORDER BY c.plddatefrom,c.plddateto ",PlanDetail.class).
 				setParameter("id", idPlan).getResultList();
+	}
+	
+	@Transactional(readOnly=true)
+	public List<Map<String,Object>> listZoneAndPlanning(Integer accountId) {
+		List<Map<String, Object>> results = new ArrayList<>();
+		List<?> addrs = em.createNativeQuery("SELECT " +
+				"plnid,plndescr,plnfkzona,zid,zdescr " +
+				"FROM planning p " +
+				"INNER JOIN catgzone z ON p.plnfkzona = z.zid " +
+				"WHERE p.plnfkaccount = :account " +
+				"ORDER BY z.zdescr,p.plndescr " )
+				.setParameter("account", accountId)				
+				.getResultList();
+		String[] keys = {"plnid","plndescr","plnfkzona","zid","zdescr"};
+		
+		if (addrs!=null && addrs.size()>0) {
+			for( Object o: addrs) {
+				Map<String,Object> v = AppUtil.toMap(keys,(Object[])o);
+				results.add(v);
+			}
+		}
+		return results;
+	}
+	
+	@Transactional(readOnly=true)
+	public Map<String,Object> calcQty(Integer accountId, Integer idPlanDetail) {
+		Map<String, Object> results = new HashMap<>();
+		StringBuffer sb = new StringBuffer();
+		sb.append("SELECT "); 
+		sb.append("SUM(cr.crincombro * ab.bqty) as incombro,SUM(ab.bqty) as qty "); 
+		sb.append("FROM act_booking ab "); 
+		sb.append("INNER JOIN catg_rifiuti cr ON cr.crid = ab.bfkcatg "); 
+		sb.append("WHERE bfkplandetail = :pd ");
+		List<?> qtys = em.createNativeQuery(sb.toString())
+				.setParameter("pd", idPlanDetail)				
+				.getResultList();
+		String[] keys = {"incombro","qty"};
+		
+		if (qtys!=null && qtys.size()>0) {
+			for( Object o: qtys) {
+				Map<String,Object> v = AppUtil.toMap(keys,(Object[])o);
+				results = v;
+			}
+		}
+		return results;
 	}
 }
