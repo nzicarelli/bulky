@@ -167,11 +167,39 @@ public class PlanningRepository {
 				.getResultList();
 		String[] keys = {"qty","incombro","plnid","plndescr","cuid","cuname","cusurname","pldfill","adcomune","adsiglaprov","adaddress",
 				"adnum","adcap","pldid","plddatefrom", "bfkactivity"};
-		
+		Map<Integer,Integer> totXpnd = new HashMap<>();
 		if (qtys!=null && qtys.size()>0) {
 			for( Object o: qtys) {
 				Map<String,Object> v = AppUtil.toMap(keys,(Object[])o);
 				results.add( v );
+				Integer pndid = (Integer)v.get("pldid");
+				double incombro = 0;
+				if (v.containsKey("incombro")) {
+					Object val = v.get("incombro");
+					if (val instanceof Number) {
+						Number new_name = (Number) val;
+						incombro = new_name.doubleValue();
+					}
+				}				
+				Integer vx = totXpnd.get(pndid);
+				if (vx == null) {
+					vx = Integer.valueOf(0);
+				}
+				vx = Integer.valueOf( vx.intValue() + ((int)incombro) );
+				totXpnd.put(pndid, vx);
+			}
+			for(Map<String,Object> r : results) {
+				Integer pndid = (Integer)r.get("pldid");
+				Integer size = totXpnd.get(pndid);
+				Integer pldfill = (Integer)r.get("pldfill");
+				r.put("size", size);
+				double perc =  0;
+				if (pldfill!=null && pldfill.intValue()>0) {
+					perc = (size!=null?size.doubleValue():0)/pldfill.doubleValue();
+					perc = perc * 100.0;
+					perc = Math.round(perc *10.0) / 10.0;
+				}
+				r.put("perc", Double.valueOf(perc));
 			}
 		}
 		return results;
