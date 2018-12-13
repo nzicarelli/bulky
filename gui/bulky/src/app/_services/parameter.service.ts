@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class ParameterService {
 
   private catgAction: any;
+  private idLead: number;
 
   constructor() { }
 
@@ -15,5 +16,13 @@ export class ParameterService {
 
   public setCatgAction(catgAct) {
     this.catgAction = catgAct;
+  }
+
+  public setIdLead(id: number) {
+    this.idLead = id;
+  }
+
+  public getIdLead() {
+    return this.idLead;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActionService} from '../../../../_services/action.service';
 import {ParameterService} from '../../../../_services/parameter.service';
 import {CustomerService} from '../../../../_services/customer.service';
@@ -13,6 +13,7 @@ import {Util} from '../../../../util';
   styleUrls: ['./act-customer-bulky.component.css']
 })
 export class ActCustomerBulkyComponent implements OnInit {
+  @Input() idCustomer: number;
 
   public myCatgAct: any;
   public listAddress: any[] = [];
@@ -94,7 +95,7 @@ export class ActCustomerBulkyComponent implements OnInit {
     }
 
 
-    this.bulkyService.saveBookingBulky(this.selectAddress.adid, undefined, this.selectPlanning.pldid, this.myCatgAct.caid, b).then( (res: any) => {
+    this.bulkyService.saveBookingBulky(this.selectAddress.adid, this.idCustomer, this.selectPlanning.pldid, this.myCatgAct.caid, b).then( (res: any) => {
       if (res.success) {
         Util.alertMsg(Util.alertSuccess, 'OK', 'Salvataggio effettuato con successo');
       } else {

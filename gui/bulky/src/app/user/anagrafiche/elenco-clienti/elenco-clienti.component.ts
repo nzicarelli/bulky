@@ -3,6 +3,8 @@ import {AnagraficheService} from "../../../_services/anagrafiche.service";
 import {DataUtilService} from "../../../_services/data-util.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {LeadService} from "../../../_services/lead.service";
+import {Util} from "../../../util";
+import {ParameterService} from "../../../_services/parameter.service";
 
 @Component({
   selector: 'app-elenco-clienti',
@@ -24,7 +26,7 @@ export class ElencoClientiComponent implements OnInit {
   public typeLead: number;
   public tipiLead: any[] = [];
 
-  constructor(private anagrServ: AnagraficheService, private dataServ: DataUtilService,
+  constructor(private anagrServ: AnagraficheService, private dataServ: DataUtilService, private paramServ: ParameterService,
               private router: Router, private route: ActivatedRoute, private leadServ: LeadService) { }
 
   ngOnInit() {
@@ -73,10 +75,13 @@ export class ElencoClientiComponent implements OnInit {
   doNewContact() {
     console.log('CREO LEAD - TYPE: ' + this.typeLead);
     this.leadServ.storeLead(this.typeLead, undefined, this.selectedCli.cuid, undefined).then( (res: any) => {
-      this.router.navigate([{ outlets: { userOut: ['lead'] } }],
-        { skipLocationChange: true, relativeTo:  this.route.parent });
-    })
-
-
+      if (res.success) {
+        this.paramServ.setIdLead(res.output[0].lid);
+        this.router.navigate([{outlets: {userOut: ['lead']}}],
+          {skipLocationChange: true, relativeTo: this.route.parent});
+      } else {
+        Util.alertMsg(Util.alertError, 'Errore', 'Si e\' verificato un errore.');
+      }
+    });
   }
 }

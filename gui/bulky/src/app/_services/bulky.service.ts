@@ -57,4 +57,76 @@ export class BulkyService {
         Promise.reject(error.message || error)
       );
   }
+
+
+  public getListZonePlanning() {
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/planning/list-zone-planning', {})
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
+
+  public getPlanningDetail(idPlanning: number) {
+    const myData = {
+      planning: idPlanning
+    }
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/planning/list-planning-detail', myData)
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
+
+
+  public getListZone() {
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/planning/list-zone', {})
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
+
+  public getListPlanning4zona(idZona: number) {
+    const myData = {
+      zone: idZona
+    }
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/planning/list-planning', myData)
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
+
+  public getListPlanning4zonaCli(idPlanning: number) {
+    const myData = {
+      plnid: idPlanning,
+      pldid: undefined
+    }
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/planning/list-plan-customers', myData)
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
 }

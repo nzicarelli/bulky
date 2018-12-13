@@ -1,31 +1,34 @@
 <section>
   <div class="ui-g">
-    <p-card class="ui-g-9" subheader="Dati Contatto">
-      DATI CLIENTE
-    </p-card>
-    <p-card class="ui-g-3" subheader="Attività Programmate">
-      azioni da eseguire
+    <p-card class="ui-g-12" subheader="Dati Contatto">
+      <div class="ui-g">
+        <div class="ui-g-1" style="text-align: right">Cliente:</div>
+        <div class="ui-g-2">{{myCustomer.cusurname}} {{myCustomer.cuname}}</div>
+        <div class="ui-g-1" style="text-align: right">Tipo Lead:</div>
+        <div class="ui-g-2">{{myCustomer.cusurname}} {{myCustomer.cuname}}</div>
+        <div class="ui-g-1" style="text-align: right">Data:</div>
+        <div class="ui-g-2">{{myLead.ledtins | date}}</div>
+      </div>
     </p-card>
   </div>
 </section>
 
 <section>
-  <mat-accordion class="example-headers-align">
-    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Azioni eseguibili
-        </mat-panel-title>
-        <mat-panel-description>
-          &nbsp;
-          <mat-icon>account_circle</mat-icon>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
+  <div class="ui-g">
+    <div class="ui-g-3">
+      <p-card subheader="Attività Programmate">
+        azioni da eseguire
+      </p-card>
+      <p-card subheader="Attività Eseguibili">
+        <ul>
+          <li *ngFor="let a of azini4lead"><a (click)="selectAzione(a)">{{a.catitle}}</a></li>
+        </ul>
+      </p-card>
+    </div>
+    <div class="ui-g-9" *ngIf="azione2exec">
+      <app-act-customer-standard *ngIf="azione2exec.cadoctype === 'act-standard'" [idCustomer]="myCustomer.cuid"></app-act-customer-standard>
+      <app-act-customer-bulky *ngIf="azione2exec.cadoctype === 'act-bulky'"  [idCustomer]="myCustomer.cuid"></app-act-customer-bulky>
+    </div>
+  </div>
+</section>
 
-      ciao
-    </mat-expansion-panel>
-  </mat-accordion>
-</section>
-<section>
-  <app-act-customer-standard></app-act-customer-standard>
-</section>

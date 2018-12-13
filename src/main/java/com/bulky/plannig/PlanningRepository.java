@@ -149,7 +149,8 @@ public class PlanningRepository {
 		sb.append("addr.adnum, "); 
 		sb.append("addr.adcap, "); 
 		sb.append("pd.pldid, "); 
-		sb.append("pd.plddatefrom "); 
+		sb.append("pd.plddatefrom, ");
+		sb.append("ab.bfkactivity ");
 		sb.append("FROM act_booking ab "); 
 		sb.append("INNER JOIN plan_detail pd ON pd.pldid = ab.bfkplandetail "); 
 		sb.append("INNER JOIN catg_rifiuti cr ON cr.crid = ab.bfkcatg "); 
@@ -165,7 +166,7 @@ public class PlanningRepository {
 				.setParameter("account", accountId)		
 				.getResultList();
 		String[] keys = {"qty","incombro","plnid","plndescr","cuid","cuname","cusurname","pldfill","adcomune","adsiglaprov","adaddress",
-				"adnum","adcap","pldid","plddatefrom"};
+				"adnum","adcap","pldid","plddatefrom", "bfkactivity"};
 		
 		if (qtys!=null && qtys.size()>0) {
 			for( Object o: qtys) {

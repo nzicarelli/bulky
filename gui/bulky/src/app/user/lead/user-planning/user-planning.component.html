@@ -1,3 +1,47 @@
-<p>
-  user-planning works!
-</p>
+<div class="row">
+  <div class="col-md-2">
+    <mat-form-field>
+      <mat-select placeholder="Zona" [(ngModel)]="zSel" (selectionChange)="changeZona($event)">
+        <mat-option *ngFor="let z of listZone" [value]="z">
+          {{z.zdescr}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-md-2">
+    <mat-form-field>
+      <mat-select placeholder="Planning" [(ngModel)]="pSel" (selectionChange)="changePlanning($event)">
+        <mat-option *ngFor="let p of listPlannong" [value]="p">
+          {{p.plndescr}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+
+<p-table [value]="dettPlanning" dataKey="bfkactivity">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Data</th>
+      <th>Cliente</th>
+      <th>Indirizzo</th>
+      <th>N. Colli</th>
+      <th>Carico</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+    <tr>
+      <td *ngIf="rowGroupMetadata[rowData.pldid].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.pldid].size">
+        {{rowData.plddatefrom | date:'EEEE'}}<br>
+        {{rowData.plddatefrom | date:'dd'}}
+        {{rowData.plddatefrom | date:'MMM yy'}}
+      </td>
+      <td>{{rowData.cusurname}} {{rowData.cuname}}</td>
+      <td>{{rowData.year}}</td>
+      <td>{{rowData.qty}}</td>
+      <td *ngIf="rowGroupMetadata[rowData.pldid].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.pldid].size">
+        {{rowData.pldfill}}/{{rowData.pldfill}}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

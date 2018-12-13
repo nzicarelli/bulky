@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {LeadService} from "../../../_services/lead.service";
 import {DataUtilService} from "../../../_services/data-util.service";
+import {ParameterService} from "../../../_services/parameter.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-user-lead-list',
@@ -15,7 +17,11 @@ export class UserLeadListComponent implements OnInit {
   public pSel: any;
   public comuni: any[] = [];
   public cSel: any;
-  constructor(private leadService: LeadService, private dataServ: DataUtilService) { }
+  public selectedLead: any;
+
+  constructor(private leadService: LeadService, private dataServ: DataUtilService,
+              private paramServ: ParameterService,
+              private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.loadPeriodi();
@@ -72,6 +78,12 @@ export class UserLeadListComponent implements OnInit {
 
   changePeriodo(evt) {
     this.loadList();
+  }
+
+  onRowSelect(evt) {
+      this.paramServ.setIdLead(evt.data.lid);
+      this.router.navigate([{outlets: {userOut: ['lead']}}],
+        {skipLocationChange: true, relativeTo: this.route.parent});
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ParameterService} from "../../../../_services/parameter.service";
 import {ActionService} from "../../../../_services/action.service";
 import {Util} from "../../../../util";
@@ -9,6 +9,7 @@ import {Util} from "../../../../util";
   styleUrls: ['./act-customer-standard.component.css']
 })
 export class ActCustomerStandardComponent implements OnInit {
+  @Input() idCustomer: number;
 
   public myCatgAct: any;
   public descr: string = '';
@@ -23,7 +24,7 @@ export class ActCustomerStandardComponent implements OnInit {
   }
 
   salva() {
-    this.actionServ.saveAction(undefined, this.descr, this.oggetto, this.myCatgAct.caid).then( (res: any) => {
+    this.actionServ.saveAction(undefined, this.descr, this.oggetto, this.myCatgAct.caid, this.idCustomer).then( (res: any) => {
       if (res.success) {
         Util.alertMsg(Util.alertSuccess, 'OK', 'Salvataggio effettuato con successo');
       } else {
