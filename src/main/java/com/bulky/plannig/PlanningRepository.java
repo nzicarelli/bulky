@@ -131,7 +131,7 @@ public class PlanningRepository {
 	}
 	
 	@Transactional(readOnly=true)
-	public List<Map<String,Object>> listPlanDetail4Customer(Integer accountId, Integer idPlanDetail) {
+	public List<Map<String,Object>> listPlanDetail4Customer(Integer accountId, Integer idPlanDetail, Integer idPlanning) {
 		List<Map<String, Object>> results = new ArrayList<>();
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT "); 
@@ -156,11 +156,12 @@ public class PlanningRepository {
 		sb.append("INNER JOIN customer cu ON cu.cuid = ab.bfkcustomer "); 
 		sb.append("INNER JOIN planning pl ON pl.plnid = pd.pldfkplannig "); 
 		sb.append("INNER JOIN address addr ON addr.adid = ab.bfkaddress "); 
-		sb.append("WHERE ab.baccount = :account AND (pd.pldid = :pd OR :pd IS NULL) "); 
+		sb.append("WHERE ab.baccount = :account AND (pd.pldid = :pd OR :pd IS NULL) AND ( plnid = :plnid OR :plnid IS NULL) "); 
 		sb.append("GROUP BY pl.plnid,pl.plndescr,cu.cuid,cu.cuname,cu.cusurname "); 
 		sb.append("ORDER BY pl.plndescr,cu.cusurname,cu.cuname ");
 		List<?> qtys = em.createNativeQuery(sb.toString())
 				.setParameter("pd", idPlanDetail)
+				.setParameter("plnid", idPlanning)
 				.setParameter("account", accountId)		
 				.getResultList();
 		String[] keys = {"qty","incombro","plnid","plndescr","cuid","cuname","cusurname","pldfill","adcomune","adsiglaprov","adaddress",

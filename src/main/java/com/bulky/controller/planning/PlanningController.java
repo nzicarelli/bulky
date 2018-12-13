@@ -196,9 +196,10 @@ public class PlanningController {
 		Integer idAccount = tokenHelper.getIdAccount(request);		
 		
 		JSONObject plObj = AppUtil.toPayLoad(payload);
-		Integer id = AppUtil.getIntegerValueOf(plObj, "pldid");
+		Integer idDetailPlan = AppUtil.getIntegerValueOf(plObj, "pldid");
+		Integer idPlanning = AppUtil.getIntegerValueOf(plObj, "plnid");
 		
-		List<Map<String, Object>> plannings = planRep.listPlanDetail4Customer(idAccount, id);
+		List<Map<String, Object>> plannings = planRep.listPlanDetail4Customer(idAccount,idDetailPlan, idPlanning);
 				
 		return builder.success(plannings);
 	}
