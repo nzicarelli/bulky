@@ -114,10 +114,10 @@ export class BulkyService {
       );
   }
 
-  public getListPlanning4zonaCli(idPlanning: number) {
+  public getListPlanning4zonaCli(idPlanning: number, idDettPlanning: number) {
     const myData = {
       plnid: idPlanning,
-      pldid: undefined
+      pldid: idDettPlanning
     }
     const myUrl = this.config.getConfig('baseUrl');
     return this.http.post(myUrl + '/api/planning/list-plan-customers', myData)

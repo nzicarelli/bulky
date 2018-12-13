@@ -2,6 +2,7 @@
   <div class="col-md-2">
     <mat-form-field>
       <mat-select placeholder="Zona" [(ngModel)]="zSel" (selectionChange)="changeZona($event)">
+        <mat-option>--</mat-option>
         <mat-option *ngFor="let z of listZone" [value]="z">
           {{z.zdescr}}
         </mat-option>
@@ -11,15 +12,26 @@
   <div class="col-md-2">
     <mat-form-field>
       <mat-select placeholder="Planning" [(ngModel)]="pSel" (selectionChange)="changePlanning($event)">
+        <mat-option>--</mat-option>
         <mat-option *ngFor="let p of listPlannong" [value]="p">
           {{p.plndescr}}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
+  <div class="col-md-2">
+    <mat-form-field>
+      <mat-select placeholder="Data Planning" [(ngModel)]="pdSel" (selectionChange)="changeDettPlanning($event)">
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let dp of listDettPlannong" [value]="dp">
+          {{dp.plan.plddescr}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </div>
 
-<p-table [value]="dettPlanning" dataKey="bfkactivity">
+<p-table #dt [value]="dettPlanning" dataKey="bfkactivity">
   <ng-template pTemplate="header">
     <tr>
       <th>Data</th>
@@ -31,16 +43,16 @@
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
     <tr>
-      <td *ngIf="rowGroupMetadata[rowData.pldid].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.pldid].size">
-        {{rowData.plddatefrom | date:'EEEE'}}<br>
-        {{rowData.plddatefrom | date:'dd'}}
-        {{rowData.plddatefrom | date:'MMM yy'}}
+      <td *ngIf="rowGroupMetadata[rowData.pldid].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.pldid].size" style="text-align: center; font-weight: bold">
+        <span>{{rowData.plddatefrom | date:'EEEE'}}</span><br>
+        <span><h3>{{rowData.plddatefrom | date:'dd'}}</h3></span>
+        <span>{{rowData.plddatefrom | date:'MMM yy'}}</span><br>
       </td>
       <td>{{rowData.cusurname}} {{rowData.cuname}}</td>
-      <td>{{rowData.year}}</td>
+      <td>{{rowData.adaddress}} {{rowData.adnum}} {{rowData.adcomune}} {{rowData.adsiglaprov}}</td>
       <td>{{rowData.qty}}</td>
       <td *ngIf="rowGroupMetadata[rowData.pldid].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.pldid].size">
-        {{rowData.pldfill}}/{{rowData.pldfill}}
+        {{rowData.size}}/{{rowData.pldfill}}
       </td>
     </tr>
   </ng-template>

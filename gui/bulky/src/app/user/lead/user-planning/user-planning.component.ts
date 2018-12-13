@@ -10,8 +10,10 @@ export class UserPlanningComponent implements OnInit {
 
   listZone: any[] = [];
   listPlannong: any[] = [];
+  listDettPlannong: any[] = [];
   zSel: any = {};
   pSel: any = {};
+  pdSel: any = {};
   dettPlanning: any[] = [];
   rowGroupMetadata: any;
 
@@ -28,6 +30,8 @@ export class UserPlanningComponent implements OnInit {
   }
 
   changeZona(evt) {
+    this.pSel = {};
+    this.pdSel = {};
     this.bluServ.getListPlanning4zona(this.zSel.zid).then((res: any) => {
       this.listPlannong = res.output;
     });
@@ -35,7 +39,22 @@ export class UserPlanningComponent implements OnInit {
 
   changePlanning(evt) {
     console.log('changePlanning ' + evt);
-    this.bluServ.getListPlanning4zonaCli(this.pSel.plnid).then((res: any) => {
+    this.pdSel = {};
+    this.loadDettPlanning();
+    this.bluServ.getListPlanning4zonaCli(this.pSel.plnid, undefined).then((res: any) => {
+      this.dettPlanning = res.output;
+      this.updateRowGroupMetaData();
+    });
+  }
+
+  loadDettPlanning() {
+    this.bluServ.getPlanningDetail(this.pSel.plnid).then((res: any) => {
+      this.listDettPlannong = res.output;
+    });
+  }
+
+  changeDettPlanning(evt) {
+    this.bluServ.getListPlanning4zonaCli(this.pSel.plnid, this.pdSel.plan.pldid).then((res: any) => {
       this.dettPlanning = res.output;
       this.updateRowGroupMetaData();
     });
