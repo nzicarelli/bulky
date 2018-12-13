@@ -138,7 +138,7 @@ public class ActionRepository {
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT "); 
 		sb.append("aid,aaccount,afktype,aowner,aassign,adtmod,astatus,adescr,atitle,asubject,afkcustomer, "); 
-		sb.append("afklead,cuname,cusurname,cadescr,asdescr,caid "); 
+		sb.append("afklead,cuname,cusurname,cadescr,asdescr,caid,cadescr "); 
 		sb.append("FROM activity a "); 
 		sb.append("INNER JOIN lead l ON l.lid = a.afklead "); 
 		sb.append("INNER JOIN customer c ON c.cuid = l.lfkcustomer "); 
@@ -156,7 +156,7 @@ public class ActionRepository {
 				.getResultList();
 		List<Map<String,Object>> rs = new ArrayList<>();
 		String[] keys = {"aid","aaccount","afktype","aowner","aassign","adtmod","astatus","adescr","atitle","asubject","afkcustomer",
-				"afklead","cuname","cusurname","cadescr","asdescr","caid"};
+				"afklead","cuname","cusurname","cadescr","asdescr","caid","cadescr"};
 		
 		if (results!=null && results.size()>0) {
 			for( Object o: results) {

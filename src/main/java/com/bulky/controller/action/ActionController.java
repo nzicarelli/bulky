@@ -95,7 +95,8 @@ public class ActionController {
 		}
 		if (act.getAfkcustomer() == null && cuid!=null) {
 			act.setAfkcustomer( cuid );
-		}else {
+		}
+		if (act.getAfkcustomer()==null) {
 			return builder.insufficienParameters("afkcustomer", request.getLocale());
 		}
 		if (AppUtil.isEmpty(act.getAfklead())){
