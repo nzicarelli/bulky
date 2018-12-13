@@ -129,4 +129,49 @@ public class PlanningRepository {
 		}
 		return results;
 	}
+	
+	@Transactional(readOnly=true)
+	public List<Map<String,Object>> listPlanDetail4Customer(Integer accountId, Integer idPlanDetail) {
+		List<Map<String, Object>> results = new ArrayList<>();
+		StringBuffer sb = new StringBuffer();
+		sb.append("SELECT "); 
+		sb.append("SUM(ab.bqty) as qty, "); 
+		sb.append("SUM( (ab.bqty*cr.crincombro)) AS incombro, "); 
+		sb.append("pl.plnid, "); 
+		sb.append("pl.plndescr, "); 
+		sb.append("cu.cuid, "); 
+		sb.append("cu.cuname, "); 
+		sb.append("cu.cusurname, "); 
+		sb.append("pd.pldfill, "); 
+		sb.append("addr.adcomune, "); 
+		sb.append("addr.adsiglaprov, "); 
+		sb.append("addr.adaddress, "); 
+		sb.append("addr.adnum, "); 
+		sb.append("addr.adcap, "); 
+		sb.append("pd.pldid, "); 
+		sb.append("pd.plddatefrom "); 
+		sb.append("FROM act_booking ab "); 
+		sb.append("INNER JOIN plan_detail pd ON pd.pldid = ab.bfkplandetail "); 
+		sb.append("INNER JOIN catg_rifiuti cr ON cr.crid = ab.bfkcatg "); 
+		sb.append("INNER JOIN customer cu ON cu.cuid = ab.bfkcustomer "); 
+		sb.append("INNER JOIN planning pl ON pl.plnid = pd.pldfkplannig "); 
+		sb.append("INNER JOIN address addr ON addr.adid = ab.bfkaddress "); 
+		sb.append("WHERE ab.baccount = :account AND (pd.pldid = :pd OR :pd IS NULL) "); 
+		sb.append("GROUP BY pl.plnid,pl.plndescr,cu.cuid,cu.cuname,cu.cusurname "); 
+		sb.append("ORDER BY pl.plndescr,cu.cusurname,cu.cuname ");
+		List<?> qtys = em.createNativeQuery(sb.toString())
+				.setParameter("pd", idPlanDetail)
+				.setParameter("account", accountId)		
+				.getResultList();
+		String[] keys = {"qty","incombro","plnid","plndescr","cuid","cuname","cusurname","pldfill","adcomune","adsiglaprov","adaddress",
+				"adnum","adcap","pldid","plddatefrom"};
+		
+		if (qtys!=null && qtys.size()>0) {
+			for( Object o: qtys) {
+				Map<String,Object> v = AppUtil.toMap(keys,(Object[])o);
+				results.add( v );
+			}
+		}
+		return results;
+	}
 }

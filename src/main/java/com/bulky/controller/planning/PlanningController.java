@@ -189,5 +189,18 @@ public class PlanningController {
 		List<Map<String,Object> > zone = planRep.listZoneAndPlanning(idAccount);		
 		return builder.success(zone);
 	}
+	
+	
+	@PostMapping("api/planning/list-plan-customers")
+	public @ResponseBody ResponseData listPlanning4Customers(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		Integer idAccount = tokenHelper.getIdAccount(request);		
+		
+		JSONObject plObj = AppUtil.toPayLoad(payload);
+		Integer id = AppUtil.getIntegerValueOf(plObj, "pldid");
+		
+		List<Map<String, Object>> plannings = planRep.listPlanDetail4Customer(idAccount, id);
+				
+		return builder.success(plannings);
+	}
 
 }

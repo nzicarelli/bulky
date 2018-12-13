@@ -259,3 +259,4 @@ INSERT INTO act_status(asfkaccount,asfkcatgact,asdescr) VALUES(1,1,'CLOSE');
 
 alter table act_booking add bfkplandetail int null;
 
+alter table plan_detail add pldfill int null;

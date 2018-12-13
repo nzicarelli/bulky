@@ -38,6 +38,8 @@ public class PlanDetail implements Serializable {
 	private Date pldtmod;
 
 	private Integer pldusrmod;
+	
+	private Integer pldfill;
 
 	public PlanDetail() {
 	}
@@ -112,6 +114,14 @@ public class PlanDetail implements Serializable {
 
 	public void setPldusrmod(Integer pldusrmod) {
 		this.pldusrmod = pldusrmod;
+	}
+
+	public Integer getPldfill() {
+		return pldfill;
+	}
+
+	public void setPldfill(Integer pldfill) {
+		this.pldfill = pldfill;
 	}
 
 }
