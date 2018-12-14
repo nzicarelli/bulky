@@ -1,0 +1,44 @@
+.box-green {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  /*padding: 15px;*/
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.box-text-green {
+  color: #3c763d;
+  /*font-weight: bold;*/
+}
+
+.box-red {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  /*padding: 15px;*/
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.box-text-red {
+  color: #a94442;
+  /*font-weight: bold;*/
+}
+
+.box-yellow {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  /*padding: 15px;*/
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.box-text-yellow {
+  color: #856404;
+  /*font-weight: bold;*/
+}

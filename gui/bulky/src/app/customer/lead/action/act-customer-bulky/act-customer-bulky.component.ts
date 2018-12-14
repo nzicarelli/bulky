@@ -49,7 +49,7 @@ export class ActCustomerBulkyComponent implements OnInit {
   }
 
   loadIndirizzi() {
-    this.custService.getMyAddress().then( (res: any) => {
+    this.custService.getAddress(this.idCustomer).then( (res: any) => {
       this.listAddress = res.output;
     })
   }
