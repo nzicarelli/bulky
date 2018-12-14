@@ -44,22 +44,23 @@
   <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
     <tr>
       <td *ngIf="rowGroupMetadata[rowData.pldid].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.pldid].size" style="text-align: center; font-weight: bold; padding: 0px"
-      >
-        <div [ngClass]="{'box-green': rowData.perc <= 60, 'box-yellow': (rowData.perc > 60 && rowData.perc <= 90), 'box-red': rowData.perc > 90 }" style="padding: 0px; margin: 0px;">
+          [ngClass]="{'box-green': rowData.perc <= 60, 'box-yellow': (rowData.perc > 60 && rowData.perc <= 90), 'box-red': rowData.perc > 90 }">
+        <!--<div [ngClass]="{'box-green': rowData.perc <= 60, 'box-yellow': (rowData.perc > 60 && rowData.perc <= 90), 'box-red': rowData.perc > 90 }" style="padding: 0px; margin: 0px;">-->
           <span>{{rowData.plddatefrom | date:'EEEE'}}</span><br>
           <span><h3>{{rowData.plddatefrom | date:'dd'}}</h3></span>
           <span>{{rowData.plddatefrom | date:'MMM yy'}}</span><br>
-        </div>
+        <!--</div>-->
       </td>
       <td>{{rowData.cusurname}} {{rowData.cuname}}</td>
       <td>{{rowData.adaddress}} {{rowData.adnum}} {{rowData.adcomune}} {{rowData.adsiglaprov}}</td>
       <td>{{rowData.qty}}</td>
-      <td *ngIf="rowGroupMetadata[rowData.pldid].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.pldid].size">
-        {{rowData.size}}/{{rowData.pldfill}}
-        <div class="progress" style="height: 15px;">
+      <td *ngIf="rowGroupMetadata[rowData.pldid].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.pldid].size" style="text-align: center">
+
+        <div class="progress" style="height: 15px; margin-bottom: 5px;">
           <div class="progress-bar" role="progressbar"  [attr.aria-valuenow]="rowData.perc" [style.width]="rowData.perc+'%'"  aria-valuemin="0" aria-valuemax="100"
                [ngClass]="{'bg-success': rowData.perc <= 60, 'bg-warning': (rowData.perc > 60 && rowData.perc <= 90), 'bg-danger': rowData.perc > 90 }" style="padding: 0px; margin: 0px;">{{rowData.perc}}%</div>
         </div>
+        {{rowData.size}} / {{rowData.pldfill}}
       </td>
     </tr>
   </ng-template>

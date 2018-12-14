@@ -129,7 +129,7 @@ export class ActCustomerBulkyComponent implements OnInit {
 
     let newPer = 0;
     let myIngrombro = 0;
-    let ingMax = 10;
+    let ingMax = p.pldfill;
     for (let r of this.listRowBulky) {
       if (!r.qty && r.crif && r.crif.crqtymin) {
         r.qty = r.crif.crqtymin;
@@ -141,7 +141,7 @@ export class ActCustomerBulkyComponent implements OnInit {
     }
 
     newPer = (100 * myIngrombro ) / ingMax;
-    this.myPerc = newPer;
+    this.myPerc = Math.round(newPer * 10) / 10;
   }
 
   goBack(stepper: MatStepper){
