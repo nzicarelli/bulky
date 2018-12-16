@@ -9,9 +9,9 @@ export class CustomerService {
 
   constructor(private http: HttpClient, private config: AppConfig) { }
 
-  public getMyAddress() {
+  public getAddress(customerId: number) {
     const myData = {
-      cuid: 3
+      cuid: customerId
     }
 
     const myUrl = this.config.getConfig('baseUrl');

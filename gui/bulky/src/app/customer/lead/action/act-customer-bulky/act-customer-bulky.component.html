@@ -25,7 +25,7 @@
                 <br><br>
                 <mat-radio-group class="example-radio-group" [(ngModel)]="selectAddress" [ngModelOptions]="{standalone: true}" (change)="radioAddressChange($event)" [disabled]="haveConfigurationRifiuti()">
                   <mat-radio-button class="example-radio-button" *ngFor="let i of listAddress" [value]="i">
-                    {{i.adnormalizzato}}
+                    {{i.adnormalizzato && i.adnormalizzato.length > 0 ? i.adnormalizzato : i.adaddress + ' ' + (i.adnum ? i.adnum : '') + ' ' + i.adcomune + ' ' + (i.adsiglaprov ? '('+i.adsiglaprov+')' : '')}}
                   </mat-radio-button>
                 </mat-radio-group>
               </div>

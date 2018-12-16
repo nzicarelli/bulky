@@ -10,8 +10,10 @@ export class UserPlanningComponent implements OnInit {
 
   listZone: any[] = [];
   listPlannong: any[] = [];
+  listDettPlannong: any[] = [];
   zSel: any = {};
   pSel: any = {};
+  pdSel: any = {};
   dettPlanning: any[] = [];
   rowGroupMetadata: any;
 
@@ -28,14 +30,45 @@ export class UserPlanningComponent implements OnInit {
   }
 
   changeZona(evt) {
-    this.bluServ.getListPlanning4zona(this.zSel.zid).then((res: any) => {
-      this.listPlannong = res.output;
-    });
+    this.pSel = {};
+    this.pdSel = {};
+    const tzid = this.zSel && this.zSel.zid && this.zSel.zid > 0 ? this.zSel.zid : undefined;
+    if (tzid) {
+      this.bluServ.getListPlanning4zona(this.zSel.zid).then((res: any) => {
+        this.listPlannong = res.output;
+      });
+    } else {
+      this.listPlannong = [];
+      this.dettPlanning = [];
+    }
   }
 
   changePlanning(evt) {
     console.log('changePlanning ' + evt);
-    this.bluServ.getListPlanning4zonaCli(this.pSel.plnid).then((res: any) => {
+    this.pdSel = {};
+    this.loadDettPlanning();
+    const tplnid = this.pSel && this.pSel.plnid && this.pSel.plnid > 0 ? this.pSel.plnid : undefined;
+    if (tplnid) {
+      this.bluServ.getListPlanning4zonaCli(this.pSel.plnid, undefined).then((res: any) => {
+        this.dettPlanning = res.output;
+        this.updateRowGroupMetaData();
+      });
+    } else {
+      this.dettPlanning = [];
+    }
+  }
+
+  loadDettPlanning() {
+    const tplnid = this.pSel && this.pSel.plnid && this.pSel.plnid > 0 ? this.pSel.plnid : undefined;
+    this.bluServ.getPlanningDetail(tplnid).then((res: any) => {
+      this.listDettPlannong = res.output;
+    });
+  }
+
+  changeDettPlanning(evt) {
+    const tplnid = this.pSel && this.pSel.plnid && this.pSel.plnid > 0 ? this.pSel.plnid : undefined;
+    const tpldid = this.pdSel && this.pdSel.plan && this.pdSel.plan.pldid && this.pdSel.plan.pldid > 0 ? this.pdSel.plan.pldid : undefined;
+    this.bluServ.getListPlanning4zonaCli(tplnid, tpldid).then((res: any) => {
       this.dettPlanning = res.output;
       this.updateRowGroupMetaData();
     });
