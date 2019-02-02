@@ -108,7 +108,7 @@ public class ActionController {
 			act.setAfklead(lead.getLid());
 		}
 		act.setAdtmod( new Date() );
-		act = actRep.store(act);
+		act = actRep.store(act); 
 
 		return builder.success(Arrays.asList(act));
 	}
