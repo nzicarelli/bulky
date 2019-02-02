@@ -1,20 +1,22 @@
+<!--
 <p>
 
 <button pButton type="button" icon="pi pi-check" label="Customer" (click)="goToCustomer()"></button>
 
 <button pButton type="button" icon="pi pi-check" label="User" (click)="goToUser()"></button>
   </p>
+-->
 
 <div class="limiter">
-  <div class="container-login100">
+  <div class="container-login100 kgreen-background">
     <div class="wrap-login100">
-      <div class="login100-pic js-tilt" data-tilt>
-        <img src="../../assets/img/img-01.png" alt="IMG">
-      </div>
+      <!--<div class="login100-pic js-tilt" data-tilt>
+        <img src="assets/img/calabra-maceri.png" height="40" width="160"/>
+      </div>-->
 
-      <form class="login100-form validate-form">
-					<span class="login100-form-title">
-						Member Login
+      <form class="login100-form e-form">
+					<span class="login100-form-title kgreen">
+						Bulky
 					</span>
 <div style="text-align: center; color: red" *ngIf="showError">{{textError}}</div>
 
@@ -37,8 +39,8 @@
 
         <div class="container-login100-form-btn">
           <button class="login100-form-btn" (click)="login()" [disabled]="loading">
+            <span >Login</span>
             <span *ngIf="loading"><i class="fa fa-spinner fa-spin" ></i>&nbsp; &nbsp; Loading...</span>
-            <span *ngIf="!loading">Login</span>
           </button>
         </div>
 
@@ -52,7 +54,8 @@
         </div>
 
         <div class="text-center p-t-136">
-          <a class="txt2" routerLink="/registration" routerLinkActive="active">
+          <img src="assets/img/calabra-maceri.png" height="40" width="160" style="margin-bottom: 10px"/><BR>
+          <a class="txt2" routerLink="/registration" routerLinkActive="active" >
             Crea il tuo Account
             <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
           </a>

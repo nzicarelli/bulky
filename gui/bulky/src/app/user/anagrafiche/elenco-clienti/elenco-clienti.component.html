@@ -1,17 +1,21 @@
-<div class="row">
-  <div class="col-md-2">
-    <mat-form-field>
-      <mat-select placeholder="Comune" [(ngModel)]="cSel">
-        <mat-option *ngFor="let c of comuni" [value]="c">
-          {{c.adcomune}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+
+<div class="row bg-light">
+  <div class="container ">
+    <div class="col-md-2">
+      <mat-form-field>
+        <mat-select placeholder="Comune" [(ngModel)]="cSel">
+          <mat-option *ngFor="let c of comuni" [value]="c">
+            {{c.adcomune}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
 </div>
 
-<p-table [value]="listClienti" [paginator]="true" [rows]="15" [responsive]="true" [loading]="loading"
-         [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]"
+<div class="kgreen" style="font-size: 24px; margin-top: 25px; margin-bottom: 15px;"><B>Elenco Clienti</B></div>
+<p-table [value]="listClienti" [paginator]="true" [rows]="10" [responsive]="true" [loading]="loading"
+         [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]" class="ktable"
          dataKey="cuid" (onRowExpand)="loadAddress($event)" rowExpandMode="single"
          selectionMode="single" [(selection)]="selectedCli" (onRowSelect)="onRowSelect($event)">
   <ng-template pTemplate="header">
@@ -19,8 +23,8 @@
       <th style="width: 3em"></th>
       <th>Denominazione/cognome</th>
       <th>Nome</th>
-      <th>Cod. Fiscale</th>
-      <th>P. IVA</th>
+      <th style="width: 10em">Cod. Fiscale</th>
+      <th style="width: 10em">P. IVA</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-obj let-expanded="expanded">

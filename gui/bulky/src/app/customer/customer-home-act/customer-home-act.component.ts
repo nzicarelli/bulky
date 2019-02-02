@@ -14,6 +14,8 @@ export class CustomerHomeActComponent implements OnInit {
   public listCatgAct: any[] = [];
   public listLead: any[] = [];
   public loading = false;
+  public displayAct = false;
+  public myAct: any;
 
   constructor(private router: Router, private route: ActivatedRoute, private leadService: LeadService,
               private actService: ActionService, private parameterServ: ParameterService) { }
@@ -49,6 +51,13 @@ export class CustomerHomeActComponent implements OnInit {
       this.listLead = res.output;
       this.loading = false;
     });
+  }
+
+  showAct(act) {
+    console.log(act);
+    this.parameterServ.setCatgAction(act);
+    this.myAct = act;
+    this.displayAct = true;
   }
 
 }

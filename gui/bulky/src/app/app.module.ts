@@ -17,6 +17,8 @@ import { getBaseUrl } from './shared/common-functions.util';
 import {SharedModule} from "./shared/shared/shared.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
+import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+
 export function initConfig(config: AppConfig) {
   return () => config.loadNew();
 }
@@ -42,6 +44,7 @@ export function initConfig(config: AppConfig) {
   providers: [AuthGuard, AppConfig, AuthenticationService,
     {provide: APP_INITIALIZER, useFactory: initConfig, deps: [AppConfig], multi: true},
     { provide: 'BASE_URL', useFactory: getBaseUrl },
+    {provide: LocationStrategy, useClass: HashLocationStrategy},
     /*{
       provide: APP_BASE_HREF,
       useFactory: getBaseLocation

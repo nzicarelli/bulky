@@ -1,9 +1,22 @@
 
-<section class="features-icons bg-light text-center">
+<section class="features-icons text-center">
   <div class="container">
     <div class="row">
       <div class="col-lg-4" *ngFor=" let a of listCatgAct">
-        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3" (click)="gotoAction(a)">
+        <div class="card">
+          <div class="card-body krectangle" (click)="showAct(a)">
+            <div style="text-align: center">
+              <i class="fa fa-trash fa-3x kgreen" aria-hidden="true"></i>
+            </div>
+            <div class="kgreen" style="font-size: larger; margin-top: 10px"><B>{{a.catitle}}</B></div>
+            Utilizza questa funzione se vuoi prenotare un ritiro.
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--<div class="row">
+      <div class="col-lg-4" *ngFor=" let a of listCatgAct">
+        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3" (click)="showAct(a)">
           <div class="features-icons-icon d-flex">
             <i class="icon-screen-desktop m-auto text-primary"></i>
           </div>
@@ -11,7 +24,7 @@
           <p class="lead mb-0">Utilizza questa funzione se vuoi prenotare un ritiro.</p>
         </div>
       </div>
-      <!--<div class="col-lg-4">
+      &lt;!&ndash;<div class="col-lg-4">
         <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
           <div class="features-icons-icon d-flex">
             <i class="icon-layers m-auto text-primary"></i>
@@ -28,25 +41,31 @@
           <h3>Variazione Dati</h3>
           <p class="lead mb-0">Utilizza questa funzione per richiedere la variazioni dei dati.</p>
         </div>
-      </div>-->
-    </div>
+      </div>&ndash;&gt;
+    </div>-->
   </div>
 </section>
 <div class="ui-g" style="padding-left: 1rem; padding-right: 1rem;">
+  <div class="ui-g-12 kgreen">
+    <span style="font-size: larger"><B>Le mie richieste</B></span>
+  </div>
   <p-table [value]="listLead" [paginator]="true" [rows]="20" [responsive]="true" [loading]="loading"
-           [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]" dataKey="lid">
-    <ng-template pTemplate="caption">
-      Lista LEADS
-    </ng-template>
+           [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]" dataKey="lid" class="ktable">
     <ng-template pTemplate="header">
       <tr>
+        <th style="width:6em">#</th>
         <th>Richiesta</th>
         <th>Data</th>
         <th>Stato</th>
+        <th style="width:3em">&nbsp;</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-obj >
       <tr>
+        <td>
+          <span class="ui-column-title">Id</span>
+          {{obj.lid}}
+        </td>
         <td>
           <span class="ui-column-title">Tipo</span>
           {{obj.lctdescrizione}}
@@ -59,6 +78,11 @@
           <span class="ui-column-title">Stato</span>
           {{obj.lstatus}}
         </td>
+        <td>
+          <button mat-icon-button color="accent">
+            <mat-icon aria-label="Elimina">delete_forever</mat-icon>
+          </button>
+        </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage" let-columns>
@@ -70,3 +94,11 @@
     </ng-template>
   </p-table>
 </div>
+
+
+<p-dialog header="{{myAct ? myAct.catitle : 'Nuova Richiesta'}}" [(visible)]="displayAct" [modal]="true" [responsive]="true" [style]="{width: '700px', minWidth: '600px'}" [minY]="70"
+          [maximizable]="true" [baseZIndex]="10000">
+  <app-act-customer-standard *ngIf="myAct && myAct.cadoctype === 'act-standard' && displayAct" ></app-act-customer-standard>
+  <app-act-customer-bulky *ngIf="myAct && myAct.cadoctype === 'act-bulky' && displayAct"  ></app-act-customer-bulky>
+</p-dialog>
+
