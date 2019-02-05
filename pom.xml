@@ -159,6 +159,12 @@
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jdk8</artifactId>			
+		</dependency>
+		
 		<!-- Utilities -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -190,7 +196,7 @@
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>			
+			<artifactId>json</artifactId>
 		</dependency>
 
 
