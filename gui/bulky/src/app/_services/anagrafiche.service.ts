@@ -42,5 +42,60 @@ export class AnagraficheService {
       );
   }
 
+  public listUser() {
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/user/list', {})
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
+
+  public saveUser(user: any) {
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/user/add-update', user)
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
+
+  public enableUser(idUser: any) {
+    const myParam: any = {
+      uid: idUser
+    };
+
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/user/enable', myParam)
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
+
+  public disableUser(idUser: any) {
+    const myParam: any = {
+      uid: idUser
+    };
+
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/user/disable', myParam)
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
 
 }

@@ -1,32 +1,61 @@
-<div class="row">
-  <div class="col-md-2">
-    <mat-form-field>
-      <mat-select placeholder="Periodo" [(ngModel)]="pSel" (selectionChange)="changePeriodo($event)">
-        <mat-option *ngFor="let p of periodi" [value]="p.ID">
-          {{p.DESCRIZIONE}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="col-md-2">
-    <mat-form-field>
-      <mat-select placeholder="Comune" [(ngModel)]="cSel">
-        <mat-option *ngFor="let c of comuni" [value]="c">
-          {{c.adcomune}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+<div class="row bg-light no-margin">
+  <div class="container ">
+    <div class="row" style="padding-top: 20px; padding-bottom: 15px">
+      <div class="col-md-2">
+        <mat-form-field>
+          <mat-select placeholder="Periodo" [(ngModel)]="pSel" (selectionChange)="changePeriodo($event)">
+            <mat-option *ngFor="let p of periodi" [value]="p.ID">
+              {{p.DESCRIZIONE}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-form-field>
+          <mat-select placeholder="Comune" [(ngModel)]="cSel">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let c of comuni" [value]="c">
+              {{c.adcomune}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-12 col-md-2">
+        <mat-form-field class="width-100">
+          <input matInput placeholder="Denominazione" [(ngModel)]="denom" (input)="dt.filter($event.target.value, 'cusurname', 'startsWith')">
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-form-field>
+          <mat-select placeholder="Tipo Lead" [(ngModel)]="tSel" (selectionChange)="dt.filter(tSel.lctid, 'lctid', 'equals')">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let c of tipiLead" [value]="c">
+              {{c.lctdescrizione}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-form-field>
+          <mat-select placeholder="Stato Lead" [(ngModel)]="cSel">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let c of comuni" [value]="c">
+              {{c.adcomune}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
   </div>
 </div>
 
+<div class="container">
+<div class="kgreen" style="font-size: 24px; margin-top: 25px; margin-bottom: 15px;"><B>Elenco Lead</B></div>
 <div>
-  <p-table [value]="listLead" [paginator]="true" [rows]="20" [responsive]="true" [loading]="loading"
+  <p-table [value]="listLead" #dt [paginator]="true" [rows]="20" [responsive]="true" [loading]="loading"
            [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]" dataKey="lid"
-           (onRowExpand)="loadAction($event)" rowExpandMode="single"
+           (onRowExpand)="loadAction($event)" rowExpandMode="single" class="ktable"
            selectionMode="single" [(selection)]="selectedLead" (onRowSelect)="onRowSelect($event)">
-    <ng-template pTemplate="caption">
-      Lista LEADS
-    </ng-template>
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 3em"></th>
@@ -58,7 +87,7 @@
         </td>
         <td>
           <span class="ui-column-title">Stato</span>
-          {{obj.lcsdescrizione}}
+          <div class="text-in-rectangle-blu">{{obj.lcsdescrizione}}</div>
         </td>
         <td>
           <span class="ui-column-title">Assegnatario</span>
@@ -84,4 +113,5 @@
       </tr>
     </ng-template>
   </p-table>
+</div>
 </div>

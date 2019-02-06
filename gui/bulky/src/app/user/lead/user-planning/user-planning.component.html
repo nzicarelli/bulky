@@ -1,44 +1,50 @@
-<div class="row">
-  <div class="col-md-2">
-    <mat-form-field>
-      <mat-select placeholder="Zona" [(ngModel)]="zSel" (selectionChange)="changeZona($event)">
-        <mat-option>--</mat-option>
-        <mat-option *ngFor="let z of listZone" [value]="z">
-          {{z.zdescr}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="col-md-2">
-    <mat-form-field>
-      <mat-select placeholder="Planning" [(ngModel)]="pSel" (selectionChange)="changePlanning($event)">
-        <mat-option>--</mat-option>
-        <mat-option *ngFor="let p of listPlannong" [value]="p">
-          {{p.plndescr}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="col-md-2">
-    <mat-form-field>
-      <mat-select placeholder="Data Planning" [(ngModel)]="pdSel" (selectionChange)="changeDettPlanning($event)">
-        <mat-option>--</mat-option>
-        <mat-option *ngFor="let dp of listDettPlannong" [value]="dp">
-          {{dp.plan.plddescr}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+<div class="row bg-light no-margin">
+  <div class="container ">
+    <div class="row" style="padding-top: 20px; padding-bottom: 15px">
+      <div class="col-md-2">
+        <mat-form-field>
+          <mat-select placeholder="Zona" [(ngModel)]="zSel" (selectionChange)="changeZona($event)">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let z of listZone" [value]="z">
+              {{z.zdescr}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-form-field>
+          <mat-select placeholder="Planning" [(ngModel)]="pSel" (selectionChange)="changePlanning($event)">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let p of listPlannong" [value]="p">
+              {{p.plndescr}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-form-field>
+          <mat-select placeholder="Data Planning" [(ngModel)]="pdSel" (selectionChange)="changeDettPlanning($event)">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let dp of listDettPlannong" [value]="dp">
+              {{dp.plan.plddescr}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
   </div>
 </div>
 
-<p-table #dt [value]="dettPlanning" dataKey="bfkactivity">
+<div class="container">
+<div class="kgreen" style="font-size: 24px; margin-top: 25px; margin-bottom: 15px;"><B>Planning</B></div>
+<p-table #dt [value]="dettPlanning" dataKey="bfkactivity" class="ktable">
   <ng-template pTemplate="header">
     <tr>
-      <th>Data</th>
+      <th style="width: 10em">Data</th>
       <th>Cliente</th>
       <th>Indirizzo</th>
-      <th>N. Colli</th>
-      <th>Carico</th>
+      <th style="width: 7em">N. Colli</th>
+      <th style="width: 12em">Carico</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
@@ -65,3 +71,4 @@
     </tr>
   </ng-template>
 </p-table>
+</div>

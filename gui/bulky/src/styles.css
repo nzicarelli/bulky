@@ -9,8 +9,29 @@
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+.no-padding {
+  padding: 0px;
+}
+
+.no-margin {
+  margin: 0px;
+}
+
+.no-space {
+  padding: 0px;
+  margin: 0px;
+}
+
+.width-100 {
+  width: 100%;
+}
+
 .kgreen {
   color: #5CB85C;
+}
+
+.kred {
+  color: #DF1C44;
 }
 
 .kgreen-background {
@@ -40,7 +61,7 @@
 }
 
 .krectangle {
-  height: 220px;
+  height: 190px;
   border: 1px solid #E7E7E7;
   border-radius: 2px;
   background-color: #F8F8F8;
@@ -53,3 +74,10 @@
   background-color: #FFFFFF;
 }
 
+.text-in-rectangle-blu {
+  border-radius: 2px;
+  background-color: #227EBA;
+  color: white;
+  width: fit-content;
+  padding: 5px;
+}
