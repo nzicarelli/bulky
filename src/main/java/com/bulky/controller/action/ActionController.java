@@ -23,6 +23,7 @@ import com.bulky.action.ActionRepository;
 import com.bulky.action.Activity;
 import com.bulky.action.CatgAction;
 import com.bulky.action.Lead;
+import com.bulky.action.LeadCatgStato;
 import com.bulky.action.LeadCatgTipo;
 import com.bulky.action.LeadServiceUtil;
 import com.bulky.customer.Address;
@@ -278,6 +279,31 @@ public class ActionController {
 		return builder.success(result);		
 	}
 
+	
+	@PostMapping("api/action/list-stato-lead")
+	public @ResponseBody ResponseData listStatoLead(@RequestBody String payload, HttpServletRequest request) throws DataException {
+
+		JSONObject plo = AppUtil.toPayLoad(payload);
+		String userKind = tokenHelper.getUserKind(request);
+		Integer idAccount = tokenHelper.getIdAccount(request);
+		Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
+		Integer cuid = null;
+		ROLES r = null;
+		if (userKind!=null) {
+			r = ROLES.valueOf(userKind);
+		}
+		if (r!=null && r.equals(ROLES.ROLE_CUSTOMER)) {
+			cuid = idUtente;
+		}else {
+			cuid = AppUtil.getIntegerValueOf(plo, "cuid");
+		}
+		Integer tipoLead = AppUtil.getIntegerValueOf(plo, "tipo");
+
+		List<LeadCatgStato> leads = actRep.listCatgStatoLead(idAccount, tipoLead);
+
+
+		return builder.success(leads);
+	}
 
 
 

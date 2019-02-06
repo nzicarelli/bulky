@@ -19,6 +19,7 @@ public class UserData extends  org.springframework.security.core.userdetails.Use
 	private String name;
 	private String accountType;
 	private Integer userId;
+	;
 	
 
 	public UserData(String username, String password, boolean enabled, boolean accountNonExpired,

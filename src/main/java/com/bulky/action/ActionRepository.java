@@ -91,7 +91,8 @@ public class ActionRepository {
 		sb.append("lcsdescrizione, "); 
 		sb.append("cuname, "); 
 		sb.append("cusurname, "); 
-		sb.append("nact.N "); 
+		sb.append("nact.N ");
+		 
 		sb.append("FROM lead l "); 
 		sb.append("LEFT OUTER JOIN lead_catg_tipo t on l.ltype = t.lctid "); 
 		sb.append("LEFT OUTER JOIN lead_catg_mediaarrivo m ON m.lcmaid = l.lefkmediaarrivo "); 
@@ -194,6 +195,20 @@ public class ActionRepository {
 		} catch (Exception e) {
 		}
 		return null;
+	}
+	
+	@Transactional(readOnly=true)
+	public List<LeadCatgStato> listCatgStatoLead(Integer idAccount, Integer tipoLead) {
+		if (AppUtil.isEmpty(tipoLead)) {
+			return em.createQuery("SELECT l FROM LeadCatgStato l WHERE l.lcsfkaccount = :id ORDER BY l.lcsdescrizione",LeadCatgStato.class)
+					.setParameter("id", idAccount)
+					.getResultList();
+			
+		}
+		return em.createQuery("SELECT l FROM LeadCatgStato l WHERE l.lcsfkaccount = :id AND l.lcsfktipolead = :tipo ORDER BY l.lcsdescrizione",LeadCatgStato.class)
+				.setParameter("id", idAccount)
+				.setParameter("tipo", tipoLead)
+				.getResultList();				
 	}
 	
 	

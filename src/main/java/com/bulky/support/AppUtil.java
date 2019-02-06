@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
 
 
@@ -44,8 +45,11 @@ public final class AppUtil {
 			mapper.getFactory().configure(Feature.ESCAPE_NON_ASCII, true);
 			mapper.getFactory().configure(Feature.IGNORE_UNKNOWN, true);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+			//mapper.registerModule(new Jdk8Module());
 			return mapper.readValue(payload, valueType);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new DataException(e);
 		}	
 	}
@@ -56,6 +60,8 @@ public final class AppUtil {
 			mapper.getFactory().configure(Feature.ESCAPE_NON_ASCII, true);
 			mapper.getFactory().configure(Feature.IGNORE_UNKNOWN, true);
 			mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+			//mapper.registerModule(new Jdk8Module());
 			CollectionType javaType = mapper.getTypeFactory()
 				      .constructCollectionType(List.class, valueType);
 			return mapper.readValue(payload, javaType);
@@ -68,6 +74,7 @@ public final class AppUtil {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.getFactory().configure(Feature.ESCAPE_NON_ASCII, true);
+			mapper.registerModule(new Jdk8Module());
 			return mapper.writeValueAsString(o);
 		} catch (Exception e) {
 			throw new DataException(e);

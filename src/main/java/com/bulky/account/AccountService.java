@@ -1,8 +1,8 @@
 package com.bulky.account;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -83,6 +83,7 @@ public class AccountService implements UserDetailsService {
 		if(account == null) {
 			throw new UsernameNotFoundException("user not found");
 		}
+		
 		UserData user = createUser(account);
 		user.setAccountType("USER");
 		return user;
@@ -127,7 +128,15 @@ public class AccountService implements UserDetailsService {
 	}
 	
 	private UserData createUser(User account) {
-		UserData user = new UserData(account.getUemail(), account.getUpasswd(), Collections.singleton(createAuthority(account)));
+		boolean accountNonExpired = true;// account.getUenable()==null || account.getUenable().booleanValue();
+		boolean credentialsNonExpired = true; //account.getUenable()==null || account.getUenable().booleanValue();
+		boolean accountNonLocked = true;// account.getUenable()==null || account.getUenable().booleanValue();
+		boolean enabled = account.getUenable()==null || account.getUenable().booleanValue();
+		UserData user = new UserData(account.getUemail(), account.getUpasswd(),
+				enabled,accountNonExpired,credentialsNonExpired,accountNonLocked,
+				Collections.singleton(createAuthority(account)));
+		
+		//(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		user.setIdAccount(account.getUaccount());
 		user.setName(account.getUname());
 		user.setRole(account.getUrole());
@@ -140,8 +149,14 @@ public class AccountService implements UserDetailsService {
 		return new SimpleGrantedAuthority(account.getUrole());
 	}
 	
-	public User findById(Integer userId) {
-		return accountRepository.findOne(Long.valueOf(userId.intValue()));
+	public User findById(Integer userId) {		
+		//return accountRepository.findOne(Long.valueOf(userId.intValue()));
+		return accountRepository.findById(userId);
+	}
+	
+	@Transactional(readOnly=true)
+	public List<User> findAll(Integer idAccount) {
+		return accountRepository.findAllByAccount(idAccount);
 	}
 
 }
