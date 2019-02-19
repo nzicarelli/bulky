@@ -55,6 +55,7 @@ export class AnagraficheService {
   }
 
   public saveUser(user: any) {
+    user.udtmod = undefined;
     const myUrl = this.config.getConfig('baseUrl');
     return this.http.post(myUrl + '/api/user/add-update', user)
       .toPromise()

@@ -21,6 +21,8 @@ export class UserLeadListComponent implements OnInit {
   public denom = '';
   public tipiLead: any[] = [];
   public tSel: any;
+  public statiLead: any[] = [];
+  public sSel: any;
 
   constructor(private leadService: LeadService, private dataServ: DataUtilService,
               private paramServ: ParameterService,
@@ -30,6 +32,15 @@ export class UserLeadListComponent implements OnInit {
     this.loadPeriodi();
     this.loadComuni();
     this.loadTipoContatti();
+    this.loadStatoContatti();
+  }
+
+
+
+  loadStatoContatti() {
+    this.leadService.listStatoLead().then( (res: any) => {
+      this.statiLead = res.output;
+    })
   }
 
   loadTipoContatti() {

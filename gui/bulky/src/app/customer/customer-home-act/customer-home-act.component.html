@@ -97,8 +97,8 @@
 </div>
 
 
-<p-dialog header="{{myAct ? myAct.catitle : 'Nuova Richiesta'}}" [(visible)]="displayAct" [modal]="true" [responsive]="true" [style]="{width: '700px', minWidth: '600px'}" [minY]="70"
-          [maximizable]="true" [baseZIndex]="10000">
+<p-dialog header="{{myAct ? myAct.catitle : 'Nuova Richiesta'}}" [(visible)]="displayAct" [modal]="true" [responsive]="true" [style]="{minWidth: '400px'}" [minY]="70"
+          [maximizable]="true"  appendTo="body" autoZIndex="true" [autoZIndex]="true">
   <app-act-customer-standard *ngIf="myAct && myAct.cadoctype === 'act-standard' && displayAct" ></app-act-customer-standard>
   <app-act-customer-bulky *ngIf="myAct && myAct.cadoctype === 'act-bulky' && displayAct"  ></app-act-customer-bulky>
 </p-dialog>

@@ -25,6 +25,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ActCustomerStandardComponent} from "../../customer/lead/action/act-customer-standard/act-customer-standard.component";
 import {ActCustomerBulkyComponent} from "../../customer/lead/action/act-customer-bulky/act-customer-bulky.component";
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {DropdownModule} from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import {ActCustomerBulkyComponent} from "../../customer/lead/action/act-customer
     SidebarModule,
     DialogModule,
     RadioButtonModule,
+    DropdownModule,
 
     // MATERIAL *****
     MatFormFieldModule,
@@ -61,7 +64,8 @@ import {ActCustomerBulkyComponent} from "../../customer/lead/action/act-customer
     MatTooltipModule,
     MatChipsModule,
     MatButtonToggleModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSlideToggleModule
 
 
   ],
@@ -78,6 +82,7 @@ import {ActCustomerBulkyComponent} from "../../customer/lead/action/act-customer
     SidebarModule,
     DialogModule,
     RadioButtonModule,
+    DropdownModule,
 
     // MATERIAL
     MatFormFieldModule,
@@ -93,7 +98,7 @@ import {ActCustomerBulkyComponent} from "../../customer/lead/action/act-customer
     MatChipsModule,
     MatButtonToggleModule,
     MatExpansionModule,
-
+    MatSlideToggleModule,
 
     // BULKY
     ActCustomerStandardComponent,

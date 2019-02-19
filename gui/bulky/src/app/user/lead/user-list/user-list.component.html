@@ -1,3 +1,65 @@
-<p>
-  user-list works!
-</p>
+<div class="row bg-light no-margin">
+  <div class="container ">
+    <div class="row" style="padding-top: 20px; padding-bottom: 15px">
+      <div class="col-sm-12 col-md-2">
+        <mat-form-field class="width-100">
+          <input matInput placeholder="Utente" [(ngModel)]="denom" (input)="dt.filter($event.target.value, 'uname', 'startsWith')">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="kgreen" style="font-size: 24px; margin-top: 25px; margin-bottom: 15px;"><B>Elenco Utenti</B></div>
+  <div>
+    <p-table [value]="listUser" #dt [paginator]="true" [rows]="20" [responsive]="true" [loading]="loading"
+             [pageLinks]="5" [rowsPerPageOptions]="[5,10,15,20,50,100]" dataKey="uid"
+             class="ktable"
+             selectionMode="single" [(selection)]="myUser" (onRowSelect)="onRowSelect($event)">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Utente</th>
+          <th>Tipo</th>
+          <th>Email</th>
+          <th>Stato</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-obj >
+        <tr [pSelectableRow]="obj">
+          <td>
+            <span class="ui-column-title">Utente</span>
+            {{obj.uname}}
+          </td>
+          <td>
+            <span class="ui-column-title">Tipo</span>
+            {{obj.utype}}
+          </td>
+          <td>
+            <span class="ui-column-title">Email</span>
+            {{obj.uemail}}
+          </td>
+          <td>
+            <span class="ui-column-title">Stato</span>
+            <i class="fa fa-check kgreen" aria-hidden="true" pTooltip="Attivo" *ngIf="obj.uenable"></i>
+            <i class="fa fa-times kred" aria-hidden="true" pTooltip="Non Attivo" *ngIf="!obj.uenable"></i>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+          <td [attr.colspan]="5">
+            No records found
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<p-dialog header="Nuovo/Modifica Utente" [(visible)]="displayUser" [modal]="true" [responsive]="true" [style]="{width: '650px', minWidth: '400px'}" [minY]="70"
+          [maximizable]="true" [baseZIndex]="10000">
+  <div>
+    <app-user *ngIf="displayUser" [user]="myUser" (close)="closeUser()"></app-user>
+  </div>
+</p-dialog>
