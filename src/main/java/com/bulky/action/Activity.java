@@ -41,6 +41,12 @@ public class Activity implements Serializable {
 	private String atitle;
 	
 	private Integer afklead;
+	
+	private Integer alead_from_status;
+	
+	private Integer alead_to_status;
+	
+	
 
 	public Activity() {
 	}
@@ -141,4 +147,19 @@ public class Activity implements Serializable {
 		this.afklead = afklead;
 	}
 
+	public void setAlead_from_status(Integer alead_from_status) {
+		this.alead_from_status = alead_from_status;
+	}
+	
+	public Integer getAlead_from_status() {
+		return alead_from_status;
+	}
+	
+	public void setAlead_to_status(Integer alead_to_status) {
+		this.alead_to_status = alead_to_status;
+	}
+	
+	public Integer getAlead_to_status() {
+		return alead_to_status;
+	}
 }

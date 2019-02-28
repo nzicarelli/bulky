@@ -53,6 +53,8 @@ public class Lead implements Serializable {
 
 	private Integer lefkmediaarrivo;
 	
+	private Boolean annullabile = true;
+	
 
 	public Lead() {
 	}
@@ -143,8 +145,13 @@ public class Lead implements Serializable {
 
 	public void setLefkmediaarrivo(Integer lefkmediaarrivo) {
 		this.lefkmediaarrivo = lefkmediaarrivo;
+	}	
+	
+	public Boolean getAnnullabile() {
+		return annullabile;
 	}
 	
-	
-
+	public void setAnnullabile(Boolean annullabile) {
+		this.annullabile = annullabile;
+	}
 }

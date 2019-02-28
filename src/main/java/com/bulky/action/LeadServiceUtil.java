@@ -4,6 +4,7 @@
 package com.bulky.action;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LeadServiceUtil {
-	
+
 	@Autowired
 	private ActionRepository actRep;
-	
+
 	public Lead buildLead(Activity act ) {
 		CatgAction catg = actRep.findCatgById(act.getAfktype());
 		Integer idTipoLead = catg.getCafktlead();
@@ -30,6 +31,16 @@ public class LeadServiceUtil {
 		lead.setLfkcustomer(act.getAfkcustomer() );
 		lead.setLtype(idTipoLead );
 		lead.setLaccount( act.getAaccount());
+		Integer idStato = null;
+		if (catg.getToStatoLead()!=null) {
+			idStato = catg.getToStatoLead();
+		}else {
+			List<LeadCatgStato> stati = actRep.listCatgStatoLead(act.getAfkcustomer(), idTipoLead);
+			if (stati!=null && stati.size()>0) {
+				idStato = stati.get(0).getLcsid();
+			}
+		}
+		lead.setLstatus( idStato );
 		return lead;
 	}
 

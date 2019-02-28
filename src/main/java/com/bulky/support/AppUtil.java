@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.springframework.core.env.Environment;
 
 import com.bulky.action.ActBooking;
 import com.bulky.error.DataException;
@@ -192,6 +193,14 @@ public final class AppUtil {
 		
 		return new StartLimit(start,limit);
 		
+	}
+
+	public static Integer getEnvValue(Environment env, String key) {
+		try {
+			return Integer.valueOf(env.getProperty(key));
+		} catch (Exception e) {
+		}
+		return null;
 	}
 
 	

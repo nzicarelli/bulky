@@ -34,7 +34,7 @@ public class ActionRepository {
 			return null;
 		}
 		StringBuffer sb = new StringBuffer();
-		sb.append("SELECT c FROM CatgAction c WHERE c.cafkaccount = :id AND c.caenabled = :enabled ");
+		sb.append("SELECT c FROM CatgAction c WHERE c.viewLevel > :view AND c.cafkaccount = :id AND c.caenabled = :enabled ");
 		
 		if (r.equals(ROLES.ROLE_CUSTOMER)) {
 			sb.append(" AND c.customerEnabled = :customerEnabled ");			
@@ -43,6 +43,7 @@ public class ActionRepository {
 		sb.append(" ORDER BY c.caid ");
 		TypedQuery<CatgAction> tq = em.createQuery(sb.toString(), CatgAction.class);
 		tq.setParameter("id", idAccount);
+		tq.setParameter("view", 0);
 		tq.setParameter("enabled", Boolean.TRUE);
 		if (r.equals(ROLES.ROLE_CUSTOMER)) {
 			tq.setParameter("customerEnabled", Boolean.TRUE);
@@ -88,11 +89,11 @@ public class ActionRepository {
 		sb.append("lefkmediaarrivo, "); 
 		sb.append("lctdescrizione, "); 
 		sb.append("lcmadescrizione, "); 
-		sb.append("lcsdescrizione, "); 
+		sb.append("lcsdescrizione, ");		
 		sb.append("cuname, "); 
 		sb.append("cusurname, "); 
-		sb.append("nact.N ");
-		 
+		sb.append("annullabile, ");
+		sb.append("nact.N ");		
 		sb.append("FROM lead l "); 
 		sb.append("LEFT OUTER JOIN lead_catg_tipo t on l.ltype = t.lctid "); 
 		sb.append("LEFT OUTER JOIN lead_catg_mediaarrivo m ON m.lcmaid = l.lefkmediaarrivo "); 
@@ -122,7 +123,7 @@ public class ActionRepository {
 				.getResultList();
 		List<Map<String,Object>> rs = new ArrayList<>();
 		String[] keys = {"lid","laccount","ltype","lowner","lassign","ldtmod","lstatus","ldescr","lfkcustomer","ledtins","lefkmediaarrivo",
-				"lctdescrizione","lcmadescrizione","lcsdescrizione","cuname","cusurname","N"};
+				"lctdescrizione","lcmadescrizione","lcsdescrizione","cuname","cusurname","annullabile","N"};
 		
 		if (results!=null && results.size()>0) {
 			for( Object o: results) {
@@ -200,16 +201,34 @@ public class ActionRepository {
 	@Transactional(readOnly=true)
 	public List<LeadCatgStato> listCatgStatoLead(Integer idAccount, Integer tipoLead) {
 		if (AppUtil.isEmpty(tipoLead)) {
-			return em.createQuery("SELECT l FROM LeadCatgStato l WHERE l.lcsfkaccount = :id ORDER BY l.lcsdescrizione",LeadCatgStato.class)
+			return em.createQuery("SELECT l FROM LeadCatgStato l WHERE l.lcsfkaccount = :id ORDER BY l.lcsorder, l.lcsdescrizione",LeadCatgStato.class)
 					.setParameter("id", idAccount)
 					.getResultList();
 			
 		}
-		return em.createQuery("SELECT l FROM LeadCatgStato l WHERE l.lcsfkaccount = :id AND l.lcsfktipolead = :tipo ORDER BY l.lcsdescrizione",LeadCatgStato.class)
+		return em.createQuery("SELECT l FROM LeadCatgStato l WHERE l.lcsfkaccount = :id AND l.lcsfktipolead = :tipo ORDER BY l.lcsorder, l.lcsdescrizione",LeadCatgStato.class)
 				.setParameter("id", idAccount)
 				.setParameter("tipo", tipoLead)
 				.getResultList();				
 	}
+
+	
+	@Transactional(readOnly=true)
+	public List<Activity> listActivityByCatgId(Integer actionLeadViewId, Integer id) {
+		return em.createQuery("SELECT a FROM Activity a WHERE a.afktype = :tipo AND a.afklead = :id",Activity.class)
+				.setParameter("tipo", actionLeadViewId)
+				.setParameter("id", id)
+				.getResultList();		
+	}
+	
+	@Transactional(readOnly=true)
+	public LeadCatgStato findStatoLeadById(Integer idStato) {
+		return em.createQuery("SELECT a FROM LeadCatgStato a WHERE a.lcsid = :id",LeadCatgStato.class)				
+				.setParameter("id", idStato)
+				.getSingleResult();	
+	}
+
+	
 	
 	
 

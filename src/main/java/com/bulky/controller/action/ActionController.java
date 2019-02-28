@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,9 +55,14 @@ public class ActionController {
 
 	@Autowired
 	private LeadServiceUtil leadService;
-	
+
 	@Autowired
 	private CustomerRepository customerRep;
+
+
+
+	@Autowired
+	private Environment env;
 
 	@PostMapping("api/action/list")
 	public @ResponseBody ResponseData listAction(@RequestBody String payload, HttpServletRequest request) throws DataException {
@@ -104,13 +110,20 @@ public class ActionController {
 			// crea Lead
 			lead = leadService.buildLead(act);
 			lead.setLaccount(idAccount);
-			//FIXME MANCA LA GESTIONE DEL MEDIA DI ARRIVO
+			//FIXME MANCA LA GESTIONE DEL MEDIA DI ARRIVO			
 			lead = actRep.store(lead);
 			act.setAfklead(lead.getLid());
 		}
 		act.setAdtmod( new Date() );
-		act = actRep.store(act); 
-
+		act.setAlead_from_status(lead.getLstatus());
+		// modifica lo stato lead in base alla catg
+		CatgAction ca = actRep.findCatgById(act.getAfktype());
+		if (ca.getToStatoLead()!=null) {
+			act.setAlead_to_status(ca.getToStatoLead());
+			lead.setLstatus( ca.getToStatoLead() );
+			actRep.store(lead);
+		} 	
+		act = actRep.store(act);
 		return builder.success(Arrays.asList(act));
 	}
 
@@ -279,7 +292,7 @@ public class ActionController {
 		return builder.success(result);		
 	}
 
-	
+
 	@PostMapping("api/action/list-stato-lead")
 	public @ResponseBody ResponseData listStatoLead(@RequestBody String payload, HttpServletRequest request) throws DataException {
 
@@ -305,7 +318,160 @@ public class ActionController {
 		return builder.success(leads);
 	}
 
+	@PostMapping("api/action/lead-viewed")
+	public @ResponseBody ResponseData leadViewed(@RequestBody String payload, HttpServletRequest request) throws DataException {
+		Lead lead = null;
+		JSONObject plo = AppUtil.toPayLoad(payload);
+		Integer id = AppUtil.getIntegerValueOf(plo, "id");
+		if(AppUtil.isEmpty(id)) {
+			return builder.insufficienParameters("id", request.getLocale());
+		}
+		lead = actRep.findLeadById(id);
+		if (lead == null ) {
+			return builder.fail(new Exception("Data Not Found"));
+		}
+		Integer actionLeadViewId = AppUtil.getEnvValue(env,"lead.action.viewed."+lead.getLtype());
+		if (actionLeadViewId==null) {
+			return builder.fail(new Exception("lead.action.viewed."+lead.getLtype()+" Not Found"));
+		}
+		CatgAction ca = null;
+		try {
+			ca = actRep.findCatgById(actionLeadViewId);
+		} catch (Exception e) {
+		}
+		if (ca==null) {
+			return builder.fail(new Exception("catg action with id."+actionLeadViewId+" Not Found"));
+		}
+		Integer idStato = ca.getToStatoLead();
 
+		// crea una azione fittizia per modificare lo stato del contatto in visto
+		// in questo modo si logga ogni volta che il lead viene visto e da chi
+		String userKind = tokenHelper.getUserKind(request);
+		Integer idAccount = tokenHelper.getIdAccount(request);
+		Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
+		Integer cuid = null;
+		ROLES r = null;
+		Activity act = new Activity();
+		act.setAfklead(id);
+		act.setAfktype(actionLeadViewId);
+
+		if (userKind!=null) {
+			r = ROLES.valueOf(userKind);
+		}
+		if (r!=null && r.equals(ROLES.ROLE_CUSTOMER)) {
+			cuid = idUtente;
+		}else {			
+			act.setAassign( idUtente );			
+		}
+		if (act.getAaccount() == null) {
+			act.setAaccount(idAccount);
+		}
+		if (act.getAfkcustomer() == null && cuid!=null) {
+			act.setAfkcustomer( cuid );
+		}
+		if (act.getAfkcustomer()==null) {
+			act.setAfkcustomer( lead.getLfkcustomer() );
+		}
+
+		act.setAdtmod( new Date() );
+		act.setAlead_from_status(lead.getLstatus());
+		
+		if (idStato != null ) {
+			lead.setLstatus(idStato);
+			act.setAlead_to_status( idStato );
+			actRep.store( lead );
+		}else {
+			act.setAlead_to_status( lead.getLstatus() );
+		}
+		act = actRep.store(act);
+		return builder.success(Arrays.asList(act));	
+	}
+
+
+	@PostMapping("api/action/lead-annulled")
+	public @ResponseBody ResponseData leadAnnulled(@RequestBody String payload, HttpServletRequest request) throws DataException {
+		Lead lead = null;
+		JSONObject plo = AppUtil.toPayLoad(payload);
+		Integer id = AppUtil.getIntegerValueOf(plo, "id");
+		if(AppUtil.isEmpty(id)) {
+			return builder.insufficienParameters("id", request.getLocale());
+		}
+		lead = actRep.findLeadById(id);
+		if (lead == null ) {
+			return builder.fail(new Exception("Data Not Found"));
+		}
+		// crea una azione fittizia per modificare lo stato del contatto in chiuso e annullato
+		// in questo modo si logga ogni volta che il lead viene visto e da chi
+		/**
+		  	lead.status.annulled.1=10010
+			lead.status.annulled.2=10020
+			lead.status.annulled.3=10000
+		 **/
+		String propertyKey = "lead.action.annulled."+lead.getLtype();		
+		Integer idAzioneAnnullata = AppUtil.getEnvValue(env, propertyKey);
+		if (idAzioneAnnullata==null) {
+			return builder.fail(new Exception("Property "+propertyKey+" Not Found"));
+		}
+
+		CatgAction ca = null;
+		try {
+			ca = actRep.findCatgById(idAzioneAnnullata);
+		} catch (Exception e) {
+		}
+		if (ca==null) {
+			return builder.fail(new Exception("catg action with id."+idAzioneAnnullata+" Not Found"));
+		}
+		Integer idStato = ca.getToStatoLead();
+		if (idStato == null ) {
+			propertyKey = "lead.status.annulled."+lead.getLtype();		
+			idStato = AppUtil.getEnvValue(env, propertyKey);
+			if (idStato==null) {
+				return builder.fail(new Exception("Property "+propertyKey+" Not Found"));
+			}
+		}
+		LeadCatgStato stato = null;
+		try {
+			stato = actRep.findStatoLeadById(idStato);
+		} catch (Exception e) {
+		}
+		if (stato == null) {
+			return builder.fail(new Exception("catg stato lead with id."+idStato+" Not Found"));
+		}
+		String userKind = tokenHelper.getUserKind(request);
+		Integer idAccount = tokenHelper.getIdAccount(request);
+		Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
+		Integer cuid = null;
+		ROLES r = null;
+		Activity act = new Activity();
+		act.setAfklead(id);
+		act.setAfktype(idAzioneAnnullata);
+		act.setAlead_from_status(lead.getLstatus());
+		act.setAlead_to_status( idStato );
+		if (userKind!=null) {
+			r = ROLES.valueOf(userKind);
+		}
+		if (r!=null && r.equals(ROLES.ROLE_CUSTOMER)) {
+			cuid = idUtente;
+		}else {			
+			act.setAassign( idUtente );			
+		}
+		if (act.getAaccount() == null) {
+			act.setAaccount(idAccount);
+		}
+		if (act.getAfkcustomer() == null && cuid!=null) {
+			act.setAfkcustomer( cuid );
+		}
+		if (act.getAfkcustomer()==null) {
+			act.setAfkcustomer( lead.getLfkcustomer() );
+		}
+
+		act.setAdtmod( new Date() );
+		act = actRep.store(act); 
+		lead.setLstatus(idStato);
+		actRep.store(lead);
+
+		return builder.success(Arrays.asList(act));	
+	}
 
 
 }

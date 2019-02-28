@@ -12,9 +12,9 @@ import java.util.Date;
 @Entity
 @Table(name="catg_action")
 @NamedQueries({
-	@NamedQuery(name=CatgAction.FIND_ALL, query="SELECT c FROM CatgAction c ORDER BY c.caid "),
+	@NamedQuery(name=CatgAction.FIND_ALL, query="SELECT c FROM CatgAction c WHERE c.viewLevel>0  ORDER BY c.caid "),
 	@NamedQuery(name=CatgAction.FIND_BY_ID, query="SELECT c FROM CatgAction c WHERE c.caid = :id  "),
-	@NamedQuery(name=CatgAction.FIND_BY_LEAD, query="SELECT c FROM CatgAction c WHERE c.cafktlead = :id ORDER BY c.cadescr  ")
+	@NamedQuery(name=CatgAction.FIND_BY_LEAD, query="SELECT c FROM CatgAction c WHERE c.viewLevel>0 AND c.cafktlead = :id ORDER BY c.cadescr  ")
 })
 public class CatgAction implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -57,6 +57,19 @@ public class CatgAction implements Serializable {
 	
 	@Column(name="cadoctype" ,columnDefinition="VARCHAR(100) NULL")
 	private String cadoctype;
+	
+	@Column(name="caviewlevel")
+	private Integer viewLevel;
+	
+	
+	@Column(name="ca_lead_from_status")
+	private Integer fromStatoLead;
+	
+	
+	@Column(name="ca_lead_to_status")
+	private Integer toStatoLead;
+		
+	
 
 	public CatgAction() {
 	}
@@ -163,6 +176,28 @@ public class CatgAction implements Serializable {
 
 	public void setCadoctype(String cadoctype) {
 		this.cadoctype = cadoctype;
+	}
+	
+	public Integer getViewLevel() {
+		return viewLevel;
+	}
+	public void setViewLevel(Integer viewLevel) {
+		this.viewLevel = viewLevel;
+	}
+	
+	public Integer getFromStatoLead() {
+		return fromStatoLead;
+	}
+	public void setFromStatoLead(Integer fromStatoLead) {
+		this.fromStatoLead = fromStatoLead;
+	}
+	
+	public Integer getToStatoLead() {
+		return toStatoLead;
+	}
+	
+	public void setToStatoLead(Integer toStatoLead) {
+		this.toStatoLead = toStatoLead;
 	}
 
 }
