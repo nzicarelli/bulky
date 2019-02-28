@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
 
   public password = '';
   public user = '';
-  loading = false;
+  public loading = false;
   returnUrl: string;
   public textError = 'Credenziali non valide';
   public showError = false;

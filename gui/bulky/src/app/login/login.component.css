@@ -168,15 +168,15 @@ iframe {
   justify-content: center;
   align-items: center;
   padding: 15px;
-  background: #9053c7;
+/*  background: #9053c7;
   background: -webkit-linear-gradient(-135deg, #c850c0, #4158d0);
   background: -o-linear-gradient(-135deg, #c850c0, #4158d0);
   background: -moz-linear-gradient(-135deg, #c850c0, #4158d0);
-  background: linear-gradient(-135deg, #c850c0, #4158d0);
+  background: linear-gradient(-135deg, #c850c0, #4158d0);*/
 }
 
 .wrap-login100 {
-  width: 960px;
+  /*width: 960px;*/
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
@@ -188,7 +188,7 @@ iframe {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 177px 130px 33px 95px;
+  padding: 100px 60px 60px 50px;
 }
 
 /*------------------------------------------------------------------
@@ -211,7 +211,7 @@ iframe {
 .login100-form-title {
   font-family: Poppins-Bold;
   font-size: 24px;
-  color: #333333;
+  /*color: #333333;*/
   line-height: 1.2;
   text-align: center;
 
@@ -803,7 +803,7 @@ iframe {
 .p-t-133 {padding-top: 133px;}
 .p-t-134 {padding-top: 134px;}
 .p-t-135 {padding-top: 135px;}
-.p-t-136 {padding-top: 136px;}
+.p-t-136 {padding-top: 70px;}
 .p-t-137 {padding-top: 137px;}
 .p-t-138 {padding-top: 138px;}
 .p-t-139 {padding-top: 139px;}

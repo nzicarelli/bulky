@@ -58,6 +58,19 @@ export class LeadService {
       );
   }
 
+  public listStatoLead() {
+    const myUrl = this.config.getConfig('baseUrl');
+    return this.http.post(myUrl + '/api/action/list-stato-lead', {})
+      .toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(error =>
+        Promise.reject(error.message || error)
+      );
+  }
+
+
   public listTipoAction4TipoLead(tLead: number) {
     const myParam: any = {
       tlead: tLead

@@ -52,18 +52,21 @@
             </div>
             <br>
             <div class="row" *ngFor="let rb of listRowBulky">
-              <div class="col-md-9">
+              <div class="col-md-1">
                 <button mat-icon-button color="warn" *ngIf="rb.crif">
                   <mat-icon aria-label="Rimuovi" (click)="removeRow(rb)" matTooltip="Rimuovi">delete_forever</mat-icon>
                 </button>
-                &nbsp;
-                <mat-form-field style="width: 90%;">
+              </div>
+              <div class="col-md-8">  &nbsp;
+                <p-dropdown [options]="listCatgIngom" [(ngModel)]="rb.crif" placeholder="Seleziona il tipo di rifiuto" optionLabel="crname"
+                            [showClear]="true" (onChange)="selectCatgRifiuto($event)" [style]="{'width': '90%'}"></p-dropdown>
+                <!--<mat-form-field style="width: 90%; z-index: 11000">
                   <mat-select placeholder="Tipo Rifiuto" (selectionChange)="selectCatgRifiuto($event)" [(ngModel)]="rb.crif">
                     <mat-option *ngFor="let r of listCatgIngom" [value]="r">
                       {{r.crname}}
                     </mat-option>
                   </mat-select>
-                </mat-form-field>
+                </mat-form-field>-->
               </div>
               <div class="col-md-3">
                 <p-spinner size="10" (onChange)="selectCatgRifiuto($event)" [(ngModel)]="rb.qty"  [min]="(rb && rb.crif && rb.crif.crqtymin) ? rb.crif.crqtymin : 0" [max]="(rb && rb.crif && rb.crif.crqtymax) ? rb.crif.crqtymax : 0"></p-spinner>

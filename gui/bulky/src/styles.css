@@ -8,3 +8,76 @@
 */
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.no-padding {
+  padding: 0px;
+}
+
+.no-margin {
+  margin: 0px;
+}
+
+.no-space {
+  padding: 0px;
+  margin: 0px;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.kgreen {
+  color: #5CB85C;
+}
+
+.kred {
+  color: #DF1C44;
+}
+
+.kgreen-background {
+  background-color: #5CB85C;
+}
+
+.ktext {
+  color: #5E6871;
+}
+
+.ktable .ui-table .ui-table-thead > tr > th {
+  background-color: white !important;
+  border: none;
+  color: #5E6871;
+  border-bottom: 2px solid lightgray;
+  font-weight: bold;
+}
+
+.ktable .ui-table .ui-table-tbody > tr > td {
+  border: none;
+  border-bottom: 1px solid lightgray;
+  border-top: 1px solid lightgray;
+}
+
+.ktable .ui-table .ui-sortable-column .ui-sortable-column-icon {
+  color: white;
+}
+
+.krectangle {
+  height: 190px;
+  border: 1px solid #E7E7E7;
+  border-radius: 2px;
+  background-color: #F8F8F8;
+}
+
+.krectangle-white {
+  height: 190px;
+  border: 1px solid #E7E7E7;
+  border-radius: 2px;
+  background-color: #FFFFFF;
+}
+
+.text-in-rectangle-blu {
+  border-radius: 2px;
+  background-color: #227EBA;
+  color: white;
+  width: fit-content;
+  padding: 5px;
+}

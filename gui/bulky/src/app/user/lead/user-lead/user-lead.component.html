@@ -6,6 +6,8 @@
         <div class="ui-g-2">{{myCustomer?.cusurname}} {{myCustomer?.cuname}}</div>
         <div class="ui-g-1" style="text-align: right">Tipo Lead:</div>
         <div class="ui-g-2">{{myCustomer?.cusurname}} {{myCustomer?.cuname}}</div>
+        <div class="ui-g-1" style="text-align: right">Stato:</div>
+        <div class="ui-g-2"><div class="text-in-rectangle-blu">{{myLead?.lstatus}}</div></div>
         <div class="ui-g-1" style="text-align: right">Data:</div>
         <div class="ui-g-2">{{myLead?.ledtins | date}}</div>
       </div>
@@ -16,7 +18,7 @@
 <section>
   <div class="ui-g">
     <div class="ui-g-3">
-      <p-card subheader="Attività Programmate">
+      <p-card subheader="Attività Programmate/Eseguite">
         <ul>
           <li *ngFor="let a of azinilead"><a (click)="selectAzione(a)">{{a.catitle}}</a></li>
         </ul>

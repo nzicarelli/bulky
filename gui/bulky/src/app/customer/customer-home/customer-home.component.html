@@ -1,17 +1,22 @@
-<nav class="navbar navbar-light bg-light justify-content-between">
-  <a class="navbar-brand"><img src="../../assets/img/img-01.png" alt="IMG" height="25px">&nbsp;<B>Bulky</B></a>
-  <form class="form-inline">
-    <div class="btn-group">
-      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{myName}}
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" role="button" (click)="logout()">Logout</a>
+<nav class="navbar kgreen-background justify-content-between">
+  <div class="container">
+    <a class="navbar-brand" style="color: white"><img src="assets/img/img-01.png" alt="IMG" height="25px">&nbsp;<B>Bulky</B></a>
+    <form class="form-inline">
+      <span style="color: white; padding-right: 10px">{{myName}}</span>
+      <div class="btn-group">
+        <button type="button" mat-icon-button class="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+          <mat-icon style="color: white; font-size: 24px;">
+            account_circle
+          </mat-icon>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" role="button" (click)="logout()">Logout</a>
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </nav>
-<p-breadcrumb [model]="breadcrumbs" [home]="home"></p-breadcrumb>
+<!--<p-breadcrumb [model]="breadcrumbs" [home]="home"></p-breadcrumb>-->
 <!--<router-outlet  name="customer"></router-outlet>-->
 
 <!--<router-outlet  name="customerOut"></router-outlet>-->

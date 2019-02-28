@@ -18,6 +18,11 @@ export class UserLeadListComponent implements OnInit {
   public comuni: any[] = [];
   public cSel: any;
   public selectedLead: any;
+  public denom = '';
+  public tipiLead: any[] = [];
+  public tSel: any;
+  public statiLead: any[] = [];
+  public sSel: any;
 
   constructor(private leadService: LeadService, private dataServ: DataUtilService,
               private paramServ: ParameterService,
@@ -26,6 +31,22 @@ export class UserLeadListComponent implements OnInit {
   ngOnInit() {
     this.loadPeriodi();
     this.loadComuni();
+    this.loadTipoContatti();
+    this.loadStatoContatti();
+  }
+
+
+
+  loadStatoContatti() {
+    this.leadService.listStatoLead().then( (res: any) => {
+      this.statiLead = res.output;
+    })
+  }
+
+  loadTipoContatti() {
+    this.leadService.listTipoLead().then( (res: any) => {
+      this.tipiLead = res.output;
+    })
   }
 
   loadPeriodi() {

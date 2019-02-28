@@ -45,6 +45,16 @@ public class CustomerController {
 	public @ResponseBody ResponseData listAction(@RequestBody String payload, HttpServletRequest request) throws DataException {
 		JSONObject plObj = AppUtil.toPayLoad(payload);
 		Integer id = AppUtil.getIntegerValueOf(plObj,"cuid");
+		String userKind = tokenHelper.getUserKind(request);
+		Integer idUtente = tokenHelper.getUserId(request); // customer id se si trata di un customer
+		ROLES r = null;
+		if (userKind!=null) {
+			r = ROLES.valueOf(userKind);
+		}
+		if (r!=null && r.equals(ROLES.ROLE_CUSTOMER)) {
+			id = idUtente;
+		}
+		
 		if (AppUtil.isEmpty(id)) {
 			return builder.insufficienParameters("cuid", request.getLocale());
 		}

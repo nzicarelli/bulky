@@ -26,6 +26,10 @@ export class ElencoClientiComponent implements OnInit {
   public typeLead: number;
   public tipiLead: any[] = [];
 
+  public denom = '';
+  public cf = '';
+  public piva = '';
+
   constructor(private anagrServ: AnagraficheService, private dataServ: DataUtilService, private paramServ: ParameterService,
               private router: Router, private route: ActivatedRoute, private leadServ: LeadService) { }
 
