@@ -1,6 +1,3 @@
-create database bulky;
-
-use bulky;
 create table account(
 	aid int not null primary key auto_increment,
 	acredit int null,
