@@ -1,21 +1,22 @@
 package com.bulky.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
-import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.dialect.SpringStandardDialect;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -25,11 +26,14 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 class WebMvcConfig extends WebMvcConfigurationSupport {
 
     private static final String CHARACTER_ENCODING = "UTF-8";
-    private static final String MESSAGE_SOURCE = "/WEB-INF/i18n/messages";
+   
     private static final String VIEWS = "/WEB-INF/views/";
 
     private static final String RESOURCES_LOCATION = "/resources/";
     private static final String RESOURCES_HANDLER = RESOURCES_LOCATION + "**";
+    
+    @Autowired
+    private MessageSource messageSource;
 
     @Override
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
@@ -39,14 +43,6 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
         return requestMappingHandlerMapping;
     }
 
-    @Bean(name = "messageSource")
-    public MessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename(MESSAGE_SOURCE);
-        messageSource.setCacheSeconds(5);
-        messageSource.setDefaultEncoding(CHARACTER_ENCODING);
-        return messageSource;
-    }
 
     @Bean
     public ITemplateResolver templateResolver() {
@@ -63,7 +59,7 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
-        templateEngine.addDialect(new SpringSecurityDialect());
+        templateEngine.addDialect(new SpringStandardDialect());
         templateEngine.addDialect(new Java8TimeDialect());
         return templateEngine;
     }
@@ -79,7 +75,7 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     public Validator getValidator() {
         LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
-        validator.setValidationMessageSource(messageSource());
+        validator.setValidationMessageSource(messageSource);
         return validator;
     }
 
