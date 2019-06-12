@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-12 d-flex align-items-stretch grid-margin">
+    <div class="row flex-grow">
+      <div class="col-12 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Coloured select box</h4>
+            <p class="card-description">
+              Basic bootstrap select in theme colors
+            </p>
+            <div class="form-group">
+              <label for="exampleSelectPrimary">Primary</label>
+              <select class="form-control border-primary" id="exampleSelectPrimary" [(ngModel)]="comune" (change)="onSelectComune($event)">
+                <option value="">Tutti</option>
+                <option *ngFor="let x of comuni" [value]="x">{{x.adcomune}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleSelectInfo">Info</label>
+              <select class="form-control border-info" id="exampleSelectInfo">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleSelectSuccess">Success</label>
+              <select class="form-control border-success" id="exampleSelectSuccess">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleSelectDanger">Danger</label>
+              <select class="form-control border-danger" id="exampleSelectDanger">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleSelectWarning">Warning</label>
+              <select class="form-control border-warning" id="exampleSelectWarning">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p>
+  plan-list works!
+</p>
