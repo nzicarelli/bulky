@@ -24,6 +24,8 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {JwtInterceptor} from './services/jwt.interceptor';
 import {ErrorInterceptor} from './services/error.nterceptor';
+import {NgSelectModule} from "@ng-select/ng-select";
+import { PaginatorComponent } from './common/paginator/paginator.component';
 
 @NgModule({
   declarations: [
@@ -48,9 +50,11 @@ import {ErrorInterceptor} from './services/error.nterceptor';
     NavbarModule,
     FooterModule,
     FixedPluginModule,
-    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'})
+    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'}),
+    NgSelectModule
 
   ],
+  exports:[],
   providers: [AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }],

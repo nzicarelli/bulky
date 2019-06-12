@@ -16,8 +16,11 @@ export class AuthGuard implements CanActivate {
     const currentUser = this.authenticationService.currentUserValue;
     console.log('******************** AuthGuard **********************');
     console.log(currentUser);
-    this.jwtUtil.isTokenExpired(currentUser.token);
-    if (currentUser) {
+    let expired = true;
+    if (currentUser && currentUser.token){
+      expired = this.jwtUtil.isTokenExpired(currentUser.token);
+    }
+    if (currentUser && !expired) {
       // logged in so return true
       return true;
     }
