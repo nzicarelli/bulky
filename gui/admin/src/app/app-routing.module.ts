@@ -24,7 +24,7 @@ import {PlanListComponent} from './crm/plan-list/plan-list.component';
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full',  canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent ,  canActivate: [AuthGuard]},
-  { path: 'forms', component: FormsComponent ,  canActivate: [AuthGuard]},
+  { path: 'forms', component: FormsComponent },
   { path: 'buttons', component: ButtonsComponent ,  canActivate: [AuthGuard]},
   { path: 'tables', component: TablesComponent ,  canActivate: [AuthGuard]},
   { path: 'icons', component: IconsComponent ,  canActivate: [AuthGuard]},
