@@ -1,0 +1,57 @@
+<section class="container-fluid">
+    <!--<ul class="breadcrumb">-->
+    <!--<li class="breadcrumb-item"><a href="javascript:;">Page</a></li>-->
+    <!--<li class="breadcrumb-item active">Blank</li>-->
+    <!--</ul>-->
+    <article class="article">
+        <h2 class="article-title">Utenza {{AppConfig.customer?AppConfig.customer.cusurname:''}}</h2>
+
+        <div class="box box-default table-box mdl-shadow--2dp">
+
+            <div class="box-body">
+                <form>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <mat-form-field style="width: 100%">
+                                    <mat-select placeholder="Indirizzo" [(ngModel)]="indirizzo" name="indirizzo"
+                                                (selectionChange)="onSelectIndirizzo($event)">
+                                        <mat-option *ngFor="let item of indirizzi" [value]="item">
+                                            {{item.adaddress}}, {{item.adnum}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div class="callout callout-info">
+                                    <p>Selected value: {{indirizzo?indirizzo.adaddress:''}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <button mat-button color="primary" [matMenuTriggerFor]="menu">
+                                    <mat-icon class="material-icons">add</mat-icon>
+                                    Aggiungi
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <ng-container *ngFor="let _item of catgTipoLead; let i = index;">
+                                        <button mat-menu-item [matMenuTriggerFor]="sbmenu">{{_item.lctdescrizione}}
+                                        </button>
+                                        <mat-menu matMe #sbmenu="matMenu">
+                                            <button mat-menu-item *ngFor="let _a of catgTipoLead[i].action"
+                                                    (click)="doAction(_a)">{{_a.catitle}}
+                                            </button>
+                                        </mat-menu>
+                                    </ng-container>
+                                </mat-menu>
+                                <div class="divider divider-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <app-planner [indirizzo]="indirizzo" [tipoAction]="selectedAction"></app-planner>
+
+
+    </article>
+
+</section>

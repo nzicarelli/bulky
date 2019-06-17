@@ -16,7 +16,11 @@ function makeAppConfig() {
         AutoCloseMobileNav: true,         // true, false. Automatically close sidenav on route change (Mobile only)
         productLink: '#',
         tokenHeader: 'Authorization',
-        tokenPrefix: 'Bearer '
+        tokenPrefix: 'Bearer ',
+        pageSize: 25,
+        customer: {},
+        comune: '',
+        indirizzo: 0
     };
 
     return AppConfig;

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { APPCONFIG } from "../config";
 import { tap } from "rxjs/internal/operators";
+import { replaceNgsp } from '@angular/compiler/src/ml_parser/html_whitespaces';
 
 @Injectable({
     providedIn: 'root'
@@ -33,6 +34,48 @@ export class ApiService {
             }));
     }
 
+    public listIndirizziByCustomer(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/customer/address', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
+    public listCatgTipoLead(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/action/list-tipo-lead', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
+    public listCatgAction(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/action/list-catgactivity-4lead', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
+    public listCatg(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/custom/list-catg', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
+
+
     public elabResp(resp: any) {
         console.log('************************ API SERVICE ');
         console.log(resp);
@@ -47,7 +90,7 @@ export class ApiService {
     }
 
     public resp2Data(resp: any): any {
-        let obj: any = {};
+        const obj: any = {};
         if (resp && resp.body) {
             const data = resp.body.output;
             const success = resp.body.success;

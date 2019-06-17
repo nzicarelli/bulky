@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PlanListComponent } from './plan-list/plan-list.component';
 import { CrmComponent } from './crm.component';
 import { AuthGuard } from '../services/auth-guard';
+import { CollListComponent } from './coll-list/coll-list.component';
 
 const routes: Routes = [
     {
@@ -10,7 +11,8 @@ const routes: Routes = [
         component: CrmComponent,
         children: [
             {path: '', redirectTo: '/app/dashboard', pathMatch: 'full'},
-            {path: 'plan-list', component: PlanListComponent, canActivate: [AuthGuard]}
+            {path: 'plan-list', component: PlanListComponent, canActivate: [AuthGuard]},
+            {path: 'coll-list', component: CollListComponent, canActivate: [AuthGuard]}
         ]
     }
 ];

@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { APPCONFIG } from '../../config';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-plan-list',
@@ -12,30 +14,38 @@ export class PlanListComponent implements OnInit {
     comune: any;
     comuni: any = [];
 
-    displayedColumns: string[] = ['cuid', 'cusurname', 'cuname', 'cucf', 'progress', 'color'];
+    displayedColumns: string[] = ['cuid', 'cusurname', 'cuname', 'cucf', 'action'];
     dataSource: MatTableDataSource<CustomerData>;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
+    AppConfig: any;
 
-    constructor(private api: ApiService, private changeDetectorRefs: ChangeDetectorRef) {
+    constructor(private api: ApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) {
         // Create 100 users
         const customeres = [];
 
         // Assign the data to the data source for the table to render
         this.dataSource = new MatTableDataSource(customeres);
+
     }
 
     ngOnInit() {
+        this.AppConfig = APPCONFIG;
         this.api.listComuni({}).subscribe((resp) => {
             const result = this.api.resp2Data(resp);
             this.comuni = result.data;
+            this.comune = APPCONFIG.comune;
+            if (this.comune) {
+                this.onSelectComune('');
+            }
         }, (error) => {
             console.log(error);
         });
 
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+
     }
 
     applyFilter(filterValue: string) {
@@ -47,9 +57,9 @@ export class PlanListComponent implements OnInit {
     }
 
     onSelectComune(evt: any) {
-        console.log(evt);
-        console.log(this.comune);
-
+        // console.log(evt);
+        console.log(this.comune + ' ' + this.paginator.pageIndex + ' ' + this.paginator.pageSize);
+        this.AppConfig.comune = this.comune;
         this.api.listCustomer({comune: this.comune}).subscribe(
             (resp) => {
                 const data = this.api.resp2Data(resp);
@@ -62,6 +72,13 @@ export class PlanListComponent implements OnInit {
                 console.log(error);
             }
         );
+    }
+
+    showCollList(row: any) {
+        this.AppConfig.customer = row;
+        // {path : 'heroes', component : HeroDetailComponent, data : {some_data : 'some value'}
+        this.router.navigate(['/app/crm/coll-list', {data: row.cuid}]);
+        // this.router.navigate([{path: 'app/crm/coll-list', data: {data: row}}]);
     }
 }
 

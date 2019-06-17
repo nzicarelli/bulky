@@ -21,6 +21,8 @@ import {
     MatToolbarModule,
     MatTooltipModule
 } from '@angular/material';
+import { CollListComponent } from './coll-list/coll-list.component';
+import { PlannerComponent } from './planner/planner.component';
 
 
 @NgModule({
@@ -61,7 +63,7 @@ import {
         CrmRoutingModule,
         ReactiveFormsModule,
     ],
-    declarations: [CrmComponent, PlanListComponent]
+    declarations: [CrmComponent, PlanListComponent, CollListComponent, PlannerComponent]
 })
 export class CrmModule {
 }
