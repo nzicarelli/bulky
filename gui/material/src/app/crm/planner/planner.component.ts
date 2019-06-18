@@ -12,7 +12,7 @@ import { ApiService } from '../../services/api.service';
 export class PlannerComponent implements OnInit {
     isLinear: false;
 
-    firstFormGroup: FormGroup;
+
     secondFormGroup: FormGroup;
 
     @Input()
@@ -22,11 +22,11 @@ export class PlannerComponent implements OnInit {
 
     catgGroups: CatgGroup[];
 
-    stateForm: FormGroup = this._formBuilder.group({
-        stateGroup: '',
+    catgForm: FormGroup = this._formBuilder.group({
+        catgGroup: '',
     });
 
-    stateGroupOptions: Observable<CatgGroup[]>;
+    catgGroupOptions: Observable<CatgGroup[]>;
 
     constructor(private _formBuilder: FormBuilder, private api: ApiService) {
     }
@@ -60,14 +60,14 @@ export class PlannerComponent implements OnInit {
             }
         );
 
-        this.firstFormGroup = this._formBuilder.group({
-            firstCtrl: ['', Validators.required]
-        });
+        // this.catgFormGroup = this._formBuilder.group({
+        //     catgGroup: '',
+        // });
         this.secondFormGroup = this._formBuilder.group({
             secondCtrl: ['', Validators.required]
         });
 
-        this.stateGroupOptions = this.stateForm.get('stateGroup')!.valueChanges
+        this.catgGroupOptions = this.catgForm.get('catgGroup')!.valueChanges
             .pipe(
                 startWith(''),
                 map((value) => this._filterGroup(value))
