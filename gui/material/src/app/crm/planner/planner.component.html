@@ -6,16 +6,55 @@
 
                 <form [formGroup]="catgForm">
                     <ng-template matStepLabel>Cosa Ritirare</ng-template>
-                    <mat-form-field>
-                        <input type="text" matInput placeholder="States Group" formControlName="catgGroup" required [matAutocomplete]="autoGroup">
-                        <mat-autocomplete #autoGroup="matAutocomplete">
-                            <mat-optgroup *ngFor="let group of catgGroupOptions | async" [label]="group.tipo">
-                                <mat-option *ngFor="let v of group.values" [value]="v.crname">
-                                    {{v.crname}}
-                                </mat-option>
-                            </mat-optgroup>
-                        </mat-autocomplete>
-                    </mat-form-field>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <mat-form-field class="full-width">
+                                <input type="text" matInput placeholder="Selezionare tipo di rifiuto" formControlName="catgGroup" required [matAutocomplete]="autoGroup">
+                                <mat-autocomplete #autoGroup="matAutocomplete" >
+                                    <mat-optgroup *ngFor="let group of catgGroupOptions | async" [label]="group.tipo">
+                                        <mat-option *ngFor="let v of group.values" [value]="v.crname" (onSelectionChange)="onSelect(v)">
+                                            {{v.crname}}
+                                        </mat-option>
+                                    </mat-optgroup>
+                                </mat-autocomplete>
+
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-1">
+                            <button mat-icon-button type="button" color="success" ><mat-icon class="material-icons">add</mat-icon></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="box box-default table-box mdl-shadow--2dp">
+                                <table class="mdl-data-table">
+                                    <thead>
+                                    <tr>
+                                        <th class="mdl-data-table__cell--non-numeric">#</th>
+                                        <th class="mdl-data-table__cell--non-numeric">Materiale</th>
+                                        <th>Quantity</th>
+                                        <th>Rimuovi</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let item of basket; let ix=index;">
+                                        <td class="mdl-data-table__cell--non-numeric">{{(ix+1)}}</td>
+                                        <td class="mdl-data-table__cell--non-numeric">{{item.materiale.crname}}</td>
+                                        <td><button mat-icon-button type="button" color="primary" (click)="updateQty(item,1)"><mat-icon class="material-icons">keyboard_arrow_up</mat-icon></button>
+                                            {{item.qty}}
+                                            <button mat-icon-button color="warn" (click)="updateQty(item,-1)"> <mat-icon class="material-icons">keyboard_arrow_down</mat-icon> </button>
+                                        </td>
+                                        <td>
+                                            <button mat-icon-button type="button" color="warn" (click)="removeItem(ix)"><mat-icon class="material-icons">delete</mat-icon></button>
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                     <div>
                         <button mat-button matStepperNext>Next</button>
                     </div>

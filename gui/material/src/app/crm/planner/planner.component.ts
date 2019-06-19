@@ -28,11 +28,14 @@ export class PlannerComponent implements OnInit {
 
     catgGroupOptions: Observable<CatgGroup[]>;
 
+    basket: any = [];
+
     constructor(private _formBuilder: FormBuilder, private api: ApiService) {
     }
 
     ngOnInit() {
         this.catgGroups = [];
+        this.basket = [];
         this.api.listCatg({}).subscribe(
             (resp) => {
                 const _data = this.api.resp2Data(resp);
@@ -72,6 +75,43 @@ export class PlannerComponent implements OnInit {
                 startWith(''),
                 map((value) => this._filterGroup(value))
             );
+    }
+
+    onSelect(evt: any) {
+        if (!this.basket) {
+            this.basket = [];
+        }
+        let trovato = false;
+        for (const x of this.basket) {
+            if (x.materiale.crid === evt.crid) {
+                x.qty = x.qty + 1;
+                trovato = true;
+                break;
+            }
+        }
+        if (!trovato) {
+            const x: any = {
+                materiale: evt,
+                qty: 1
+            }
+            this.basket.push(x);
+        }
+        console.log(evt);
+    }
+
+    updateQty(item: any, qty: number) {
+        const val = (item.qty + qty);
+        if (val > item.materiale.crqtymax || val < item.materiale.crqtymin) {
+            return;
+        }
+        item.qty = item.qty + qty;
+    }
+
+    removeItem(index: number) {
+        if (index >= 0 && index < this.basket.length) {
+            // this.basket =
+            this.basket.splice(index, 1);
+        }
     }
 
     private _filterGroup(value: string): CatgGroup[] {
