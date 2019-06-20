@@ -77,7 +77,7 @@ export class PlannerComponent implements OnInit {
             );
     }
 
-    onSelect(evt: any) {
+    onSelect(evento: any, evt: any) {
         if (!this.basket) {
             this.basket = [];
         }
@@ -96,7 +96,10 @@ export class PlannerComponent implements OnInit {
             }
             this.basket.push(x);
         }
-        console.log(evt);
+
+        evento.source.value = ''
+
+
     }
 
     updateQty(item: any, qty: number) {

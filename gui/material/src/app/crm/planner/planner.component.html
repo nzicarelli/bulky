@@ -1,5 +1,7 @@
 <div class="box box-default table-box mdl-shadow--2dp">
-    <div class="box-header">{{indirizzo?indirizzo.adaddress:'Select Indirizzo'}} / {{tipoAction?tipoAction.catitle:'Select tipologia'}}</div>
+    <div class="box-header">{{indirizzo?indirizzo.adaddress:'Select Indirizzo'}} /
+        {{tipoAction?tipoAction.catitle:'Select tipologia'}}
+    </div>
     <div class="box-body">
         <mat-horizontal-stepper [linear]="isLinear" #stepper>
             <mat-step [stepControl]="catgFormGroup">
@@ -9,10 +11,12 @@
                     <div class="row">
                         <div class="col-md-5">
                             <mat-form-field class="full-width">
-                                <input type="text" matInput placeholder="Selezionare tipo di rifiuto" formControlName="catgGroup" required [matAutocomplete]="autoGroup">
-                                <mat-autocomplete #autoGroup="matAutocomplete" >
+                                <input type="text" matInput placeholder="Selezionare tipo di rifiuto"
+                                       formControlName="catgGroup" [matAutocomplete]="autoGroup">
+                                <mat-autocomplete #autoGroup="matAutocomplete">
                                     <mat-optgroup *ngFor="let group of catgGroupOptions | async" [label]="group.tipo">
-                                        <mat-option *ngFor="let v of group.values" [value]="v.crname" (onSelectionChange)="onSelect(v)">
+                                        <mat-option *ngFor="let v of group.values" [value]="v.crname"
+                                                    (onSelectionChange)="onSelect($event,v)">
                                             {{v.crname}}
                                         </mat-option>
                                     </mat-optgroup>
@@ -21,7 +25,9 @@
                             </mat-form-field>
                         </div>
                         <div class="col-md-1">
-                            <button mat-icon-button type="button" color="success" ><mat-icon class="material-icons">add</mat-icon></button>
+                            <button mat-icon-button type="button" color="success">
+                                <mat-icon class="material-icons">add</mat-icon>
+                            </button>
                         </div>
                     </div>
                     <div class="row">
@@ -40,12 +46,20 @@
                                     <tr *ngFor="let item of basket; let ix=index;">
                                         <td class="mdl-data-table__cell--non-numeric">{{(ix+1)}}</td>
                                         <td class="mdl-data-table__cell--non-numeric">{{item.materiale.crname}}</td>
-                                        <td><button mat-icon-button type="button" color="primary" (click)="updateQty(item,1)"><mat-icon class="material-icons">keyboard_arrow_up</mat-icon></button>
+                                        <td>
+                                            <button mat-icon-button type="button" color="primary"
+                                                    (click)="updateQty(item,1)">
+                                                <mat-icon class="material-icons">keyboard_arrow_up</mat-icon>
+                                            </button>
                                             {{item.qty}}
-                                            <button mat-icon-button color="warn" (click)="updateQty(item,-1)"> <mat-icon class="material-icons">keyboard_arrow_down</mat-icon> </button>
+                                            <button mat-icon-button color="warn" (click)="updateQty(item,-1)">
+                                                <mat-icon class="material-icons">keyboard_arrow_down</mat-icon>
+                                            </button>
                                         </td>
                                         <td>
-                                            <button mat-icon-button type="button" color="warn" (click)="removeItem(ix)"><mat-icon class="material-icons">delete</mat-icon></button>
+                                            <button mat-icon-button type="button" color="warn" (click)="removeItem(ix)">
+                                                <mat-icon class="material-icons">delete</mat-icon>
+                                            </button>
                                         </td>
                                     </tr>
 
