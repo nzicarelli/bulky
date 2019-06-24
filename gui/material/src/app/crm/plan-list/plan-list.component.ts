@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { APPCONFIG } from '../../config';
 import { Router } from '@angular/router';
+import { DialogUpdAddrZoneComponent } from '../update-address-zone/dialog-upd-addr-zone/dialog-upd-addr-zone.component';
 
 @Component({
     selector: 'app-plan-list',
@@ -13,6 +14,11 @@ export class PlanListComponent implements OnInit {
 
     comune: any;
     comuni: any = [];
+    zona: any;
+    zone: any = [];
+
+    indirizzi: any = [];
+    indirizzo: any;
 
     displayedColumns: string[] = ['cuid', 'cusurname', 'cuname', 'cucf', 'action'];
     dataSource: MatTableDataSource<CustomerData>;
@@ -21,7 +27,8 @@ export class PlanListComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     AppConfig: any;
 
-    constructor(private api: ApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) {
+    constructor(private api: ApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router,
+                private dialog: MatDialog) {
         // Create 100 users
         const customeres = [];
 
@@ -60,7 +67,7 @@ export class PlanListComponent implements OnInit {
         // console.log(evt);
         console.log(this.comune + ' ' + this.paginator.pageIndex + ' ' + this.paginator.pageSize);
         this.AppConfig.comune = this.comune;
-        this.api.listCustomer({comune: this.comune}).subscribe(
+        this.api.listCustomer({comune: this.comune ? this.comune.adcomune : ''}).subscribe(
             (resp) => {
                 const data = this.api.resp2Data(resp);
                 console.log(data);
@@ -72,6 +79,36 @@ export class PlanListComponent implements OnInit {
                 console.log(error);
             }
         );
+
+        this.api.listZoneByComune({comune: this.comune ? this.comune.adcomune : ''}).subscribe(
+            (resp) => {
+                this.zone = this.api.resp2Data(resp).data;
+            }
+        );
+    }
+
+    onSelectZona(evt: any) {
+        console.log(this.zona);
+        this.api.listIndirizziByZone({idzona: this.zona.zid}).subscribe(
+            (resp) => {
+                this.indirizzi = this.api.resp2Data(resp).data;
+            }
+        );
+    }
+
+    onSelectIndirizzo(evt: any) {
+        console.log(this.indirizzo);
+
+    }
+
+    updateZone() {
+        const dialogRef = this.dialog.open(DialogUpdAddrZoneComponent, {
+            height: '600px',
+            width: '800px'
+        });
+        dialogRef.componentInstance.comune = this.comune;
+        dialogRef.componentInstance.zona = this.zona;
+        dialogRef.componentInstance.zone = this.indirizzi;
     }
 
     showCollList(row: any) {

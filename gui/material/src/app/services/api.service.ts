@@ -75,6 +75,45 @@ export class ApiService {
     }
 
 
+    public listZone(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/planning/list-zone', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
+    public listZoneByComune(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/planning/list-zone-by-comune', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
+    public listIndirizziByZone(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/planning/list-detail-zone', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
+    public listDistinctIndirizziByZone(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/planning/list-disticnt-address', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
 
     public elabResp(resp: any) {
         console.log('************************ API SERVICE ');

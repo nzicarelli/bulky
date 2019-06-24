@@ -129,8 +129,31 @@ public class CustomerRepository {
 	
 	
 	
+	@Transactional(readOnly=true)
+	public List<Catgzone> listZoneByComune(Integer accountId, String comune) {
+		return em.createQuery("SELECT c FROM Catgzone c WHERE c.zfkaccount = :id AND EXISTS ( "
+				+ " SELECT x FROM AddressZone x WHERE x.azfkaccount = c.zfkaccount AND x.azfkzona = c.id AND x.azcomune = :comune "
+				+ ") ORDER BY c.zdescr ",Catgzone.class).
+				setParameter("id", accountId).
+				setParameter("comune", comune ).
+				getResultList();
+	}
 	
+	@Transactional(readOnly=true)
+	public List<AddressZone> listAddressZone(Integer accountId, Integer idZona) {
+		return em.createQuery("SELECT c FROM AddressZone c WHERE c.azfkaccount = :id AND c.azfkzona = :zona  ORDER BY c.azcomune,c.azcap, c.azaddress ",AddressZone.class).
+				setParameter("id", accountId).
+				setParameter("zona", idZona ).
+				getResultList();
+	}
 	
-
+	@Transactional(readOnly=true)
+	public List<?> listdDistinctAddressZone(Integer accountId, String comune) {
+		return em.createQuery("SELECT DISTINCT c.adaddress,c.adcap FROM Address c WHERE c.adfkaccount = :id AND c.adcomune = :comune  ORDER BY c.adcap,c.adaddress ").
+				setParameter("id", accountId).
+				setParameter("comune", comune ).
+				getResultList();
+	}
+	
 
 }

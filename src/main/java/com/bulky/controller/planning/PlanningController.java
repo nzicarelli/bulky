@@ -145,6 +145,24 @@ public class PlanningController {
 		return builder.success(zone);
 	}
 	
+	@PostMapping("api/planning/list-zone-by-comune")
+	public @ResponseBody ResponseData listZoneByComune(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		Integer idAccount = tokenHelper.getIdAccount(request);	
+		JSONObject plObj = AppUtil.toPayLoad(payload);
+		String comune = AppUtil.getStringValueOf(plObj, "comune");				
+		List<Catgzone > zone = customerRep.listZoneByComune(idAccount, comune);	
+		return builder.success(zone);
+	}
+	
+	@PostMapping("api/planning/list-detail-zone")
+	public @ResponseBody ResponseData listZoneDetail(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		Integer idAccount = tokenHelper.getIdAccount(request);	
+		JSONObject plObj = AppUtil.toPayLoad(payload);
+		Integer idZone = AppUtil.getIntegerValueOf(plObj, "idzona");				
+		List<AddressZone > zone = customerRep.listAddressZone(idAccount, idZone);	
+		return builder.success(zone);
+	}
+	
 	@PostMapping("api/planning/list-planning")
 	public @ResponseBody ResponseData listPlanningByZona(@RequestBody String payload, HttpServletRequest request) throws DataException {		
 		// Integer idAccount = tokenHelper.getIdAccount(request);		
@@ -203,5 +221,25 @@ public class PlanningController {
 				
 		return builder.success(plannings);
 	}
+	
+	@PostMapping("api/planning/list-disticnt-address")
+	public @ResponseBody ResponseData listDistinctAddress(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		Integer idAccount = tokenHelper.getIdAccount(request);
+				
+		JSONObject plObj = AppUtil.toPayLoad(payload);
+		String comune = AppUtil.getStringValueOf(plObj, "comune");				
+		List<? > zone = customerRep.listdDistinctAddressZone(idAccount, comune);	
+		String[] keys = {"adaddress","adcap"};		
+		List<Map<String,Object>> res = new ArrayList<>();
+		
+		if (zone!=null && zone.size()>0) {
+			for( Object o: zone) {
+				Map<String,Object> v = AppUtil.toMap(keys,(Object[])o);
+				res.add( v );
+			}
+		}
+		return builder.success(res);
+	}
+
 
 }

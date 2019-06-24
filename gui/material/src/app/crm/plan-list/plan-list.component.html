@@ -5,22 +5,87 @@
     <!--</ul>-->
     <article class="article">
         <h2 class="article-title">Gestione Pianificazione</h2>
-
-        <div class="box box-default">
-            <div class="box-body">
-                <form>
-                    <mat-form-field>
-                        <mat-select placeholder="Comune" [(ngModel)]="comune" name="food"
-                                    (selectionChange)="onSelectComune($event)">
-                            <mat-option *ngFor="let item of comuni" [value]="item.adcomune">
-                                {{item.adcomune}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <div class="callout callout-info">
-                        <p>Selected value: {{comune}}</p>
+        <div class="row" style="border: 1px solid red;">
+            <div class="col-md-4">
+                <div class="box box-default">
+                    <div class="box-body">
+                        <form>
+                            <mat-form-field>
+                                <mat-select placeholder="Comune" [(ngModel)]="comune" name="comune"
+                                            (selectionChange)="onSelectComune($event)">
+                                    <mat-option *ngFor="let item of comuni" [value]="item">
+                                        {{item.adcomune}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="callout callout-info">
+                                <p>Selected value: {{comune.adcomune}}</p>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="box box-default">
+                    <div class="box-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <mat-form-field class="full-width">
+                                        <mat-select placeholder="Zona" [(ngModel)]="zona" name="zona"
+                                                    (selectionChange)="onSelectZona($event)">
+                                            <!--
+                                            zid
+                                            zfkaccount
+                                            zdescr
+                                            zdtmod
+                                            zdtins
+                                            zusermod
+                                            -->
+                                            <mat-option *ngFor="let item of zone" [value]="item">
+                                                {{item.zdescr}}
+                                            </mat-option>
+                                        </mat-select>
+
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" color="primary" (click)="updateZone()" mat-icon-button><mat-icon>note_add</mat-icon></button>
+                                </div>
+                            </div>
+                            <div class="callout callout-info">
+                                <p>Selected value: {{zona}}</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="box box-default">
+                    <div class="box-body">
+                        <form>
+                            <mat-form-field>
+                                <mat-select placeholder="Indirizzo" [(ngModel)]="indizizzo" name="indirizzo"
+                                            (selectionChange)="onSelectIndirizzo($event)">
+                                    <!--
+                                    {"azid":1,"azaddress":"VIA TRIESTE","azcap":"87046","azcomune":"MOLTALTO UFFUGO","azdtins":null,"azdtmod":null,"azfkaccount":1,"azfkzona":10,"azprov":"COSENZA","azsiglaprov":"CS","azusermod":null}
+                                    -->
+                                    <mat-option *ngFor="let item of indirizzi" [value]="item">
+                                        <span *ngIf="!item.azaddress">
+                                            <span *ngIf="item.azcap; else allcomune">{{item.azcap}}</span>
+                                            <ng-template #allcomune>{{item.azcomune}}</ng-template>
+                                        </span>
+                                        <span *ngIf="item.azaddress">{{item.azaddress}}</span>
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="callout callout-info">
+                                <p>Selected value: {{zona}}</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 

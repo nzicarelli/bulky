@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Aggiungi/Modifica indirizzi alla ZONA</h2>
+<mat-dialog-content class="mat-typography">
+    <app-update-address-zone [comnune]="comune" [zona]="zona" [zone]="zone" #updater></app-update-address-zone>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="salva()">Salva</button>
+</mat-dialog-actions>

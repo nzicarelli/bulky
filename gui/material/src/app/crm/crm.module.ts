@@ -23,6 +23,8 @@ import {
 } from '@angular/material';
 import { CollListComponent } from './coll-list/coll-list.component';
 import { PlannerComponent } from './planner/planner.component';
+import { UpdateAddressZoneComponent } from './update-address-zone/update-address-zone.component';
+import { DialogUpdAddrZoneComponent } from './update-address-zone/dialog-upd-addr-zone/dialog-upd-addr-zone.component';
 
 
 @NgModule({
@@ -63,7 +65,8 @@ import { PlannerComponent } from './planner/planner.component';
         CrmRoutingModule,
         ReactiveFormsModule,
     ],
-    declarations: [CrmComponent, PlanListComponent, CollListComponent, PlannerComponent]
+    declarations: [CrmComponent, PlanListComponent, CollListComponent, PlannerComponent, UpdateAddressZoneComponent, DialogUpdAddrZoneComponent],
+    entryComponents: [DialogUpdAddrZoneComponent]
 })
 export class CrmModule {
 }
