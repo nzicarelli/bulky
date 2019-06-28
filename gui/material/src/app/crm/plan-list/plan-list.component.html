@@ -19,7 +19,7 @@
                                 </mat-select>
                             </mat-form-field>
                             <div class="callout callout-info">
-                                <p>Selected value: {{comune.adcomune}}</p>
+                                <p>Selected value: {{comune?comune.adcomune:''}}</p>
                             </div>
                         </form>
                     </div>
@@ -50,7 +50,12 @@
                                     </mat-form-field>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button type="button" color="primary" (click)="updateZone()" mat-icon-button><mat-icon>note_add</mat-icon></button>
+                                    <button type="button" color="primary" (click)="updateZone()" mat-icon-button>
+                                        <mat-icon>note_add</mat-icon>
+                                    </button>
+                                    <button type="button" color="primary" (click)="updateZoneNew()" mat-icon-button>
+                                        <mat-icon>build</mat-icon>
+                                    </button>
                                 </div>
                             </div>
                             <div class="callout callout-info">
@@ -65,21 +70,30 @@
                 <div class="box box-default">
                     <div class="box-body">
                         <form>
-                            <mat-form-field>
-                                <mat-select placeholder="Indirizzo" [(ngModel)]="indizizzo" name="indirizzo"
-                                            (selectionChange)="onSelectIndirizzo($event)">
-                                    <!--
-                                    {"azid":1,"azaddress":"VIA TRIESTE","azcap":"87046","azcomune":"MOLTALTO UFFUGO","azdtins":null,"azdtmod":null,"azfkaccount":1,"azfkzona":10,"azprov":"COSENZA","azsiglaprov":"CS","azusermod":null}
-                                    -->
-                                    <mat-option *ngFor="let item of indirizzi" [value]="item">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <mat-form-field>
+                                        <mat-select placeholder="Indirizzo" [(ngModel)]="indizizzo" name="indirizzo"
+                                                    (selectionChange)="onSelectIndirizzo($event)">
+                                            <!--
+                                            {"azid":1,"azaddress":"VIA TRIESTE","azcap":"87046","azcomune":"MOLTALTO UFFUGO","azdtins":null,"azdtmod":null,"azfkaccount":1,"azfkzona":10,"azprov":"COSENZA","azsiglaprov":"CS","azusermod":null}
+                                            -->
+                                            <mat-option *ngFor="let item of indirizzi" [value]="item">
                                         <span *ngIf="!item.azaddress">
                                             <span *ngIf="item.azcap; else allcomune">{{item.azcap}}</span>
                                             <ng-template #allcomune>{{item.azcomune}}</ng-template>
                                         </span>
-                                        <span *ngIf="item.azaddress">{{item.azaddress}}</span>
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                                                <span *ngIf="item.azaddress">{{item.azaddress}}</span>
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" color="primary" (click)="updateAddressZone()" mat-icon-button>
+                                        <mat-icon>note_add</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
                             <div class="callout callout-info">
                                 <p>Selected value: {{zona}}</p>
                             </div>

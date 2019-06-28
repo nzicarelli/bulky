@@ -4,6 +4,7 @@ import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/m
 import { APPCONFIG } from '../../config';
 import { Router } from '@angular/router';
 import { DialogUpdAddrZoneComponent } from '../update-address-zone/dialog-upd-addr-zone/dialog-upd-addr-zone.component';
+import { UpdateZoneComponent } from '../update-address-zone/update-zone/update-zone.component';
 
 @Component({
     selector: 'app-plan-list',
@@ -102,6 +103,28 @@ export class PlanListComponent implements OnInit {
     }
 
     updateZone() {
+        const dialogRef = this.dialog.open(UpdateZoneComponent, {
+            height: '600px',
+            width: '800px'
+        });
+        dialogRef.componentInstance.comune = this.comune;
+        dialogRef.componentInstance.zona = this.zona;
+    }
+
+    updateZoneNew() {
+        const dialogRef = this.dialog.open(UpdateZoneComponent, {
+            height: '600px',
+            width: '800px'
+        });
+        dialogRef.componentInstance.comune = this.comune;
+        dialogRef.componentInstance.zona = {
+            zid: undefined,
+            zcomune: this.comune ? this.comune.adcomune : '',
+            zdescr: ''
+        };
+    }
+
+    updateAddressZone() {
         const dialogRef = this.dialog.open(DialogUpdAddrZoneComponent, {
             height: '600px',
             width: '800px'
@@ -138,7 +161,6 @@ export interface CustomerData {
     cucode02: string;
 
 }
-
 
 /** Constants used to fill up our data base. */
 const COLORS: string[] = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',

@@ -12,8 +12,8 @@ import { APPCONFIG } from '../../config';
 export class UpdateAddressZoneComponent implements OnInit {
 
     @Input() comnune: any;
-    @Input() zona: any
-    @Input() zone: any = []
+    @Input() zona: any;
+    @Input() zone: any = [];
 
     data: any;
 
@@ -114,6 +114,11 @@ export class UpdateAddressZoneComponent implements OnInit {
 
     save() {
         console.log('Save');
+        this.api.saveAddressZone(this.zone).subscribe(
+            (resp) => {
+                console.log(resp);
+            }
+        );
     }
 
     private existsInZone(row: any): boolean {

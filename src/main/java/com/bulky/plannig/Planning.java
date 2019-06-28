@@ -34,6 +34,12 @@ public class Planning implements Serializable {
 	private Integer plnowner;
 
 	private Integer plnusrmod;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date plndal;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date plnal;
 
 	public Planning() {
 	}
@@ -101,5 +107,23 @@ public class Planning implements Serializable {
 	public void setPlnusrmod(Integer plnusrmod) {
 		this.plnusrmod = plnusrmod;
 	}
+
+	public Date getPlndal() {
+		return plndal;
+	}
+
+	public void setPlndal(Date plndal) {
+		this.plndal = plndal;
+	}
+
+	public Date getPlnal() {
+		return plnal;
+	}
+
+	public void setPlnal(Date plnal) {
+		this.plnal = plnal;
+	}
+	
+	
 
 }

@@ -34,7 +34,8 @@ public final class AppUtil {
 	public static SimpleDateFormat DATE_FORMAT_ITA = new SimpleDateFormat("dd/MM/yyyy");
 	public static SimpleDateFormat DATE_TIME_FORMAT_ITA = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	public static SimpleDateFormat DATE_TIME2_FORMAT_ITA = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	public static SimpleDateFormat[] DATE_FORMATS = {DATE_FORMAT,DATE_TIME2_FORMAT_ITA,DATE_TIME_FORMAT_ITA,DATE_FORMAT_ITA};
+	public static SimpleDateFormat[] DATE_FORMATS = {DATE_FORMAT,DATE_TIME2_FORMAT_ITA,DATE_TIME_FORMAT_ITA,DATE_FORMAT_ITA,
+			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")};
 
 	public static boolean isEmpty(String value) {
 		return value == null || value.trim().length()==0;

@@ -30,6 +30,8 @@ public class Catgzone implements Serializable {
 	private Integer zfkaccount;
 
 	private Integer zusermod;
+	
+	private String zcomune;
 
 	public Catgzone() {
 	}
@@ -80,6 +82,14 @@ public class Catgzone implements Serializable {
 
 	public void setZusermod(Integer zusermod) {
 		this.zusermod = zusermod;
+	}
+
+	public String getZcomune() {
+		return zcomune;
+	}
+
+	public void setZcomune(String zcomune) {
+		this.zcomune = zcomune;
 	}
 
 }

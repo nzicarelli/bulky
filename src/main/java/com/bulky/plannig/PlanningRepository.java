@@ -77,6 +77,22 @@ public class PlanningRepository {
 		return em.createQuery("SELECT c FROM Planning c WHERE c.plnfkzona = :id ORDER BY c.plndescr ",Planning.class).
 				setParameter("id", idZona).getResultList();
 	}
+	
+	@Transactional(readOnly=true)
+	public List<Planning> findPlanningByZone(Date dal, Date al,Integer idZona) {
+		return em.createQuery("SELECT c FROM Planning c WHERE c.plnfkzona = :id AND c.plndal = :dal AND c.plnal = :al ORDER BY c.plndescr ",Planning.class).
+				setParameter("id", idZona).
+				setParameter("dal", dal).
+				setParameter("al", al).
+				getResultList();
+	}
+	
+	@Transactional(readOnly=true)
+	public Planning findPlanningById(Integer id) {
+		return em.createQuery("SELECT c FROM Planning c WHERE c.plnfkzona = :plnid  ",Planning.class).
+				setParameter("id", id).			
+				getSingleResult();
+	}
 
 	
 	@Transactional(readOnly=true)

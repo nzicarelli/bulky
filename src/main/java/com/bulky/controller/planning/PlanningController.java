@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,7 @@ import com.bulky.response.ResponseBuilder;
 import com.bulky.response.ResponseData;
 import com.bulky.security.TokenHelper;
 import com.bulky.support.AppUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author kaala
@@ -150,7 +152,7 @@ public class PlanningController {
 		Integer idAccount = tokenHelper.getIdAccount(request);	
 		JSONObject plObj = AppUtil.toPayLoad(payload);
 		String comune = AppUtil.getStringValueOf(plObj, "comune");				
-		List<Catgzone > zone = customerRep.listZoneByComune(idAccount, comune);	
+		List<Catgzone > zone = customerRep.listZoneByComune2(idAccount, comune);	
 		return builder.success(zone);
 	}
 	
@@ -239,6 +241,90 @@ public class PlanningController {
 			}
 		}
 		return builder.success(res);
+	}
+	
+	@PostMapping("api/planning/save-address-zona")
+	public @ResponseBody ResponseData saveAddressZone(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		Integer idAccount = tokenHelper.getIdAccount(request);
+		Integer userId = tokenHelper.getUserId(request);
+		try {
+			List<AddressZone> zones = AppUtil.bindToList(payload, AddressZone.class);
+			for (int i = 0; zones != null && i < zones.size(); i++) {
+
+			}
+			customerRep.storeZoneList(zones, idAccount, userId);
+		} catch (Exception e) {
+			return builder.fail(e);
+		}
+		return builder.success();
+	}
+	
+	@PostMapping("api/planning/save-zona")
+	public @ResponseBody ResponseData saveZone(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		Integer idAccount = tokenHelper.getIdAccount(request);
+		Integer userId = tokenHelper.getUserId(request);
+		try {
+			//
+			JSONObject plObj = new JSONObject(payload);
+			String plZone = plObj.getJSONObject("z").toString();
+			// {"dom":false,"lun":true,"mart":false,"sab":false,"giov":false,"merc":true,"ven":true}
+			JSONObject days = plObj.getJSONObject("d");
+			//2019-06-29T22:00:00.000Z
+			String szDal = plObj.getString("dal");
+			String szAl = plObj.getString("al");
+			Date dal = AppUtil.getDateValueOf(plObj, "dal");
+			Date al = AppUtil.getDateValueOf(plObj, "al");
+			
+			Catgzone zona = AppUtil.bindObject(plZone, Catgzone.class);
+			
+			Integer plnid = AppUtil.getIntegerValueOf(plObj, "plnid");
+			
+			// genera per esempio tutti i mercoledi' dalle 9,00 alle 15,00
+			GregorianCalendar cal = new GregorianCalendar();
+			cal.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
+			for (int i=0; i<10; i++) {
+				
+				cal.set(Calendar.HOUR_OF_DAY, 9);
+				cal.set(Calendar.MINUTE, 0);
+				cal.set(Calendar.SECOND, 0);
+				cal.set(Calendar.MILLISECOND, 0);			
+				
+				Date start = cal.getTime();
+				cal.set(Calendar.HOUR_OF_DAY, 15);
+				
+				Date end = cal.getTime();
+				
+				PlanDetail detail = null ;
+				try {
+					detail = planRep.findByDate(idAccount, plnid, start, end);
+				} catch (Exception e) {
+
+				}
+				if (detail == null) {
+					detail = new PlanDetail();
+					detail.setPldfkaccount(idAccount);
+					detail.setPldfkplannig(plnid);
+					detail.setPlddtins( new Date());
+				}
+				detail.setPlddescr( AppUtil.formatDateAsText( start, end , request.getLocale()) );
+				detail.setPldtmod( new Date ());
+				detail.setPldusrmod(userId);
+				detail.setPlddatefrom(start);
+				detail.setPlddateto(end);
+				planRep.store(detail);
+				cal.add(Calendar.DATE, 8);
+				
+				
+			}
+						
+			zona = customerRep.storeZone(zona, idAccount, userId);
+			List<Catgzone> rs = new ArrayList<>();
+			rs.add(zona);
+			return builder.success(rs);
+		} catch (Exception e) {
+			return builder.fail(e);
+		}
+		
 	}
 
 

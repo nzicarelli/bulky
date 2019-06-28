@@ -115,6 +115,26 @@ export class ApiService {
             }));
     }
 
+    public saveZone(params: any) {
+        if (!params) {
+            params = [];
+        }
+        return this.http.post<any>('/api/planning/save-zona', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
+    public saveAddressZone(params: any) {
+        if (!params) {
+            params = [];
+        }
+        return this.http.post<any>('/api/planning/save-address-zona', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
     public elabResp(resp: any) {
         console.log('************************ API SERVICE ');
         console.log(resp);
