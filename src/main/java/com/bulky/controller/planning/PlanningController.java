@@ -277,7 +277,30 @@ public class PlanningController {
 			
 			Catgzone zona = AppUtil.bindObject(plZone, Catgzone.class);
 			
+			zona = customerRep.storeZone(zona, idAccount, userId);
+			
 			Integer plnid = AppUtil.getIntegerValueOf(plObj, "plnid");
+			
+			Planning planning = null;
+			if (!AppUtil.isEmpty(plnid)) {
+				try {
+					planning = planRep.findPlanningById(plnid);
+				} catch (Exception e) {
+				}
+			}
+			if (planning == null) {
+				// crea uno nuovo
+				planning = new Planning();
+				planning.setPlnfkaccount(idAccount);
+				planning.setPlnal(dal);
+				planning.setPlndal(al);
+				planning.setPlndtins( new Date () );
+				planning.setPlnusrmod(userId);
+				planning.setPlnowner( userId );
+				planning.setPlnfkzona( zona.getZid() );
+				
+				
+			}
 			
 			// genera per esempio tutti i mercoledi' dalle 9,00 alle 15,00
 			GregorianCalendar cal = new GregorianCalendar();
@@ -317,7 +340,7 @@ public class PlanningController {
 				
 			}
 						
-			zona = customerRep.storeZone(zona, idAccount, userId);
+			
 			List<Catgzone> rs = new ArrayList<>();
 			rs.add(zona);
 			return builder.success(rs);
