@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,10 +24,10 @@ import com.bulky.support.AppUtil;
  */
 @Repository
 public class PlanningRepository {
-	
+
 	@Autowired
 	private EntityManager em;
-	
+
 	@Transactional
 	public PlanDetail store(PlanDetail detail) {
 		return em.merge(detail);
@@ -43,7 +44,7 @@ public class PlanningRepository {
 				.setParameter("to", end)
 				.getSingleResult();
 	}
-	
+
 	@Transactional(readOnly=true)
 	public PlanDetail listDetail(Integer idAccount, Integer plnid, Date start, Date end) {		
 		return em.createQuery(" SELECT d FROM PlanDetail d WHERE d.pldfkplannig = :id "
@@ -55,7 +56,7 @@ public class PlanningRepository {
 				.setParameter("to", end)
 				.getSingleResult();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public List<PlanDetail> listPlanDetail(Integer idZona) {
@@ -66,18 +67,22 @@ public class PlanningRepository {
 		sb.append("WHERE pd.pldfkplannig = p.plnid "); 
 		sb.append("AND p.plnfkzona = :id "); 
 		sb.append("ORDER BY pd.plddatefrom ");
-		
+
 		return em.createNativeQuery(sb.toString(),PlanDetail.class)
 				.setParameter("id", idZona)				
 				.getResultList();
 	}
-	
+
 	@Transactional(readOnly=true)
-	public List<Planning> listPlanningByZone(Integer idZona) {
-		return em.createQuery("SELECT c FROM Planning c WHERE c.plnfkzona = :id ORDER BY c.plndescr ",Planning.class).
-				setParameter("id", idZona).getResultList();
+	public List<Planning> listPlanningByZone(Integer idZona, Date dal, Date al) {
+		
+		TypedQuery<Planning> q = em.createQuery("SELECT c FROM Planning c WHERE c.plnfkzona = :id AND (c.plndal>=:dal OR :dal IS NULL ) AND (c.plnal<= :al OR :al IS NULL )  ORDER BY c.plndescr ",Planning.class);
+		q.setParameter("dal", dal);
+		q.setParameter("al", al);
+		q.setParameter("id", idZona);
+		return q.getResultList();
 	}
-	
+
 	@Transactional(readOnly=true)
 	public List<Planning> findPlanningByZone(Date dal, Date al,Integer idZona) {
 		return em.createQuery("SELECT c FROM Planning c WHERE c.plnfkzona = :id AND c.plndal = :dal AND c.plnal = :al ORDER BY c.plndescr ",Planning.class).
@@ -86,7 +91,7 @@ public class PlanningRepository {
 				setParameter("al", al).
 				getResultList();
 	}
-	
+
 	@Transactional(readOnly=true)
 	public Planning findPlanningById(Integer id) {
 		return em.createQuery("SELECT c FROM Planning c WHERE c.plnfkzona = :plnid  ",Planning.class).
@@ -94,13 +99,13 @@ public class PlanningRepository {
 				getSingleResult();
 	}
 
-	
+
 	@Transactional(readOnly=true)
 	public List<PlanDetail> listPlanningDeatil(Integer idPlan) {
 		return em.createQuery("SELECT c FROM PlanDetail c WHERE c.pldfkplannig = :id ORDER BY c.plddatefrom,c.plddateto ",PlanDetail.class).
 				setParameter("id", idPlan).getResultList();
 	}
-	
+
 	@Transactional(readOnly=true)
 	public List<Map<String,Object>> listZoneAndPlanning(Integer accountId) {
 		List<Map<String, Object>> results = new ArrayList<>();
@@ -113,7 +118,7 @@ public class PlanningRepository {
 				.setParameter("account", accountId)				
 				.getResultList();
 		String[] keys = {"plnid","plndescr","plnfkzona","zid","zdescr"};
-		
+
 		if (addrs!=null && addrs.size()>0) {
 			for( Object o: addrs) {
 				Map<String,Object> v = AppUtil.toMap(keys,(Object[])o);
@@ -122,7 +127,7 @@ public class PlanningRepository {
 		}
 		return results;
 	}
-	
+
 	@Transactional(readOnly=true)
 	public Map<String,Object> calcQty(Integer accountId, Integer idPlanDetail) {
 		Map<String, Object> results = new HashMap<>();
@@ -136,7 +141,7 @@ public class PlanningRepository {
 				.setParameter("pd", idPlanDetail)				
 				.getResultList();
 		String[] keys = {"incombro","qty"};
-		
+
 		if (qtys!=null && qtys.size()>0) {
 			for( Object o: qtys) {
 				Map<String,Object> v = AppUtil.toMap(keys,(Object[])o);
@@ -145,7 +150,7 @@ public class PlanningRepository {
 		}
 		return results;
 	}
-	
+
 	@Transactional(readOnly=true)
 	public List<Map<String,Object>> listPlanDetail4Customer(Integer accountId, Integer idPlanDetail, Integer idPlanning) {
 		List<Map<String, Object>> results = new ArrayList<>();
@@ -219,5 +224,17 @@ public class PlanningRepository {
 			}
 		}
 		return results;
+	}
+
+	@Transactional
+	public Planning storePlanning(Planning planning) {		
+		return em.merge(planning);
+	}
+	@Transactional
+	public PlanDetail deletePlanDetailById(Integer id) {
+		PlanDetail detail = em.createNamedQuery( PlanDetail.FIND_BY_ID,PlanDetail.class)
+				.setParameter("id", id).getSingleResult();
+		em.remove(detail);		
+		return detail;
 	}
 }

@@ -127,6 +127,15 @@ public final class AppUtil {
 		sb.append(hour.format(end));		
 		return sb.toString();
 	}
+	
+	public static String formatDalAlAsText(Date dal, Date al, Locale locale) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yy",locale);		
+		StringBuffer sb = new StringBuffer();
+		sb.append(sdf.format(dal));
+		sb.append(" -- ");
+		sb.append(sdf.format(al));				
+		return sb.toString();
+	}
 
 	public static String getStringValueOf(JSONObject plObj, String key) {
 		if (plObj!=null && plObj.has(key)) {
@@ -202,6 +211,14 @@ public final class AppUtil {
 		} catch (Exception e) {
 		}
 		return null;
+	}
+
+	public static boolean getBoolVal(JSONObject obj, String key) {
+		try {
+			return obj.getBoolean(key);
+		} catch (Exception e) {
+		}
+		return false;
 	}
 
 	

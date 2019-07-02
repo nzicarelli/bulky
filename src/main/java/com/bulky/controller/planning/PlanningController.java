@@ -13,7 +13,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +33,6 @@ import com.bulky.response.ResponseBuilder;
 import com.bulky.response.ResponseData;
 import com.bulky.security.TokenHelper;
 import com.bulky.support.AppUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author kaala
@@ -171,11 +169,12 @@ public class PlanningController {
 		
 		JSONObject plObj = AppUtil.toPayLoad(payload);
 		Integer id = AppUtil.getIntegerValueOf(plObj, "zone");
-		
+		Date dal = AppUtil.getDateValueOf(plObj, "dal");
+		Date al = AppUtil.getDateValueOf(plObj, "al");
 		if (AppUtil.isEmpty(id)) {			
 			return builder.insufficienParameters("zone", request.getLocale());
 		}
-		List<Planning > plans = planRep.listPlanningByZone(id);		
+		List<Planning > plans = planRep.listPlanningByZone(id, dal, al);		
 		return builder.success(plans);
 	}
 	
@@ -270,8 +269,8 @@ public class PlanningController {
 			// {"dom":false,"lun":true,"mart":false,"sab":false,"giov":false,"merc":true,"ven":true}
 			JSONObject days = plObj.getJSONObject("d");
 			//2019-06-29T22:00:00.000Z
-			String szDal = plObj.getString("dal");
-			String szAl = plObj.getString("al");
+//			String szDal = plObj.getString("dal");
+//			String szAl = plObj.getString("al");
 			Date dal = AppUtil.getDateValueOf(plObj, "dal");
 			Date al = AppUtil.getDateValueOf(plObj, "al");
 			
@@ -289,6 +288,15 @@ public class PlanningController {
 				}
 			}
 			if (planning == null) {
+				try {
+					List<Planning> pls = planRep.findPlanningByZone(dal, al, zona.getZid());
+					if (pls!=null && pls.size()>0) {
+						planning = pls.get(0);
+					}
+				} catch (Exception e) {
+				}
+			}
+			if (planning == null) {
 				// crea uno nuovo
 				planning = new Planning();
 				planning.setPlnfkaccount(idAccount);
@@ -298,49 +306,116 @@ public class PlanningController {
 				planning.setPlnusrmod(userId);
 				planning.setPlnowner( userId );
 				planning.setPlnfkzona( zona.getZid() );
-				
-				
+				planning.setPlndescr(AppUtil.formatDalAlAsText( dal, al , request.getLocale()));
+				planning = planRep.storePlanning( planning );
 			}
-			
-			// genera per esempio tutti i mercoledi' dalle 9,00 alle 15,00
 			GregorianCalendar cal = new GregorianCalendar();
-			cal.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY);
-			for (int i=0; i<10; i++) {
-				
-				cal.set(Calendar.HOUR_OF_DAY, 9);
-				cal.set(Calendar.MINUTE, 0);
-				cal.set(Calendar.SECOND, 0);
-				cal.set(Calendar.MILLISECOND, 0);			
-				
-				Date start = cal.getTime();
-				cal.set(Calendar.HOUR_OF_DAY, 15);
-				
-				Date end = cal.getTime();
-				
-				PlanDetail detail = null ;
-				try {
-					detail = planRep.findByDate(idAccount, plnid, start, end);
-				} catch (Exception e) {
-
-				}
-				if (detail == null) {
-					detail = new PlanDetail();
-					detail.setPldfkaccount(idAccount);
-					detail.setPldfkplannig(plnid);
-					detail.setPlddtins( new Date());
-				}
-				detail.setPlddescr( AppUtil.formatDateAsText( start, end , request.getLocale()) );
-				detail.setPldtmod( new Date ());
-				detail.setPldusrmod(userId);
-				detail.setPlddatefrom(start);
-				detail.setPlddateto(end);
-				planRep.store(detail);
-				cal.add(Calendar.DATE, 8);
-				
-				
-			}
-						
+			cal.setTime( dal );
 			
+			cal.set(Calendar.HOUR_OF_DAY, 8);
+			cal.set(Calendar.MINUTE, 0);
+			cal.set(Calendar.SECOND, 0);
+			cal.set(Calendar.MILLISECOND, 0);			
+									
+			boolean dom = AppUtil.getBoolVal(days,"dom");
+			boolean lun = AppUtil.getBoolVal(days,"lun");
+			boolean mar = AppUtil.getBoolVal(days,"mart");
+			boolean merc = AppUtil.getBoolVal(days,"merc");
+			boolean gio = AppUtil.getBoolVal(days,"giov");
+			boolean ven = AppUtil.getBoolVal(days,"ven");
+			boolean sab = AppUtil.getBoolVal(days,"sab");
+			
+			GregorianCalendar cal2 = new GregorianCalendar();
+			cal2.setTime( cal.getTime() );
+			while ( cal.getTimeInMillis()<al.getTime()) {
+				int dayOfweek = cal.get(Calendar.DAY_OF_WEEK);
+				Date start = null;
+				Date end = null;
+				switch (dayOfweek) {
+				case Calendar.SUNDAY:
+					if (dom) {
+						start = cal.getTime();
+						cal.set(Calendar.HOUR_OF_DAY, 18);
+						end = cal.getTime();
+						cal.setTime( start );
+					}
+					break;
+				case Calendar.MONDAY:
+					if (lun) {
+						start = cal.getTime();
+						cal.set(Calendar.HOUR_OF_DAY, 18);
+						end = cal.getTime();
+						cal.setTime( start );
+					}
+					break;
+				case Calendar.TUESDAY:
+					if (mar) {
+						start = cal.getTime();
+						cal.set(Calendar.HOUR_OF_DAY, 18);
+						end = cal.getTime();
+						cal.setTime( start );
+					}
+					break;
+				case Calendar.WEDNESDAY:
+					if (merc) {
+						start = cal.getTime();
+						cal.set(Calendar.HOUR_OF_DAY, 18);
+						end = cal.getTime();
+						cal.setTime( start );
+					}
+					break;
+				case Calendar.THURSDAY:
+					if (gio) {
+						start = cal.getTime();
+						cal.set(Calendar.HOUR_OF_DAY, 18);
+						end = cal.getTime();
+						cal.setTime( start );
+					}
+					break;
+				case Calendar.FRIDAY:
+					if (ven) {
+						start = cal.getTime();
+						cal.set(Calendar.HOUR_OF_DAY, 18);
+						end = cal.getTime();
+						cal.setTime( start );
+					}
+					break;
+				case Calendar.SATURDAY:
+					if (sab) {
+						start = cal.getTime();
+						cal.set(Calendar.HOUR_OF_DAY, 18);
+						end = cal.getTime();
+						cal.setTime( start );
+					}
+					break;
+
+				default:
+					break;
+				}
+				if (start!=null && end!=null) {
+					PlanDetail detail = null ;
+					try {
+						detail = planRep.findByDate(idAccount, plnid, start, end);
+					} catch (Exception e) {
+
+					}
+					if (detail == null) {
+						detail = new PlanDetail();
+						detail.setPldfkaccount(idAccount);
+						detail.setPldfkplannig(plnid);
+						detail.setPlddtins( new Date());
+					}
+					detail.setPlddescr( AppUtil.formatDateAsText( start, end , request.getLocale()) );
+					detail.setPldtmod( new Date ());
+					detail.setPldusrmod(userId);
+					detail.setPlddatefrom(start);
+					detail.setPlddateto(end);
+					detail.setPldfkplannig(planning.getPlnid());
+					planRep.store(detail);					
+				}
+				cal.add(Calendar.DATE, 1);
+			}
+				
 			List<Catgzone> rs = new ArrayList<>();
 			rs.add(zona);
 			return builder.success(rs);
@@ -348,6 +423,24 @@ public class PlanningController {
 			return builder.fail(e);
 		}
 		
+	}
+	
+	@PostMapping("api/planning/delete-planning-detail")
+	public @ResponseBody ResponseData deletePlanningDetail(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		Integer idAccount = tokenHelper.getIdAccount(request);		
+		
+		JSONObject plObj = AppUtil.toPayLoad(payload);
+		Integer id = AppUtil.getIntegerValueOf(plObj, "pldid");
+		
+		if (AppUtil.isEmpty(id)) {			
+			return builder.insufficienParameters("pldid", request.getLocale());
+		}
+		try {
+			planRep.deletePlanDetailById(id);
+		} catch (Exception e) {
+			return builder.fail(e);
+		}
+		return builder.success();
 	}
 
 

@@ -11,9 +11,14 @@ import java.util.Date;
  */
 @Entity
 @Table(name="plan_detail")
-@NamedQuery(name="PlanDetail.findAll", query="SELECT p FROM PlanDetail p")
+@NamedQueries({
+	@NamedQuery(name="PlanDetail.findAll", query="SELECT p FROM PlanDetail p"),
+	@NamedQuery(name=PlanDetail.FIND_BY_ID, query="SELECT p FROM PlanDetail p WHERE p.pldid = :id ")
+})
 public class PlanDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	public static final String FIND_BY_ID = "PlanDetail.FindById";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

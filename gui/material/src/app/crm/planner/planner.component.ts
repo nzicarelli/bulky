@@ -78,6 +78,9 @@ export class PlannerComponent implements OnInit {
     }
 
     onSelect(evento: any, evt: any) {
+        if (!evento.source.value){
+            return;
+        }
         if (!this.basket) {
             this.basket = [];
         }

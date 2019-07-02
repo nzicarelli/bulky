@@ -12,41 +12,124 @@
 
             </form>
 
-        </div>
-    </div>
-    <div class="box box-default">
-        <div class="box-header">Pianificazioni</div>
-        <div class="box-body">
             <div class="row">
                 <div class="col-md-6">
                     <mat-form-field>
-                        <input matInput [matDatepicker]="picker" placeholder="DAL" name="dal" [(ngModel)]="dal">
+                        <input matInput [matDatepicker]="picker" placeholder="DAL" name="dal" [(ngModel)]="dal"
+                               (dateChange)="changeData($event)">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                 </div>
                 <div class="col-md-6">
                     <mat-form-field>
-                        <input matInput [matDatepicker]="picker1" placeholder="AL" name="al" [(ngModel)]="al">
+                        <input matInput [matDatepicker]="picker1" placeholder="AL" name="al" [(ngModel)]="al"
+                               (dateChange)="changeData($event)">
                         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                         <mat-datepicker #picker1></mat-datepicker>
                     </mat-form-field>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <mat-list dense>
-                        <mat-list-item> <mat-checkbox [(ngModel)]="days.lun">Lun.</mat-checkbox> </mat-list-item>
-                        <mat-list-item> <mat-checkbox [(ngModel)]="days.mart">Mart.</mat-checkbox> </mat-list-item>
-                        <mat-list-item> <mat-checkbox [(ngModel)]="days.merc">Merc.</mat-checkbox> </mat-list-item>
-                        <mat-list-item> <mat-checkbox [(ngModel)]="days.giov">Giov.</mat-checkbox> </mat-list-item>
-                        <mat-list-item> <mat-checkbox [(ngModel)]="days.ven">Ven.</mat-checkbox> </mat-list-item>
-                        <mat-list-item> <mat-checkbox [(ngModel)]="days.sab">Sab.</mat-checkbox> </mat-list-item>
-                        <mat-list-item> <mat-checkbox [(ngModel)]="days.dom">Dom.</mat-checkbox> </mat-list-item>
-                    </mat-list>
+            <mat-tab-group>
+                <mat-tab label="Elenco date">
+                    <section class="container-fluid">
+                        <div class="article">
+                            <div class="row" style="border: 1px solid red;">
+                                <div class="col-md-12">
+                                    <table class="mdl-data-table full-width">
+                                        <tbody>
+                                        <tr *ngFor="let pln of plannings">
+                                            <td class="mdl-data-table__cell--non-numeric">
+                                                <div class="box box-default">
+                                                    <div class="box-header">
+                                                        {{pln.plndescr}}
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <table class="mdl-data-table">
+                                                            <tbody>
+                                                            <tr *ngFor="let detail of pln.detail">
+                                                                <td class="mdl-data-table__cell--non-numeric">
+                                                                    {{detail.plan.plddescr}}
+                                                                </td>
+                                                                <td>{{(detail.qty &&
+                                                                    detail.qty.qty)?detail.qty.qty:0}}
+                                                                </td>
+                                                                <td>{{(detail.qty && detail.qty.incombro) ?
+                                                                    detail.qty.incombro:0}}
+                                                                </td>
+                                                                <td>
+                                                                    <button type="button" color="warn" mat-icon-button (click)="deleteDetail(pnl)">
+                                                                        <mat-icon class="material-icons">delete_outline</mat-icon>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-                </div>
-            </div>
+
+                        </div>
+                    </section>
+                </mat-tab>
+                <mat-tab label="Modifica Pianificazione">
+                    <section class="container-fluid">
+                        <div class="article-title">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <mat-list dense>
+                                        <mat-list-item>
+                                            <mat-checkbox [(ngModel)]="days.lun">Lun.</mat-checkbox>
+                                        </mat-list-item>
+                                        <mat-list-item>
+                                            <mat-checkbox [(ngModel)]="days.mart">Mart.</mat-checkbox>
+                                        </mat-list-item>
+                                        <mat-list-item>
+                                            <mat-checkbox [(ngModel)]="days.merc">Merc.</mat-checkbox>
+                                        </mat-list-item>
+                                        <mat-list-item>
+                                            <mat-checkbox [(ngModel)]="days.giov">Giov.</mat-checkbox>
+                                        </mat-list-item>
+                                        <mat-list-item>
+                                            <mat-checkbox [(ngModel)]="days.ven">Ven.</mat-checkbox>
+                                        </mat-list-item>
+                                        <mat-list-item>
+                                            <mat-checkbox [(ngModel)]="days.sab">Sab.</mat-checkbox>
+                                        </mat-list-item>
+                                        <mat-list-item>
+                                            <mat-checkbox [(ngModel)]="days.dom">Dom.</mat-checkbox>
+                                        </mat-list-item>
+                                    </mat-list>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </mat-tab>
+                <mat-tab label="Three">
+                    <section class="container-fluid">
+                        <div class="article-title">Blank 3</div>
+                    </section>
+                </mat-tab>
+            </mat-tab-group>
+
+        </div>
+    </div>
+    <div class="box box-default">
+        <!--<div class="box-header">Pianificazioni</div>-->
+        <div class="box-header">
+
+        </div>
+        <div class="box-body">
+
+
         </div>
     </div>
 </mat-dialog-content>

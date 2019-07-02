@@ -135,6 +135,37 @@ export class ApiService {
             }));
     }
 
+
+    public listPlanningByZone(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/planning/list-planning', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
+    public listPlanDetail(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/planning/list-planning-detail', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
+    public deletePlanDetail(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/planning/delete-planning-detail', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
     public elabResp(resp: any) {
         console.log('************************ API SERVICE ');
         console.log(resp);

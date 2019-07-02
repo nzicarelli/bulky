@@ -147,7 +147,7 @@ export interface CustomerData {
     cufkaccount: number;
     cuname: string;
     cusurname: string;
-    cucf: string
+    cucf: string;
     cupiva: string;
     cufktype: number;
     cudtmod: string;
