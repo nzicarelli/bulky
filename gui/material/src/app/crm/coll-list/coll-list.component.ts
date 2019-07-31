@@ -46,7 +46,7 @@ export class CollListComponent implements OnInit {
     }
 
     onSelectIndirizzo(evt: any) {
-
+        // selezione zona indirizzo
     }
 
     doAction(action: any) {

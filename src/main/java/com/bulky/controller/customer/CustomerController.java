@@ -68,14 +68,17 @@ public class CustomerController {
 		Integer account = tokenHelper.getIdAccount(request);
 		JSONObject plObj = AppUtil.toPayLoad(payload);
 		String comune = AppUtil.getStringValueOf(plObj,"comune");
+		String indirizzo = AppUtil.getStringValueOf(plObj,"indirizzo");
 		if (AppUtil.isEmpty(comune)) {
 			return builder.insufficienParameters("comune", request.getLocale());
 		}
 		Integer _limit = AppUtil.getIntegerValueOf(plObj, "limit");
 		Integer _start = AppUtil.getIntegerValueOf(plObj, "start");
+		Integer _zona = AppUtil.getIntegerValueOf(plObj, "zona");
 		int limit = _limit == null ?1000:_limit.intValue();
 		int start = _start == null ?0:_start.intValue();
-		List<Customer> customers = customerRep.listCustomerByComune(account,comune,start,limit);
+		int zona = _zona == null ?0:_zona.intValue();		
+		List<Customer> customers = customerRep.listCustomerByComune(account,comune,start,limit, zona, indirizzo);
 		return builder.success(customers);
 	}
 	

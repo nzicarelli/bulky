@@ -105,6 +105,29 @@ public class PlanningRepository {
 		return em.createQuery("SELECT c FROM PlanDetail c WHERE c.pldfkplannig = :id ORDER BY c.plddatefrom,c.plddateto ",PlanDetail.class).
 				setParameter("id", idPlan).getResultList();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public List<PlanDetail> listPlanningDetailByAddress(String indirizzo){
+		StringBuffer sb = new StringBuffer();
+		sb.append("SELECT "); 
+		sb.append("* "); 
+		sb.append("FROM plan_detail "); 
+		sb.append("where pldfkplannig IN "); 
+		sb.append("( "); 
+		sb.append("   SELECT "); 
+		sb.append("   p.plnid "); 
+		sb.append("   FROM planning P "); 
+		sb.append("   INNER JOIN address_zone A ON P.plnfkzona = A.azfkzona "); 
+		sb.append("   WHERE A.azaddress = :addr "); 
+		sb.append(") "); 
+		// sb.append("and plddatefrom <= now() "); 
+		sb.append("and (plddateto is null OR plddateto >= NOW() ) "); 
+		sb.append("ORDER BY plddatefrom,plddateto ");
+		return em.createNativeQuery(sb.toString(), PlanDetail.class)
+				.setParameter("addr", indirizzo)
+				.getResultList();
+	}
 
 	@Transactional(readOnly=true)
 	public List<Map<String,Object>> listZoneAndPlanning(Integer accountId) {

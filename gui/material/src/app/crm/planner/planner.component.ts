@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/index';
 import { startWith, map } from 'rxjs/operators';
 import { ApiService } from '../../services/api.service';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
     selector: 'app-planner',
@@ -29,11 +30,17 @@ export class PlannerComponent implements OnInit {
     catgGroupOptions: Observable<CatgGroup[]>;
 
     basket: any = [];
+    avaiablePlans: any = [];
+    mySeletedDate: any;
+
+    @ViewChild('planList')
+    planList: any;
 
     constructor(private _formBuilder: FormBuilder, private api: ApiService) {
     }
 
     ngOnInit() {
+        console.log('Planner');
         this.catgGroups = [];
         this.basket = [];
         this.api.listCatg({}).subscribe(
@@ -78,7 +85,7 @@ export class PlannerComponent implements OnInit {
     }
 
     onSelect(evento: any, evt: any) {
-        if (!evento.source.value){
+        if (!evento.source.value) {
             return;
         }
         if (!this.basket) {
@@ -127,6 +134,37 @@ export class PlannerComponent implements OnInit {
                 .filter((group) => group.values.length > 0);
         }
         return this.catgGroups;
+    }
+
+    selectionChange($event?: StepperSelectionEvent): void {
+        console.log(' Step ' + $event.selectedIndex);
+
+        if ($event.selectedIndex == 1) {
+            // load pianificazioni possibili
+            console.log(this.indirizzo); // adaddress {adid: 12, adaddress: "CORSO ITALIA", adcap: "87046", adcomune: "MOLTALTO UFFUGO", addtins: null, …}
+            this.api.listPlanDetail4Address({
+                indirizzo: this.indirizzo ? this.indirizzo.adaddress : ''
+            }).subscribe(
+                (data) => {
+                    const _data = this.api.resp2Data(data);
+                    console.log(_data.data);
+                    this.avaiablePlans = _data.data;
+                }, (error) => {
+
+                }
+            );
+        } else if ($event.selectedIndex == 2) {
+            if (this.planList.selectedOptions) {
+                for (const x of this.planList.selectedOptions.selected) {
+                    console.log(x.value);
+                }
+            }
+        }
+    }
+
+    onPlanSelectChange($event:any){
+        this.planList.deselectAll();
+        $event.option.selected = true;
     }
 
     // stateGroups: StateGroup[] = [{

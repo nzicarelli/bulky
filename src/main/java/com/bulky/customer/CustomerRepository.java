@@ -85,21 +85,38 @@ public class CustomerRepository {
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public List<Customer> listCustomerByComune(Integer account,String comune, int start, int limit) {
+	public List<Customer> listCustomerByComune(Integer account,String comune, int start, int limit,int idZone, String szAddr) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT "); 
 		sb.append("DISTINCT c.* "); 
 		sb.append("FROM customer c "); 
 		sb.append("LEFT OUTER JOIN address a ON c.cuid = a.adfkcustomer "); 
 		sb.append("WHERE c.cufkaccount = :account AND  a.adcomune = :comune "); 
+		if (idZone>0) {
+			sb.append(" AND a.adaddress in ( SELECT azaddress FROM address_zone where azfkzona=:zone ) ");
+		}
+		if (!AppUtil.isEmpty(szAddr)) {
+			sb.append(" AND a.adaddress = :addr ");
+		}
 		sb.append("ORDER BY c.cusurname,c.cuname LIMIT :start,:limit ");
-
-		return em.createNativeQuery(sb.toString(), Customer.class)
-				.setParameter("comune", comune)
-				.setParameter("start", start)
-				.setParameter("limit", limit)
-				.setParameter("account", account)
-				.getResultList();
+		Query q = em.createNativeQuery(sb.toString(), Customer.class);
+		q.setParameter("comune", comune)
+		.setParameter("start", start)
+		.setParameter("limit", limit)
+		.setParameter("account", account);
+		if (idZone>0) {
+			q.setParameter("zone", idZone);
+		}
+		if (!AppUtil.isEmpty(szAddr)) {
+			q.setParameter("addr", szAddr);
+		}
+		return q.getResultList();
+//		return em.createNativeQuery(sb.toString(), Customer.class)
+//				.setParameter("comune", comune)
+//				.setParameter("start", start)
+//				.setParameter("limit", limit)
+//				.setParameter("account", account)
+//				.getResultList();
 	}
 
 	@Transactional(readOnly=true)

@@ -202,6 +202,31 @@ public class PlanningController {
 		return builder.success(planMap);
 	}
 	
+	@PostMapping("api/planning/list-planning-detail-4address")
+	public @ResponseBody ResponseData listPlanningDetail4Address(@RequestBody String payload, HttpServletRequest request) throws DataException {		
+		Integer idAccount = tokenHelper.getIdAccount(request);		
+		
+		JSONObject plObj = AppUtil.toPayLoad(payload);
+		String szAddr = AppUtil.getStringValueOf(plObj, "indirizzo");
+		
+		
+		if (AppUtil.isEmpty(szAddr)) {			
+			return builder.insufficienParameters("indirizzo", request.getLocale());
+		}
+		List<PlanDetail > plans = planRep.listPlanningDetailByAddress(szAddr);
+		List<Map<String,Object>> planMap = new ArrayList<>();
+		if ( plans!=null) {
+			for(PlanDetail pd:plans) {
+				Map<String,Object> qty = planRep.calcQty(idAccount, pd.getPldid());
+				Map<String,Object> map = new HashMap<>();
+				map.put("plan", pd);
+				map.put("qty", qty);
+				planMap.add(map);
+			}
+		}
+		return builder.success(planMap);
+	}
+	
 	@PostMapping("api/planning/list-zone-planning")
 	public @ResponseBody ResponseData listZoneAndPlanningByAccount(@RequestBody String payload, HttpServletRequest request) throws DataException {		
 		Integer idAccount = tokenHelper.getIdAccount(request);		

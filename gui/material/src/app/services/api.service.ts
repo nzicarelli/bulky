@@ -166,6 +166,16 @@ export class ApiService {
             }));
     }
 
+    public listPlanDetail4Address(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/planning/list-planning-detail-4address', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
     public elabResp(resp: any) {
         console.log('************************ API SERVICE ');
         console.log(resp);

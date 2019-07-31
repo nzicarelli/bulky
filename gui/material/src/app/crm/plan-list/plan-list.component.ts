@@ -68,18 +68,8 @@ export class PlanListComponent implements OnInit {
         // console.log(evt);
         console.log(this.comune + ' ' + this.paginator.pageIndex + ' ' + this.paginator.pageSize);
         this.AppConfig.comune = this.comune;
-        this.api.listCustomer({comune: this.comune ? this.comune.adcomune : ''}).subscribe(
-            (resp) => {
-                const data = this.api.resp2Data(resp);
-                console.log(data);
-                this.dataSource = new MatTableDataSource(data.data);
-                // this.changeDetectorRefs.detectChanges();
-                this.dataSource.paginator = this.paginator;
-                this.dataSource.sort = this.sort;
-            }, (error) => {
-                console.log(error);
-            }
-        );
+        this.loadCustomers();
+
 
         this.api.listZoneByComune({comune: this.comune ? this.comune.adcomune : ''}).subscribe(
             (resp) => {
@@ -95,11 +85,12 @@ export class PlanListComponent implements OnInit {
                 this.indirizzi = this.api.resp2Data(resp).data;
             }
         );
+        this.loadCustomers();
     }
 
     onSelectIndirizzo(evt: any) {
         console.log(this.indirizzo);
-
+        this.loadCustomers();
     }
 
     updateZone() {
@@ -139,6 +130,25 @@ export class PlanListComponent implements OnInit {
         // {path : 'heroes', component : HeroDetailComponent, data : {some_data : 'some value'}
         this.router.navigate(['/app/crm/coll-list', {data: row.cuid}]);
         // this.router.navigate([{path: 'app/crm/coll-list', data: {data: row}}]);
+    }
+
+    private loadCustomers() {
+        this.api.listCustomer({
+            comune: this.comune ? this.comune.adcomune : '',
+            zona: this.zona ? '' + this.zona.zid : '',
+            indirizzo: this.indirizzo ? this.indirizzo.azaddress : ''
+        }).subscribe(
+            (resp) => {
+                const data = this.api.resp2Data(resp);
+                console.log(data);
+                this.dataSource = new MatTableDataSource(data.data);
+                // this.changeDetectorRefs.detectChanges();
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
+            }, (error) => {
+                console.log(error);
+            }
+        );
     }
 }
 
