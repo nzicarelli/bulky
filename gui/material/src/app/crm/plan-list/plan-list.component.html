@@ -146,6 +146,24 @@
                                 <mat-icon class="material-icons" matTooltip="Azioni">view_module</mat-icon>
                             </th>
                             <td mat-cell *matCellDef="let row" [style.color]="row.color">
+
+                                <button mat-icon-button [matMenuTriggerFor]="menu"
+                                        aria-label="Example icon-button with a menu">
+                                    <mat-icon matTooltip="Visualizza/Aggiungi">playlist_add</mat-icon>
+                                </button>
+                                <mat-menu #menu="matMenu">
+                                    <ng-container *ngFor="let ix of catgTipoLead">
+                                        <button mat-menu-item [matMenuTriggerFor]="submenu">
+                                            <mat-icon>folder</mat-icon>
+                                            <span>{{ix.lctdescrizione}}</span></button>
+                                        <mat-menu #submenu="matMenu">
+                                            <button mat-menu-item *ngFor="let a of ix.actions" (click)="showCollList(row,a)">
+                                                <i class="fa fa-file-text"></i>
+                                                <span> &nbsp; {{a.catitle}}</span>
+                                            </button>
+                                        </mat-menu>
+                                    </ng-container>
+                                </mat-menu>
                                 <button mat-icon-button (click)="showCollList(row)">
                                     <mat-icon class="material-icons" matTooltip="Visualizza/Aggiungi">playlist_add
                                     </mat-icon>

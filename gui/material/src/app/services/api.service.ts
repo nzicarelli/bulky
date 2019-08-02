@@ -74,6 +74,16 @@ export class ApiService {
             }));
     }
 
+    public loadLead(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/action/list-lead', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
 
     public listZone(params: any) {
         if (!params) {
@@ -176,6 +186,17 @@ export class ApiService {
             }));
     }
 
+
+    public storeBooking(params: any) {
+        if (!params) {
+            params = {};
+        }
+        return this.http.post<any>('/api/booking/store', params, {observe: 'response'})
+            .pipe(tap((resp) => {
+                return this.elabResp(resp);
+            }));
+    }
+
     public elabResp(resp: any) {
         console.log('************************ API SERVICE ');
         console.log(resp);
@@ -188,6 +209,7 @@ export class ApiService {
         return resp;
 
     }
+
 
     public resp2Data(resp: any): any {
         const obj: any = {};

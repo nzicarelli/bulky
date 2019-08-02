@@ -20,6 +20,7 @@ export class PlannerComponent implements OnInit {
     tipoAction: any;
     @Input()
     indirizzo: any;
+    @Input() idCatgAction: any;
 
     catgGroups: CatgGroup[];
 
@@ -35,6 +36,7 @@ export class PlannerComponent implements OnInit {
 
     @ViewChild('planList')
     planList: any;
+
 
     constructor(private _formBuilder: FormBuilder, private api: ApiService) {
     }
@@ -162,9 +164,38 @@ export class PlannerComponent implements OnInit {
         }
     }
 
-    onPlanSelectChange($event:any){
+    onPlanSelectChange($event: any) {
         this.planList.deselectAll();
         $event.option.selected = true;
+        // console.log($event.option.value);
+        this.mySeletedDate = $event.option.value;
+    }
+
+    salva() {
+        console.log(this.indirizzo);
+        console.log(this.tipoAction);
+        const ActBooking: any = [];
+        for (const b of this.basket) {
+            ActBooking.push({
+                bdescr: b.materiale.crname,
+                bfkcatg: b.materiale.crid,
+                bqty: b.qty
+            });
+        }
+        const payload: any = {
+            adid: this.indirizzo.adid,
+            pldid: this.mySeletedDate.pldid,
+            tact: this.tipoAction.caid,
+            cuid: this.indirizzo.adfkcustomer,
+            bks: ActBooking
+        }
+
+        console.log(payload);
+        this.api.storeBooking(payload).subscribe((resp) => {
+
+        }, (error) => {
+
+        });
     }
 
     // stateGroups: StateGroup[] = [{

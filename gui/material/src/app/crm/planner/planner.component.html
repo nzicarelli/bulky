@@ -108,7 +108,8 @@
             </mat-step>
             <mat-step>
                 <ng-template matStepLabel>Conferma</ng-template>
-                Hai selezionato {{basket.length}} rifiuti totali.
+                Hai selezionato {{basket.length}} rifiuti totali da consegnare il {{mySeletedDate?mySeletedDate.plddescr+' ( '+mySeletedDate.pldid+') ':''}}
+
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
                         <div class="box box-default table-box mdl-shadow--2dp">
@@ -137,6 +138,7 @@
                 <div>
                     <button mat-button matStepperPrevious>Back</button>
                     <button mat-button (click)="stepper.reset()">Reset</button>
+                    <button mat-button color="accent" (click)="salva()">OK</button>
                 </div>
             </mat-step>
         </mat-horizontal-stepper>

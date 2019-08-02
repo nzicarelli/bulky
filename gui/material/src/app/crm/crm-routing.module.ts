@@ -4,6 +4,7 @@ import { PlanListComponent } from './plan-list/plan-list.component';
 import { CrmComponent } from './crm.component';
 import { AuthGuard } from '../services/auth-guard';
 import { CollListComponent } from './coll-list/coll-list.component';
+import { LeadComponent } from './lead/lead.component';
 
 const routes: Routes = [
     {
@@ -12,7 +13,8 @@ const routes: Routes = [
         children: [
             {path: '', redirectTo: '/app/dashboard', pathMatch: 'full'},
             {path: 'plan-list', component: PlanListComponent, canActivate: [AuthGuard]},
-            {path: 'coll-list', component: CollListComponent, canActivate: [AuthGuard]}
+            {path: 'coll-list', component: CollListComponent, canActivate: [AuthGuard]},
+            {path: 'lead', component: LeadComponent, canActivate: [AuthGuard]}
         ]
     }
 ];

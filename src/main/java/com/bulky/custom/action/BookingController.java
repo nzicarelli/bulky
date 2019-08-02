@@ -93,6 +93,7 @@ public class BookingController {
 			a.setAtitle(catg.getCadescr());
 			a.setAfktype(idCatgAction);
 			a.setAowner(idUtente);
+			a.setAaccount(idAccount);
 			a.setAstatus(catg.getCastatus());
 
 			Lead lead = leadService.buildLead(a);

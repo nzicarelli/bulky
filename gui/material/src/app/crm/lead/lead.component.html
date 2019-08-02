@@ -1,0 +1,260 @@
+<section class="container-fluid ">
+
+  <article class="article">
+    <h2 class="article-title">Lead Management</h2>
+    <div class="box box-default" >
+      <div class="box-body">
+         Filtri
+      </div>
+    </div>
+
+    <div class="box box-default table-box mdl-shadow--2dp">
+      <div class="box-body">
+        <mat-form-field class="w-100">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Cerca">
+        </mat-form-field>
+
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource" matSort class="w-100">
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="lid">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> ID</th>
+              <td mat-cell *matCellDef="let row"> {{row.lid}}</td>
+            </ng-container>
+
+            <!--
+             lid: number;
+    laccount: number;
+    ltype: number;
+    lowner: number;
+    lassign: number;
+    ldtmod: string;
+    lstatus: number;
+    ldescr: string;
+    lfkcustomer: number;
+    ledtins: string;
+    lefkmediaarrivo: number;
+    lctdescrizione: string;
+    lcmadescrizione: string;
+    lcsdescrizione: string;
+    cuname: string;
+    cusurname: string;
+    annullabile: boolean;
+    N: number;
+             -->
+            <!--<ng-container matColumnDef="progress">-->
+            <!--<th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>-->
+            <!--<td mat-cell *matCellDef="let row"> {{row.progress}}% </td>-->
+            <!--</ng-container>-->
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="cuname">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome</th>
+              <td mat-cell *matCellDef="let row"> {{row.cuname}}</td>
+            </ng-container>
+            <!-- Surname Column -->
+            <ng-container matColumnDef="cusurname">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Cognome/Denominazione</th>
+              <td mat-cell *matCellDef="let row"> {{row.cusurname}}</td>
+            </ng-container>
+            <!-- Surname Column -->
+
+
+            <ng-container matColumnDef="lctdescrizione">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipologia </th>
+              <td mat-cell *matCellDef="let row"> {{row.lctdescrizione}}</td>
+            </ng-container>
+            <ng-container matColumnDef="N">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+              <td mat-cell *matCellDef="let row"> {{row.N}}</td>
+            </ng-container>
+
+            <!-- Color Column -->
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <mat-icon class="material-icons" matTooltip="Azioni">view_module</mat-icon>
+              </th>
+              <td mat-cell *matCellDef="let row" [style.color]="row.color">
+                <button mat-icon-button (click)="showCollList(row)">
+                  <mat-icon class="material-icons" matTooltip="Visualizza/Aggiungi">playlist_add
+                  </mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            </tr>
+          </table>
+          <mat-paginator [pageSize]="AppConfig.pageSize" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-default table-box table-responsive mdl-shadow--2dp">
+      <table class="mdl-data-table">
+        <thead>
+        <tr>
+          <th class="mdl-data-table__cell--non-numeric">#</th>
+          <th class="mdl-data-table__cell--non-numeric">Code</th>
+          <th class="mdl-data-table__cell--non-numeric">Material</th>
+          <th>Quantity</th>
+          <th>Unit price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class="mdl-data-table__cell--non-numeric">1</td>
+          <td class="mdl-data-table__cell--non-numeric">AZ90</td>
+          <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
+          <td>25</td>
+          <td>$2.90</td>
+        </tr>
+        <tr>
+          <td class="mdl-data-table__cell--non-numeric">2</td>
+          <td class="mdl-data-table__cell--non-numeric">BC30</td>
+          <td class="mdl-data-table__cell--non-numeric">Plywood (Birch)</td>
+          <td>50</td>
+          <td>$1.25</td>
+        </tr>
+        <tr>
+          <td class="mdl-data-table__cell--non-numeric">3</td>
+          <td class="mdl-data-table__cell--non-numeric">DL32</td>
+          <td class="mdl-data-table__cell--non-numeric">Laminate (Gold on Blue)</td>
+          <td>10</td>
+          <td>$2.35</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+
+  <article class="article">
+    <h2 class="article-title">Flip Scroll</h2>
+    <div class="box box-default table-box table-flip-scroll mdl-shadow--2dp">
+
+      <table class="mdl-data-table table-bordered table-striped cf no-margin">
+        <thead class="cf">
+        <tr>
+          <th>Code</th>
+          <th class="numeric">Price</th>
+          <th class="numeric">Change</th>
+          <th class="numeric">Open</th>
+          <th class="numeric">High</th>
+          <th class="numeric">Low</th>
+          <th class="numeric">Volume</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>AAC</td>
+          <td class="numeric">$1.38</td>
+          <td class="numeric">-0.01</td>
+          <td class="numeric">$1.39</td>
+          <td class="numeric">$1.39</td>
+          <td class="numeric">$1.38</td>
+          <td class="numeric">9,395</td>
+        </tr>
+        <tr>
+          <td>AAD</td>
+          <td class="numeric">$1.15</td>
+          <td class="numeric">  +0.02</td>
+          <td class="numeric">$1.14</td>
+          <td class="numeric">$1.15</td>
+          <td class="numeric">$1.13</td>
+          <td class="numeric">56,431</td>
+        </tr>
+        <tr>
+          <td>AAX</td>
+          <td class="numeric">$4.00</td>
+          <td class="numeric">-0.04</td>
+          <td class="numeric">$4.01</td>
+          <td class="numeric">$4.05</td>
+          <td class="numeric">$4.00</td>
+          <td class="numeric">90,641</td>
+        </tr>
+        <tr>
+          <td>ABC</td>
+          <td class="numeric">$3.00</td>
+          <td class="numeric">  +0.06</td>
+          <td class="numeric">$2.98</td>
+          <td class="numeric">$3.00</td>
+          <td class="numeric">$2.96</td>
+          <td class="numeric">862,518</td>
+        </tr>
+        <tr>
+          <td>ABP</td>
+          <td class="numeric">$1.91</td>
+          <td class="numeric">0.00</td>
+          <td class="numeric">$1.92</td>
+          <td class="numeric">$1.93</td>
+          <td class="numeric">$1.90</td>
+          <td class="numeric">595,701</td>
+        </tr>
+        <tr>
+          <td>ABY</td>
+          <td class="numeric">$0.77</td>
+          <td class="numeric">  +0.02</td>
+          <td class="numeric">$0.76</td>
+          <td class="numeric">$0.77</td>
+          <td class="numeric">$0.76</td>
+          <td class="numeric">54,567</td>
+        </tr>
+        <tr>
+          <td>ACR</td>
+          <td class="numeric">$3.71</td>
+          <td class="numeric">  +0.01</td>
+          <td class="numeric">$3.70</td>
+          <td class="numeric">$3.72</td>
+          <td class="numeric">$3.68</td>
+          <td class="numeric">191,373</td>
+        </tr>
+        <tr>
+          <td>ADU</td>
+          <td class="numeric">$0.72</td>
+          <td class="numeric">0.00</td>
+          <td class="numeric">$0.73</td>
+          <td class="numeric">$0.74</td>
+          <td class="numeric">$0.72</td>
+          <td class="numeric">8,602,291</td>
+        </tr>
+        <tr>
+          <td>AGG</td>
+          <td class="numeric">$7.81</td>
+          <td class="numeric">-0.22</td>
+          <td class="numeric">$7.82</td>
+          <td class="numeric">$7.82</td>
+          <td class="numeric">$7.81</td>
+          <td class="numeric">148</td>
+        </tr>
+        <tr>
+          <td>AGK</td>
+          <td class="numeric">$13.82</td>
+          <td class="numeric">  +0.02</td>
+          <td class="numeric">$13.83</td>
+          <td class="numeric">$13.83</td>
+          <td class="numeric">$13.67</td>
+          <td class="numeric">846,403</td>
+        </tr>
+        <tr>
+          <td>AGO</td>
+          <td class="numeric">$3.17</td>
+          <td class="numeric">-0.02</td>
+          <td class="numeric">$3.11</td>
+          <td class="numeric">$3.22</td>
+          <td class="numeric">$3.10</td>
+          <td class="numeric">5,416,303</td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </article>
+
+
+
+
+
+</section>

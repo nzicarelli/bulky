@@ -20,6 +20,9 @@ export class PlanListComponent implements OnInit {
 
     indirizzi: any = [];
     indirizzo: any;
+    catgActions: any = [];
+    catgTipoLead: any = [];
+    loadIndex = 0;
 
     displayedColumns: string[] = ['cuid', 'cusurname', 'cuname', 'cucf', 'action'];
     dataSource: MatTableDataSource<CustomerData>;
@@ -53,6 +56,16 @@ export class PlanListComponent implements OnInit {
 
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+
+        this.api.listCatgTipoLead({}).subscribe((resp) => {
+            const result = this.api.resp2Data(resp);
+            this.catgTipoLead = result.data;
+            this.loadIndex = 0;
+            this.loadLead();
+
+        }, (error) => {
+            console.log(error);
+        });
 
     }
 
@@ -125,10 +138,11 @@ export class PlanListComponent implements OnInit {
         dialogRef.componentInstance.zone = this.indirizzi;
     }
 
-    showCollList(row: any) {
+    showCollList(row: any, action: any) {
         this.AppConfig.customer = row;
+        this.AppConfig.action = action;
         // {path : 'heroes', component : HeroDetailComponent, data : {some_data : 'some value'}
-        this.router.navigate(['/app/crm/coll-list', {data: row.cuid}]);
+        this.router.navigate(['/app/crm/coll-list', {data: row.cuid, act: action.caid}]);
         // this.router.navigate([{path: 'app/crm/coll-list', data: {data: row}}]);
     }
 
@@ -145,6 +159,24 @@ export class PlanListComponent implements OnInit {
                 // this.changeDetectorRefs.detectChanges();
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
+            }, (error) => {
+                console.log(error);
+            }
+        );
+    }
+
+    private loadLead() {
+        if (!this.catgTipoLead) {
+            return;
+        }
+        if (this.loadIndex < 0 || this.loadIndex >= this.catgTipoLead.length) {
+            return;
+        }
+        this.api.listCatgAction({tlead: this.catgTipoLead[this.loadIndex].lctid}).subscribe(
+            (resp) => {
+                this.catgTipoLead[this.loadIndex].actions = this.api.resp2Data(resp).data;
+                this.loadIndex++;
+                this.loadLead();
             }, (error) => {
                 console.log(error);
             }

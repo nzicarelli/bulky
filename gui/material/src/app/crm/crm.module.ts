@@ -26,6 +26,7 @@ import { PlannerComponent } from './planner/planner.component';
 import { UpdateAddressZoneComponent } from './update-address-zone/update-address-zone.component';
 import { DialogUpdAddrZoneComponent } from './update-address-zone/dialog-upd-addr-zone/dialog-upd-addr-zone.component';
 import { UpdateZoneComponent } from './update-address-zone/update-zone/update-zone.component';
+import { LeadComponent } from './lead/lead.component';
 
 
 @NgModule({
@@ -66,7 +67,7 @@ import { UpdateZoneComponent } from './update-address-zone/update-zone/update-zo
         CrmRoutingModule,
         ReactiveFormsModule,
     ],
-    declarations: [CrmComponent, PlanListComponent, CollListComponent, PlannerComponent, UpdateAddressZoneComponent, DialogUpdAddrZoneComponent, UpdateZoneComponent],
+    declarations: [CrmComponent, PlanListComponent, CollListComponent, PlannerComponent, UpdateAddressZoneComponent, DialogUpdAddrZoneComponent, UpdateZoneComponent, LeadComponent],
     entryComponents: [DialogUpdAddrZoneComponent, UpdateZoneComponent]
 })
 export class CrmModule {
