@@ -32,7 +32,7 @@
     "chartist": "0.9.4",
     "core-js": "2.6.8",
     "express": "^4.17.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "rxjs": "6.3.0",
     "rxjs-compat": "6.3.0",
